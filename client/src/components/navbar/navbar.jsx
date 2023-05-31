@@ -44,12 +44,8 @@ function Navbar() {
           Araç İlanları
         </NavLink>
       </div>
-      <div className="contact">
-        <button
-          className={`navbar-contact ${
-            isOpen ? "navbar-open" : "navbar-close"
-          }`}
-        >
+      <div className={`contact ${isOpen ? "navbar-open" : "navbar-close"}`}>
+        <button className="navbar-contact">
           <IoCall className="icon-transform" /> İletişime geç
         </button>
         <Link>İlan ver</Link>

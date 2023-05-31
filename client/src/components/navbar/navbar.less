@@ -59,6 +59,7 @@ nav.navbar {
       display: inline-block;
       padding: 10px 10px;
       color: var(--color-primary-blue);
+      background-color: var(--color-primary-background);
       font-size: 1rem;
       transition: color 0.4s;
       cursor: pointer;
@@ -100,6 +101,9 @@ nav.navbar {
       justify-content: space-between;
       padding: 10px;
       background-color: var(--color-primary-background);
+      position: fixed;
+      top: 0px;
+      left: 0px;
       .mobile-input {
         display: block;
       }
@@ -115,7 +119,7 @@ nav.navbar {
       left: 0px;
       z-index: 9999;
       width: 100%;
-      height: calc(100vh - 107px);
+      height: calc(100vh - 148px);
       flex-direction: column;
       justify-content: flex-start;
       align-items: flex-start;
@@ -133,17 +137,29 @@ nav.navbar {
     .navbar-links.navbar-open {
       transform: translateY(0px);
     }
-    .navbar-contact {
+    .contact {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0px;
       transform: translateY(-100vh);
       position: fixed;
-      top: calc(100vh - 41px);
+      top: calc(100vh - 82px);
       left: 0px;
       z-index: 9999;
       width: 100%;
-      border-radius: 0px;
       transition: transform 0.3s;
+      .navbar-contact {
+        border-radius: 0px;
+      }
+      a {
+        border-radius: 0px;
+      }
+      a:hover {
+        background-color: var(--color-primary-blue);
+        color: var(--color-primary-whitetext);
+      }
     }
-    .navbar-contact.navbar-open {
+    .contact.navbar-open {
       transform: translateY(0px);
     }
   }
