@@ -98,15 +98,15 @@ nav.navbar .contact a:hover {
     justify-content: space-between;
     padding: 10px;
     background-color: var(--color-primary-background);
-    position: fixed;
-    top: 0px;
-    left: 0px;
   }
   nav.navbar .navbar-logo .mobile-input {
     display: block;
   }
   nav.navbar .navbar-logo.navbar-open {
     border-bottom: 2px solid var(--color-quaternary-text);
+    position: fixed;
+    top: 0px;
+    left: 0px;
   }
   nav.navbar .navbar-links {
     transform: translateY(-100vh);
