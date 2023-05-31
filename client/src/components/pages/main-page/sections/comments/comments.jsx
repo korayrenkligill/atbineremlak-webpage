@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import "./comments.css";
+
 function getWindowSize() {
   const { innerWidth, innerHeight } = window;
   return { innerWidth, innerHeight };
