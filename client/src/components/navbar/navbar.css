@@ -1,0 +1,146 @@
+nav.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--page-padding);
+  text-align: center;
+  box-shadow: var(--boxshadow);
+  transition: padding 0.3s;
+  background-color: var(--color-primary-background);
+}
+nav.navbar .navbar-logo a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+}
+nav.navbar .navbar-logo a .frame {
+  max-width: 40px;
+  overflow: hidden;
+}
+nav.navbar .navbar-logo a .frame img {
+  width: 100%;
+}
+nav.navbar .navbar-logo .mobile-input {
+  display: none;
+}
+nav.navbar .navbar-logo .mobile-input label {
+  font-size: 2rem;
+}
+nav.navbar .navbar-logo .mobile-input input {
+  display: none;
+}
+nav.navbar .navbar-links {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-primary-text);
+  gap: 1rem;
+}
+nav.navbar .navbar-links a {
+  padding: 20px 15px;
+  border-radius: 4px;
+  border-top: 4px solid transparent;
+  border-bottom: 4px solid transparent;
+  transition: transform 0.2s;
+}
+nav.navbar .navbar-links a:not(.active):hover {
+  transform: translateY(-5px);
+}
+nav.navbar .navbar-links a.active {
+  border-bottom: 4px solid var(--color-primary-blue);
+}
+nav.navbar .contact {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+nav.navbar .contact .navbar-contact {
+  display: inline-block;
+  padding: 10px 10px;
+  color: var(--color-primary-blue);
+  font-size: 1rem;
+  transition: color 0.4s;
+  cursor: pointer;
+}
+nav.navbar .contact .navbar-contact:hover {
+  color: var(--color-primary-text);
+}
+nav.navbar .contact a {
+  display: inline-block;
+  padding: 10px 30px;
+  background-color: var(--color-primary-blue);
+  color: var(--color-primary-whitetext);
+  border-radius: 100px;
+  font-size: 1rem;
+  font-weight: bold;
+  transition: color 0.4s, background-color 0.4s;
+  cursor: pointer;
+}
+nav.navbar .contact a:hover {
+  background-color: var(--color-primary-background);
+  color: var(--color-primary-blue);
+}
+@media screen and (max-width: 768px) {
+  nav.navbar {
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    position: relative;
+    z-index: 10000;
+  }
+  nav.navbar .navbar-logo {
+    z-index: 10000;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: var(--color-primary-background);
+  }
+  nav.navbar .navbar-logo .mobile-input {
+    display: block;
+  }
+  nav.navbar .navbar-logo.navbar-open {
+    border-bottom: 2px solid var(--color-quaternary-text);
+  }
+  nav.navbar .navbar-links {
+    transform: translateY(-100vh);
+    background-color: var(--color-primary-background);
+    position: fixed;
+    top: 66px;
+    left: 0px;
+    z-index: 9999;
+    width: 100%;
+    height: calc(100vh - 107px);
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    transition: transform 0.3s;
+  }
+  nav.navbar .navbar-links a {
+    border: none !important;
+    padding: 10px;
+    width: 100%;
+    text-align: left;
+  }
+  nav.navbar .navbar-links a:not(.active):hover {
+    transform: translateY(0px);
+  }
+  nav.navbar .navbar-links.navbar-open {
+    transform: translateY(0px);
+  }
+  nav.navbar .navbar-contact {
+    transform: translateY(-100vh);
+    position: fixed;
+    top: calc(100vh - 41px);
+    left: 0px;
+    z-index: 9999;
+    width: 100%;
+    border-radius: 0px;
+    transition: transform 0.3s;
+  }
+  nav.navbar .navbar-contact.navbar-open {
+    transform: translateY(0px);
+  }
+}

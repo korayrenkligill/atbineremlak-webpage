@@ -1,0 +1,68 @@
+main.main-page .services .services-list {
+  display: flex;
+  gap: 3rem;
+  flex-wrap: wrap;
+}
+main.main-page .services .services-list .service {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  border-radius: 30px;
+  transition: transform 0.3s;
+}
+main.main-page .services .services-list .service .frame {
+  height: 250px;
+}
+main.main-page .services .services-list .service .frame img {
+  height: 100%;
+}
+main.main-page .services .services-list .service .texts h2.title {
+  font-size: 2rem;
+  color: var(--color-primary-text);
+  text-align: center;
+}
+main.main-page .services .services-list .service .texts p {
+  font-size: 1rem;
+  color: var(--color-secondary-text);
+  text-align: justify;
+  word-wrap: break-word;
+}
+main.main-page .services .services-list .service .texts button {
+  margin-top: 1rem;
+  width: 100%;
+  padding: 10px;
+  color: var(--color-primary-blue);
+  font-size: 1rem;
+  transition: color 0.4s;
+}
+main.main-page .services .services-list .service .texts button:hover {
+  color: var(--color-primary-text);
+}
+main.main-page .services .services-list .service:hover {
+  transform: translateY(-20px) scale(1.03);
+}
+@media screen and (max-width: 1440px) {
+  main.main-page .services .services-list {
+    gap: 1rem;
+  }
+}
+@media screen and (max-width: 768px) {
+  main.main-page .services .services-list .service:hover {
+    transform: translateY(0px) scale(1);
+    background-color: var(--color-primary-background);
+  }
+}
+@media screen and (max-width: 450px) {
+  main.main-page .services .services-list {
+    gap: 0px;
+  }
+  main.main-page .services .services-list .service {
+    padding: 1rem;
+  }
+  main.main-page .services .services-list .service .texts p {
+    text-align: center;
+  }
+}

@@ -1,0 +1,91 @@
+main.main-page .popular-listings .real-estate-listings {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 50px;
+}
+main.main-page .popular-listings .real-estate-listings .list-item {
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.4s;
+  padding: 10px;
+  border-radius: 20px;
+  cursor: pointer;
+}
+main.main-page .popular-listings .real-estate-listings .list-item .image-background {
+  height: 200px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  border-radius: 20px;
+  overflow: hidden;
+}
+main.main-page .popular-listings .real-estate-listings .list-item .image-background div {
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.438);
+  transition: opacity 0.4s;
+}
+main.main-page .popular-listings .real-estate-listings .list-item .image-background div .icon {
+  color: var(--color-primary-whitetext);
+  font-size: 2.5rem;
+}
+main.main-page .popular-listings .real-estate-listings .list-item h3 {
+  margin-top: 10px;
+  font-size: 1.2rem;
+  color: var(--color-primary-text);
+}
+main.main-page .popular-listings .real-estate-listings .list-item p {
+  font-size: 0.8rem;
+  color: var(--color-tertiary-text);
+}
+main.main-page .popular-listings .real-estate-listings .list-item button {
+  background-color: var(--color-primary-blue);
+  padding: 10px;
+  font-size: 1rem;
+  color: var(--color-primary-whitetext);
+  margin-top: 10px;
+  border-radius: 10px;
+  transition: background-color 0.4s, color 0.4s;
+}
+main.main-page .popular-listings .real-estate-listings .list-item:hover {
+  transform: scale(1.05);
+  box-shadow: var(--boxshadow);
+}
+main.main-page .popular-listings .real-estate-listings .list-item:hover .image-background div {
+  opacity: 1;
+}
+main.main-page .popular-listings .real-estate-listings .list-item:hover button {
+  background-color: var(--color-primary-background);
+  color: var(--color-primary-blue);
+}
+main.main-page .popular-listings .more-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 20px;
+}
+main.main-page .popular-listings .more-container button {
+  padding: 10px 30px;
+  font-size: 1rem;
+  color: var(--color-primary-blue);
+  transition: color 0.4s;
+}
+main.main-page .popular-listings .more-container button:hover {
+  color: var(--color-primary-text);
+}
+@media screen and (max-width: 768px) {
+  main.main-page .popular-listings .real-estate-listings {
+    gap: 30px;
+    padding: 20px;
+  }
+  main.main-page .popular-listings .real-estate-listings .list-item:hover {
+    transform: scale(1);
+  }
+  main.main-page .popular-listings .real-estate-listings .list-item:hover .image-background div {
+    opacity: 0;
+  }
+}

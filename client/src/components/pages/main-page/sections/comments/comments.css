@@ -1,0 +1,84 @@
+main.main-page .comments .comments-slider {
+  position: relative;
+  overflow: hidden;
+}
+main.main-page .comments .comments-slider .comment-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  padding: 2rem;
+  z-index: 1;
+}
+main.main-page .comments .comments-slider .comment-container .comment {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 10px;
+}
+main.main-page .comments .comments-slider .comment-container .comment img {
+  max-width: 200px;
+  border-radius: 100px;
+  border: 5px solid var(--color-primary-background);
+  outline: 3px dotted var(--color-primary-blue);
+}
+main.main-page .comments .comments-slider::after {
+  content: "";
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 2;
+  height: 100%;
+  width: 50px;
+  background: var(--color-primary-background);
+  background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, var(--color-primary-background) 100%);
+}
+main.main-page .comments .comments-slider::before {
+  content: "";
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  z-index: 2;
+  height: 100%;
+  width: 100px;
+  background: var(--color-primary-background);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, var(--color-primary-background) 100%);
+}
+@media screen and (max-width: 768px) {
+  main.main-page .comments .comments-slider .comment-container .comment img {
+    max-width: 130px;
+  }
+  main.main-page .comments .comments-slider .comment-container .comment .texts h2 {
+    font-size: 1.2rem;
+  }
+  main.main-page .comments .comments-slider .comment-container .comment .texts p {
+    font-size: 0.9rem;
+  }
+}
+@media screen and (max-width: 450px) {
+  main.main-page .comments .comments-slider {
+    overflow: hidden;
+  }
+  main.main-page .comments .comments-slider .comment-container {
+    padding: 0px;
+  }
+  main.main-page .comments .comments-slider .comment-container .comment {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  main.main-page .comments .comments-slider .comment-container .comment img {
+    max-width: 80px;
+  }
+  main.main-page .comments .comments-slider .comment-container .comment .texts {
+    text-align: center;
+  }
+  main.main-page .comments .comments-slider::after {
+    width: 0px;
+    background: none;
+  }
+  main.main-page .comments .comments-slider::before {
+    width: 0px;
+    background: none;
+  }
+}

@@ -1,0 +1,131 @@
+main.main-page .contact .contact-container {
+  display: flex;
+  gap: 2rem;
+}
+main.main-page .contact .contact-container .contact-form {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+main.main-page .contact .contact-container .contact-form div {
+  display: flex;
+  flex-direction: column;
+}
+main.main-page .contact .contact-container .contact-form div label {
+  color: var(--color-tertiary-text);
+}
+main.main-page .contact .contact-container .contact-form div input,
+main.main-page .contact .contact-container .contact-form div textarea {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--color-fifth-text);
+  resize: vertical;
+}
+main.main-page .contact .contact-container .contact-form div input:focus,
+main.main-page .contact .contact-container .contact-form div textarea:focus {
+  outline: 1px solid var(--color-tertiary-text);
+}
+main.main-page .contact .contact-container .contact-form div.name-surname {
+  display: flex;
+  flex-direction: row;
+  gap: 2rem;
+}
+main.main-page .contact .contact-container .contact-form div.name-surname div {
+  flex: 1;
+}
+main.main-page .contact .contact-container .contact-form button {
+  font-size: 1rem;
+  padding: 10px 30px;
+  background-color: var(--color-primary-blue);
+  color: var(--color-primary-whitetext);
+  border-radius: 10px;
+}
+main.main-page .contact .contact-container iframe {
+  flex: 1;
+  border: none;
+  border-radius: 30px;
+}
+main.main-page .contact .numbers {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 2rem;
+  margin-top: 4rem;
+}
+main.main-page .contact .numbers .person {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 1rem;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: var(--boxshadow);
+  background-color: var(--color-primary-background);
+}
+main.main-page .contact .numbers .person .profile-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+main.main-page .contact .numbers .person .profile-name .profile {
+  min-width: 50px;
+  height: 50px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 100px;
+}
+main.main-page .contact .numbers .person .profile-name p {
+  font-weight: bold;
+  font-size: 1rem;
+}
+main.main-page .contact .numbers .person .profile-name span {
+  display: inline-block;
+  transform: translateY(-5px);
+  font-size: 0.8rem;
+}
+main.main-page .contact .numbers .person .contact-informations {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 10px;
+  padding: 15px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-background);
+}
+main.main-page .contact .numbers .person .contact-informations a {
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+main.main-page .contact .numbers .person .contact-informations a img.image-icon {
+  width: 15px;
+  height: 15px;
+}
+@media screen and (max-width: 768px) {
+  main.main-page .contact .contact-container {
+    flex-direction: column;
+    margin: 10px;
+  }
+  main.main-page .contact .contact-container iframe {
+    min-height: 350px;
+  }
+  main.main-page .contact .numbers {
+    flex-direction: column;
+    align-items: stretch;
+    margin: 0px 5%;
+  }
+  main.main-page .contact .numbers .person .contact-informations {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 450px) {
+  main.main-page .contact .contact-container .contact-form div.name-surname {
+    flex-direction: column;
+    gap: 0.8rem;
+  }
+}

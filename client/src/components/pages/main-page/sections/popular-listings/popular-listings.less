@@ -1,0 +1,100 @@
+main.main-page {
+  .popular-listings {
+    .real-estate-listings {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 50px;
+      .list-item {
+        display: flex;
+        flex-direction: column;
+        transition: transform 0.4s;
+        padding: 10px;
+        border-radius: 20px;
+        cursor: pointer;
+        .image-background {
+          height: 200px;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: cover;
+          border-radius: 20px;
+          overflow: hidden;
+          div {
+            opacity: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.438);
+            transition: opacity 0.4s;
+            .icon {
+              color: var(--color-primary-whitetext);
+              font-size: 2.5rem;
+            }
+          }
+        }
+        h3 {
+          margin-top: 10px;
+          font-size: 1.2rem;
+          color: var(--color-primary-text);
+        }
+        p {
+          font-size: 0.8rem;
+          color: var(--color-tertiary-text);
+        }
+        button {
+          background-color: var(--color-primary-blue);
+          padding: 10px;
+          font-size: 1rem;
+          color: var(--color-primary-whitetext);
+          margin-top: 10px;
+          border-radius: 10px;
+          transition: background-color 0.4s, color 0.4s;
+        }
+      }
+      .list-item:hover {
+        transform: scale(1.05);
+        box-shadow: var(--boxshadow);
+        .image-background div {
+          opacity: 1;
+        }
+        button {
+          background-color: var(--color-primary-background);
+          color: var(--color-primary-blue);
+        }
+      }
+    }
+    .more-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 20px;
+      button {
+        padding: 10px 30px;
+        font-size: 1rem;
+        color: var(--color-primary-blue);
+        transition: color 0.4s;
+      }
+      button:hover {
+        color: var(--color-primary-text);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  main.main-page {
+    .popular-listings {
+      .real-estate-listings {
+        gap: 30px;
+        padding: 20px;
+        .list-item:hover {
+          transform: scale(1);
+          .image-background div {
+            opacity: 0;
+          }
+        }
+      }
+    }
+  }
+}

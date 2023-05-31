@@ -1,0 +1,98 @@
+footer.footer {
+  box-shadow: var(--boxshadow);
+}
+footer.footer .top-footer {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background-color: var(--color-secondary-background);
+  padding: var(--page-padding);
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+footer.footer .top-footer .company-information {
+  display: flex;
+  flex-direction: column;
+}
+footer.footer .top-footer .company-information .company {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  color: var(--color-primary-text);
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+footer.footer .top-footer .company-information .company img {
+  width: 30px;
+  height: 30px;
+}
+footer.footer .top-footer .company-information .contact {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+footer.footer .top-footer .company-information .contact a {
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  color: var(--color-secondary-text);
+  gap: 5px;
+}
+footer.footer .top-footer .company-information .contact a img {
+  width: 20px;
+  height: 20px;
+}
+footer.footer .top-footer .navigation {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+footer.footer .top-footer .navigation h2 {
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-primary-text);
+}
+footer.footer .top-footer .navigation a {
+  font-size: 1rem;
+  color: var(--color-secondary-text);
+}
+footer.footer .top-footer .social-medias {
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+}
+footer.footer .top-footer .social-medias h2 {
+  margin-bottom: 8px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--color-primary-text);
+}
+footer.footer .top-footer .social-medias a {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 1rem;
+  color: var(--color-secondary-text);
+}
+footer.footer .top-footer .social-medias a img {
+  width: 20px;
+  height: 20px;
+}
+footer.footer .bottom-footer {
+  background-color: var(--color-bottomfooter-background);
+  padding: 10px;
+}
+footer.footer .bottom-footer p {
+  text-align: center;
+  color: var(--color-primary-whitetext);
+}
+footer.footer .bottom-footer p a {
+  color: var(--color-primary-blue);
+}
+@media screen and (max-width: 768px) {
+  footer.footer .top-footer {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+}

@@ -1,0 +1,101 @@
+footer.footer {
+  box-shadow: var(--boxshadow);
+  .top-footer {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    background-color: var(--color-secondary-background);
+    padding: var(--page-padding);
+    padding-top: 20px;
+    padding-bottom: 20px;
+    .company-information {
+      display: flex;
+      flex-direction: column;
+      .company {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 15px;
+        color: var(--color-primary-text);
+        font-size: 1.5rem;
+        font-weight: bold;
+        img {
+          width: 30px;
+          height: 30px;
+        }
+      }
+      .contact {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        a {
+          display: flex;
+          align-items: center;
+          font-size: 1rem;
+          color: var(--color-secondary-text);
+          gap: 5px;
+          img {
+            width: 20px;
+            height: 20px;
+          }
+        }
+      }
+    }
+    .navigation {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      h2 {
+        margin-bottom: 8px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--color-primary-text);
+      }
+      a {
+        font-size: 1rem;
+        color: var(--color-secondary-text);
+      }
+    }
+    .social-medias {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      h2 {
+        margin-bottom: 8px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--color-primary-text);
+      }
+      a {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        font-size: 1rem;
+        color: var(--color-secondary-text);
+        img {
+          width: 20px;
+          height: 20px;
+        }
+      }
+    }
+  }
+  .bottom-footer {
+    background-color: var(--color-bottomfooter-background);
+    padding: 10px;
+    p {
+      text-align: center;
+      color: var(--color-primary-whitetext);
+      a {
+        color: var(--color-primary-blue);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  footer.footer {
+    .top-footer {
+      grid-template-columns: 1fr;
+      gap: 2rem;
+    }
+  }
+}

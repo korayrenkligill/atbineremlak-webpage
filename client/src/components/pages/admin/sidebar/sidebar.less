@@ -1,0 +1,24 @@
+.admin-page-sidebar {
+  display: flex;
+  flex-direction: column;
+  h2.header {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    font-weight: normal;
+    color: var(--color-quaternary-text);
+  }
+  a {
+    color: var(--color-secondary-text);
+    padding: 4px;
+    border-left: 3px solid transparent;
+    .icon {
+      transform: translateY(2px);
+    }
+  }
+  a.active {
+    color: var(--color-primary-blue);
+  }
+  a:hover {
+    border-left: 3px solid var(--color-primary-blue);
+  }
+}

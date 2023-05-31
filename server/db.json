@@ -1,0 +1,13 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "password": "admin",
+      "name": "Admin",
+      "surname": "Admin",
+      "email": "admin@newspulse.com",
+      "position": "Owner"
+    }
+  ]
+}

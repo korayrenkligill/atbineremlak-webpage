@@ -1,0 +1,113 @@
+main.main-page {
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    .header {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      h1 {
+        text-align: center;
+        font-size: 2.5rem;
+        padding: 1rem;
+        color: var(--color-primary-text);
+      }
+      span {
+        font-size: 1.4rem;
+        color: var(--color-secondary-blue);
+      }
+      button {
+        margin-top: 2rem;
+        padding: 10px 30px;
+        background-color: var(--color-primary-blue);
+        color: var(--color-primary-whitetext);
+        border-radius: 10px;
+        font-size: 1rem;
+        transition: background-color 0.4s, color 0.4s;
+      }
+      button:hover {
+        background-color: var(--color-primary-background);
+        color: var(--color-primary-blue);
+      }
+    }
+    .frame {
+      flex: 1;
+      img {
+        width: 100%;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  main.main-page {
+    header {
+      .header {
+        h1 {
+          font-size: 1.6rem;
+        }
+        span {
+          font-size: 1rem;
+        }
+        button {
+          font-size: 0.9rem;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  main.main-page {
+    header {
+      flex-direction: column;
+      .header {
+        order: 1;
+        h1 {
+          padding: 10px 2rem;
+        }
+      }
+      .frame {
+        max-width: 400px;
+      }
+    }
+  }
+}
+@media screen and (max-width: 450px) {
+  main.main-page {
+    header {
+      .header {
+        h1 {
+          font-size: 1.4rem;
+          padding: 10px 2rem;
+        }
+      }
+    }
+  }
+}
+@media screen and (max-width: 400px) {
+  main.main-page {
+    header {
+      .header {
+        h1 {
+          font-size: 1rem;
+          padding: 10px 2rem;
+        }
+        span {
+          font-size: 0.9rem;
+        }
+        button {
+          font-size: 0.9rem;
+        }
+      }
+      .frame {
+        max-width: 400px;
+        img {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
