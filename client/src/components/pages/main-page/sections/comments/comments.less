@@ -3,6 +3,7 @@ main.main-page {
     .comments-slider {
       position: relative;
       overflow: hidden;
+      margin-top: 3rem;
       .comment-container {
         display: flex;
         align-items: center;
@@ -32,11 +33,11 @@ main.main-page {
       z-index: 2;
       height: 100%;
       width: 50px;
-      background: var(--color-primary-background);
+      background: var(--color-secondary-background);
       background: linear-gradient(
         -90deg,
         rgba(255, 255, 255, 0) 0%,
-        var(--color-primary-background) 100%
+        var(--color-secondary-background) 100%
       );
     }
     .comments-slider::before {
@@ -47,11 +48,11 @@ main.main-page {
       z-index: 2;
       height: 100%;
       width: 100px;
-      background: var(--color-primary-background);
+      background: var(--color-secondary-background);
       background: linear-gradient(
         90deg,
         rgba(255, 255, 255, 0) 0%,
-        var(--color-primary-background) 100%
+        var(--color-secondary-background) 100%
       );
     }
   }

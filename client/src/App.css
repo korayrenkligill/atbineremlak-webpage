@@ -7,7 +7,7 @@
 h1.title {
   font-size: 2rem;
   color: var(--color-primary-text);
-  margin: 2rem;
+  margin: 6rem 2rem 2rem 2rem;
   position: relative;
 }
 h1.title::after {
@@ -21,6 +21,20 @@ h1.title::after {
   top: -30%;
   left: -20px;
   transform: rotate(10deg);
+}
+h1.admin-title {
+  font-size: 1.5rem;
+  color: var(--color-primary-text);
+  margin-bottom: 2rem;
+}
+
+input,
+select {
+  padding: 10px;
+  border-radius: 10px;
+  outline: none;
+  border: none;
+  background-color: var(--color-secondary-background);
 }
 @media screen and (max-width: 768px) {
   h1.title {

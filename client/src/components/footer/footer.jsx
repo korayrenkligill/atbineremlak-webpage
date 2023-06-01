@@ -7,7 +7,7 @@ function Footer() {
       <div className="top-footer">
         <div className="company-information">
           <div className="company">
-            <img src="logo.png" alt="logo" />
+            <img src="/logo.png" alt="logo" />
             Atbiner Emlak
           </div>
           <div className="contact">

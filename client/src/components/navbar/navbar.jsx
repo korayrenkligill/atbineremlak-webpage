@@ -88,13 +88,13 @@ function Navbar() {
             <BsFillGridFill className="icon-transform" /> Ana Sayfa
           </NavLink>
           <NavLink
-            to="/emlak"
+            to="/konut"
             onClick={() => {
               setIsOpen(false);
             }}
           >
             <IoHome className="icon-transform" />
-            Ev İlanları
+            Konut İlanları
           </NavLink>
           <NavLink
             to="/otomobil"
@@ -103,7 +103,7 @@ function Navbar() {
             }}
           >
             <BsFillCarFrontFill className="icon-transform" />
-            Araç İlanları
+            Otomobil İlanları
           </NavLink>
           <button
             className="navbar-contact"

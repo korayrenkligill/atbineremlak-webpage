@@ -1,6 +1,7 @@
 main.main-page .comments .comments-slider {
   position: relative;
   overflow: hidden;
+  margin-top: 3rem;
 }
 main.main-page .comments .comments-slider .comment-container {
   display: flex;
@@ -30,8 +31,8 @@ main.main-page .comments .comments-slider::after {
   z-index: 2;
   height: 100%;
   width: 50px;
-  background: var(--color-primary-background);
-  background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, var(--color-primary-background) 100%);
+  background: var(--color-secondary-background);
+  background: linear-gradient(-90deg, rgba(255, 255, 255, 0) 0%, var(--color-secondary-background) 100%);
 }
 main.main-page .comments .comments-slider::before {
   content: "";
@@ -41,8 +42,8 @@ main.main-page .comments .comments-slider::before {
   z-index: 2;
   height: 100%;
   width: 100px;
-  background: var(--color-primary-background);
-  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, var(--color-primary-background) 100%);
+  background: var(--color-secondary-background);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0%, var(--color-secondary-background) 100%);
 }
 @media screen and (max-width: 768px) {
   main.main-page .comments .comments-slider .comment-container .comment img {

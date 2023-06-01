@@ -1,6 +1,8 @@
 main.main-page .contact .contact-container {
   display: flex;
   gap: 2rem;
+  margin-top: 6rem;
+  padding: 20px;
 }
 main.main-page .contact .contact-container .contact-form {
   flex: 1;
@@ -117,7 +119,7 @@ main.main-page .contact .numbers .person .contact-informations a img.image-icon 
   main.main-page .contact .numbers {
     flex-direction: column;
     align-items: stretch;
-    margin: 0px 5%;
+    margin: 0px 30px;
   }
   main.main-page .contact .numbers .person .contact-informations {
     width: 100%;

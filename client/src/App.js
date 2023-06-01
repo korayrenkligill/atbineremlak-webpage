@@ -7,6 +7,8 @@ import Otomobil from "./components/pages/otomobil/otomobil";
 import { Route, Routes } from "react-router-dom";
 import AdminPanel from "./components/pages/admin/admin-panel";
 import Dashboard from "./components/pages/admin/dashboard/dashboard";
+import RealEstateList from "./components/pages/admin/real-estate/real-estate-list/real-estate-list";
+import RealEstateAdd from "./components/pages/admin/real-estate/real-estate-add/real-estate-add";
 
 //CSS
 import "./App.css";
@@ -20,6 +22,8 @@ function App() {
         <Route path="/otomobil" element={<Otomobil />} />
         <Route path="/admin" element={<AdminPanel />}>
           <Route path="/admin/" element={<Dashboard />} />
+          <Route path="/admin/konutlar/" element={<RealEstateList />} />
+          <Route path="/admin/konut/ekle/" element={<RealEstateAdd />} />
         </Route>
       </Routes>
       <Footer />
