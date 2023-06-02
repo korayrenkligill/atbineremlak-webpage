@@ -1,0 +1,42 @@
+.car-requests {
+  .table-container {
+    overflow-x: scroll;
+    table {
+      width: 100%;
+      min-width: 1200px;
+      th {
+        text-align: left;
+      }
+      .image {
+        width: 15%;
+      }
+      .title {
+        width: 40%;
+      }
+      td {
+        padding: 10px;
+        .frame {
+          width: 100%;
+          aspect-ratio: 16 / 9;
+          background-color: var(--color-tertiary-background);
+          border-radius: 10px;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .actions {
+          height: 100%;
+          text-align: left;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 1rem;
+          button {
+            padding: 10px;
+            font-size: 1.5rem;
+          }
+        }
+      }
+    }
+  }
+}

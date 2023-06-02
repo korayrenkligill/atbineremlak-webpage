@@ -1,0 +1,40 @@
+.car-requests .table-container {
+  overflow-x: scroll;
+}
+.car-requests .table-container table {
+  width: 100%;
+  min-width: 1200px;
+}
+.car-requests .table-container table th {
+  text-align: left;
+}
+.car-requests .table-container table .image {
+  width: 15%;
+}
+.car-requests .table-container table .title {
+  width: 40%;
+}
+.car-requests .table-container table td {
+  padding: 10px;
+}
+.car-requests .table-container table td .frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-tertiary-background);
+  border-radius: 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.car-requests .table-container table td .actions {
+  height: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+.car-requests .table-container table td .actions button {
+  padding: 10px;
+  font-size: 1.5rem;
+}

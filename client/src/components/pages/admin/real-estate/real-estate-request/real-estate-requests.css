@@ -1,0 +1,40 @@
+.real-estate-requests .table-container {
+  overflow-x: scroll;
+}
+.real-estate-requests .table-container table {
+  width: 100%;
+  min-width: 1200px;
+}
+.real-estate-requests .table-container table th {
+  text-align: left;
+}
+.real-estate-requests .table-container table .image {
+  width: 15%;
+}
+.real-estate-requests .table-container table .title {
+  width: 40%;
+}
+.real-estate-requests .table-container table td {
+  padding: 10px;
+}
+.real-estate-requests .table-container table td .frame {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  background-color: var(--color-tertiary-background);
+  border-radius: 10px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.real-estate-requests .table-container table td .actions {
+  height: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+.real-estate-requests .table-container table td .actions button {
+  padding: 10px;
+  font-size: 1.5rem;
+}

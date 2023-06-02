@@ -12,6 +12,10 @@ import RealEstateAdd from "./components/pages/admin/real-estate/real-estate-add/
 
 //CSS
 import "./App.css";
+import RealEstateRequests from "./components/pages/admin/real-estate/real-estate-request/real-estate-requests";
+import CarAdd from "./components/pages/admin/car/car-add/car-add";
+import CarList from "./components/pages/admin/car/car-list/car-list";
+import CarRequest from "./components/pages/admin/car/car-request/car-request";
 function App() {
   return (
     <div className="App">
@@ -24,6 +28,16 @@ function App() {
           <Route path="/admin/" element={<Dashboard />} />
           <Route path="/admin/konutlar/" element={<RealEstateList />} />
           <Route path="/admin/konut/ekle/" element={<RealEstateAdd />} />
+          <Route
+            path="/admin/konut/ilan-istekleri/"
+            element={<RealEstateRequests />}
+          />
+          <Route path="/admin/otomobiller" element={<CarList />} />
+          <Route path="/admin/otomobil/ekle" element={<CarAdd />} />
+          <Route
+            path="/admin/otomobil/ilan-istekleri"
+            element={<CarRequest />}
+          />
         </Route>
       </Routes>
       <Footer />

@@ -2,11 +2,195 @@ import React, { useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
 import { BsFillTrash3Fill, BsPencilSquare } from "react-icons/bs";
 import ReactQuill from "react-quill";
+import YouTube from "react-youtube";
 import "./real-estate-add.css";
+
+const manisaIlceleri = [
+  {
+    ilce: "Şehzadeler",
+    mahalleler: [
+      "ANAFAKTALAR MAHALLESİ",
+      "ADAKALE MAHALLESİ",
+      "ADNAN MENDERES MAHALLESİ",
+      "AHMET BEDEVİ MAHALLESİ",
+      "AKINCILAR MAHALLESİ",
+      "AKPINAR MAHALLESİ",
+      "ALAYBEY MAHALLESİ",
+      "ARDA MAHALLESİ",
+      "AŞAĞIÇOBANİSA MAHALLESİ",
+      "AYVACIK MAHALLESİ",
+      "BAYINDIRLIK MAHALLESİ",
+      "BELENYENİCE MAHALLESİ",
+      "ÇAMKÖY MAHALLESİ",
+      "ÇARŞI MAHALLESİ",
+      "ÇAVUŞOĞLU MAHALLESİ",
+      "ÇERKEZMAHMUDİYE MAHALLESİ",
+      "ÇINARLIKUYU MAHALLESİ",
+      "DERE MAHALLESİ",
+      "DİLŞİKAR MAHALLESİ",
+      "DİNÇER MAHALLESİ",
+      "EGE MAHALLESİ",
+      "GEDİZ MAHALLESİ",
+      "GÖKBEL MAHALLESİ",
+      "GÖKTAŞLI MAHALLESİ",
+      "GÜZELKÖY MAHALLESİ",
+      "HACIHALİLLER MAHALLESİ",
+      "HALITLI MAHALLESİ",
+      "HAMZABEYLİ MAHALLESİ",
+      "İBRAHİMÇELEBİ MAHALLESİ",
+      "İSHAKÇELEBİ MAHALLESİ",
+      "KAĞAN MAHALLESİ",
+      "KALEKÖY MAHALLESİ",
+      "KALEMLİ MAHALLESİ",
+      "KARAAĞAÇLI MAHALLESİ",
+      "KARAOĞLANLI MAHALLESİ",
+      "KARAYENİCE MAHALLESİ",
+      "KAZIM KARABEKİR MAHALLESİ",
+      "KIRANÇİFTLİĞİ MAHALLESİ",
+      "KOCATEPE MAHALLESİ",
+      "KUŞLUBAHÇE MAHALLESİ",
+      "MİMARSİNAN MAHALLESİ",
+      "NİŞANCIPAŞA MAHALLESİ",
+      "NURLUPINAR MAHALLESİ",
+      "PEKER MAHALLESİ",
+      "SAKARYA MAHALLESİ",
+      "SANCAKLIBOZKÖY MAHALLESİ",
+      "SANCAKLIÇEŞMEBAŞI MAHALLESİ",
+      "SANCAKLIİĞDECİK MAHALLESİ",
+      "SANCAKLIKAYADİBİ MAHALLESİ",
+      "SANCAKLIUZUNÇINAR MAHALLESİ",
+      "SARIALAN MAHALLESİ",
+      "SARUHAN MAHALLESİ",
+      "SELİMŞAHLAR MAHALLESİ",
+      "ŞEHİTLER MAHALLESİ",
+      "TEKELİLER MAHALLESİ",
+      "TEPECİK MAHALLESİ",
+      "TİLKİSÜLEYMANİYE MAHALLESİ",
+      "TUNCA MAHALLESİ",
+      "TURGUT ÖZAL MAHALLESİ",
+      "UTKU MAHALLESİ",
+      "VEZİROĞLU MAHALLESİ",
+      "YARHASANLAR MAHALLESİ",
+      "YENİHARMANDALI MAHALLESİ",
+      "YENİKÖY MAHALLESİ",
+      "YEŞİLKÖY MAHALLESİ",
+      "YUKARIÇOBANİSA MAHALLESİ",
+    ],
+  },
+  {
+    ilce: "Yunusemre",
+    mahalleler: [
+      "50.YIL MAHALLESİ",
+      "75. YIL MAHALLESİ",
+      "AKÇAKÖY MAHALLESİ",
+      "AKGEDİK MAHALLESİ",
+      "AKMESCİT MAHALLESİ",
+      "ASMACIK MAHALLESİ",
+      "ATATÜRK MAHALLESİ",
+      "AVDAL MAHALLESİ",
+      "AYNİ ALİ MAHALLESİ",
+      "BAĞYOLU MAHALLESİ",
+      "BARBAROS MAHALLESİ",
+      "BEYDERE MAHALLESİ",
+      "BOSTANLAR MAHALLESİ",
+      "BÜYÜKSÜMBÜLLER MAHALLESİ",
+      "CUMHURİYET MAHALLESİ",
+      "ÇAMLICA MAHALLESİ",
+      "DAVUTLAR MAHALLESİ",
+      "DAZYURT MAHALLESİ",
+      "DEMİRCİ MAHALLESİ",
+      "DURASILLI MAHALLESİ",
+      "DÜZLEN MAHALLESİ",
+      "EMLAKDERE MAHALLESİ",
+      "EVRENOS MAHALLESİ",
+      "FATİH MAHALLESİ",
+      "GÖKÇELER MAHALLESİ",
+      "GÜLBAHÇE MAHALLESİ",
+      "GÜRLE MAHALLESİ",
+      "GÜZELYURT MAHALLESİ",
+      "HAFSA SULTAN MAHALLESİ",
+      "İLYASÇILAR MAHALLESİ",
+      "KARAAHMETLİ MAHALLESİ",
+      "KARAALİ MAHALLESİ",
+      "KARAHÜSEYİNLİ MAHALLESİ",
+      "KARAKILIÇLI MAHALLESİ",
+      "KARAKOCA MAHALLESİ",
+      "KARAVELİLER MAHALLESİ",
+      "KARAYAĞCIHACILAR MAHALLESİ",
+      "KAYAPINAR MAHALLESİ",
+      "KAYNAK MAHALLESİ",
+      "KEÇİLİ KÖY MAHALLESİ",
+      "KIŞLAKÖY MAHALLESİ",
+      "KOCAKORU MAHALLESİ",
+      "KORUKÖY MAHALLESİ",
+      "KOZAKLAR MAHALLESİ",
+      "KUYUALAN MAHALLESİ",
+      "KÜÇÜKBELEN MAHALLESİ",
+      "KÜÇÜKSÜMBÜLLER MAHALLESİ",
+      "LALAPAŞA MAHALLESİ",
+      "LALELİ MAHALLESİ",
+      "MALDAN MAHALLESİ",
+      "MAREŞAL FEVZİ ÇAKMAK MAHALLESİ",
+      "MERKEZ EFENDİ MAHALLESİ",
+      "MESİR MAHALLESİ",
+      "MOLLASÜLEYMANLI MAHALLESİ",
+      "MURADİYE MAHALLESİ",
+      "MUTLU MAHALLESİ",
+      "MÜSLİH MAHALLESİ",
+      "ORTAKÖY MAHALLESİ",
+      "OSMANCALI MAHALLESİ",
+      "OTMANLAR MAHALLESİ",
+      "ÖRENCİK MAHALLESİ",
+      "ÖRSELLİ MAHALLESİ",
+      "PELİTALAN MAHALLESİ",
+      "PINARKÖY MAHALLESİ",
+      "RECEPLİ MAHALLESİ",
+      "SAKALLI MAHALLESİ",
+      "SARIAHMETLİ MAHALLESİ",
+      "SARINASUHLAR MAHALLESİ",
+      "SARMA MAHALLESİ",
+      "SEYİTLİ MAHALLESİ",
+      "SPİL MAHALLESİ",
+      "SÜMBÜLTEPE MAHALLESİ",
+      "SÜNGÜLLÜ MAHALLESİ",
+      "ŞAMAR MAHALLESİ",
+      "TEVFİKİYE MAHALLESİ",
+      "TOPÇUASIM MAHALLESİ",
+      "TURGUTALP MAHALLESİ",
+      "TÜRKMEN MAHALLESİ",
+      "UNCUBOZKÖY MAHALLESİ",
+      "UZUNBURUN MAHALLESİ",
+      "UZUNLAR MAHALLESİ",
+      "ÜÇPINAR MAHALLESİ",
+      "YAĞCILAR MAHALLESİ",
+      "YAYLAKÖY MAHALLESİ",
+      "YENİ MAHALLE MAHALLESİ",
+      "YUNTDAĞIKÖSELER MAHALLESİ",
+      "YUNTDAĞYENİCE MAHALLESİ",
+    ],
+  },
+];
+
+const getVideoIdFromUrl = (url) => {
+  const videoIdRegex = /[?&]v=([^?&]+)/;
+  const match = url.match(videoIdRegex);
+  if (match && match[1]) {
+    return match[1];
+  } else {
+    return null; // Geçersiz URL
+  }
+};
+
 function RealEstateAdd() {
   const [selectedImages, setSelectedImages] = useState([]);
+  const [videoLink, setVideoLink] = useState("");
+  const [videoId, setVideoId] = useState("");
 
   const [content, setContent] = useState("");
+
+  const [ilce, setIlce] = useState("Şehzadeler");
+
+  const [imageOrVideo, setImageOrVideo] = useState("image");
 
   const handleDrop = (e) => {
     e.preventDefault();
@@ -27,12 +211,16 @@ function RealEstateAdd() {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files;
-    for (let i = 0; i < file.length; i++) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file[i]);
-      reader.onload = () => {
-        setSelectedImages((oldArray) => [...oldArray, reader.result]);
-      };
+    if (file.length + selectedImages.length < 26) {
+      for (let i = 0; i < file.length; i++) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file[i]);
+        reader.onload = () => {
+          setSelectedImages((oldArray) => [...oldArray, reader.result]);
+        };
+      }
+    } else {
+      alert("En fazla 25 resim yükleyebilirsin!");
     }
   };
 
@@ -62,67 +250,167 @@ function RealEstateAdd() {
   };
   return (
     <div className="real-estate-add">
-      <h1 className="admin-title">Konut İlanlaı Ekle</h1>
+      <h1 className="admin-title">Konut İlanı Ekle</h1>
       <div className="real-estate-add-form">
-        <div className="images-list">
-          {selectedImages.map((item, key) => {
-            return (
-              <label htmlFor={`image-selector-single-${key}`} key={key}>
-                <div className="frame">
-                  <img src={item} alt={`image_${key}`} />
-                  <button
-                    className="remove-button"
-                    onClick={() => {
-                      handleClearFileInputSingle(key);
-                    }}
-                  >
-                    <BsFillTrash3Fill className="icon" />
-                  </button>
-                </div>
-                <input
-                  id={`image-selector-single-${key}`}
-                  type="file"
-                  accept="image/*"
-                  multiple={true}
-                  onChange={(e) => {
-                    handleFileInputChangeSingle(e, key);
-                  }}
-                  style={{ display: "none" }}
-                />
-              </label>
-            );
-          })}
-          <label
-            htmlFor="image-selector"
-            className="image-uploader drop-area"
-            onDrop={handleDrop}
-            onDragOver={handleDragOver}
+        <div className="image-video-buttons">
+          <button
+            className={imageOrVideo === "image" ? "active" : ""}
+            onClick={() => {
+              setImageOrVideo("image");
+            }}
           >
-            <div className="placeholder">
-              <BiImageAdd className="icon" />
-              <span>Bir resim sürükle veya seç</span>
-            </div>
-            <input
-              id="image-selector"
-              type="file"
-              accept="image/*"
-              multiple={true}
-              onChange={handleFileInputChange}
-              style={{ display: "none" }}
-            />
-          </label>
+            Resimler
+          </button>
+          <button
+            className={imageOrVideo === "video" ? "active" : ""}
+            onClick={() => {
+              setImageOrVideo("video");
+            }}
+          >
+            Video
+          </button>
         </div>
+        {imageOrVideo === "image" ? (
+          <div className="images-list">
+            {selectedImages.map((item, key) => {
+              return (
+                <label htmlFor={`image-selector-single-${key}`} key={key}>
+                  <div className="frame">
+                    <img src={item} alt={`image_${key}`} />
+                    <button
+                      className="remove-button"
+                      onClick={() => {
+                        handleClearFileInputSingle(key);
+                      }}
+                    >
+                      <BsFillTrash3Fill className="icon" />
+                    </button>
+                  </div>
+                  <input
+                    id={`image-selector-single-${key}`}
+                    type="file"
+                    accept="image/*"
+                    multiple={true}
+                    onChange={(e) => {
+                      handleFileInputChangeSingle(e, key);
+                    }}
+                    style={{ display: "none" }}
+                  />
+                </label>
+              );
+            })}
+            <label
+              htmlFor="image-selector"
+              className="image-uploader drop-area"
+              onDrop={handleDrop}
+              onDragOver={handleDragOver}
+            >
+              <div className="placeholder">
+                <BiImageAdd className="icon" />
+                <span>Bir resim sürükle veya seç</span>
+              </div>
+              <input
+                id="image-selector"
+                type="file"
+                accept="image/*"
+                multiple={true}
+                onChange={handleFileInputChange}
+                style={{ display: "none" }}
+              />
+            </label>
+          </div>
+        ) : (
+          <div className="video-container">
+            {videoId.length > 0 ? (
+              <YouTube className="video-player" videoId={videoId} />
+            ) : (
+              <div>Video adresi giriniz</div>
+            )}
+            <div className="input-container">
+              <input
+                type="text"
+                value={videoLink}
+                onChange={(e) => {
+                  setVideoLink(e.target.value);
+                }}
+              />
+              <button
+                onClick={() => {
+                  setVideoId(getVideoIdFromUrl(videoLink));
+                }}
+              >
+                +
+              </button>
+            </div>
+          </div>
+        )}
+
+        {imageOrVideo === "image" ? (
+          <button
+            className="clear-all-images-button"
+            onClick={() => {
+              setSelectedImages([]);
+            }}
+          >
+            <BsFillTrash3Fill className="icon" /> Tüm resimleri kaldır
+          </button>
+        ) : (
+          <button className="clear-all-images-button">
+            <BsFillTrash3Fill className="icon" /> Videoyu kaldır
+          </button>
+        )}
         <div className="title form-element">
           <label htmlFor="">İlan başlığı</label>
           <input type="text" placeholder="ilan başlığı giriniz.." />
         </div>
         <div className="description form-element">
-          <label htmlFor="">İlan Açıklaması</label>
+          <label htmlFor="">
+            İlan Açıklaması <span className="optional">( Opsiyonel )</span>
+          </label>
           <ReactQuill
             value={content}
             onChange={handleChange}
             placeholder="İlan açıklaması giriniz.."
           />
+        </div>
+        <div className="floor form-element">
+          <label htmlFor="">Fiyat</label>
+          <input type="number" placeholder="İlan fiyatı.." />
+        </div>
+        <div className="Type form-element">
+          <label htmlFor="">Pazarlık</label>
+          <select>
+            <option value="Test">Var</option>
+            <option value="Test">Yok</option>
+          </select>
+        </div>
+        <div className="Type form-element">
+          <label htmlFor="">İlçe</label>
+          <select
+            value={ilce}
+            onChange={(e) => {
+              setIlce(e.target.value);
+            }}
+          >
+            <option value="Şehzadeler">Şehzadeler</option>
+            <option value="Yunusemre">Yunusemre</option>
+          </select>
+        </div>
+        <div className="Type form-element">
+          <label htmlFor="">Mahalle</label>
+          <select>
+            {manisaIlceleri.map((ilceItem, key) => {
+              if (ilceItem.ilce === ilce) {
+                return ilceItem.mahalleler.map((mahalleItem, key2) => {
+                  return (
+                    <option value={mahalleItem} key={key2}>
+                      {mahalleItem}
+                    </option>
+                  );
+                });
+              }
+            })}
+          </select>
         </div>
         <div className="Type form-element">
           <label htmlFor="">İlan türü</label>
@@ -265,11 +553,15 @@ function RealEstateAdd() {
           </select>
         </div>
         <div className="side-adi form-element">
-          <label htmlFor="">Site adı</label>
+          <label htmlFor="">
+            Site adı <span className="optional">( Opsiyonel )</span>
+          </label>
           <input type="text" placeholder="site adı.." />
         </div>
         <div className="aidat form-element">
-          <label htmlFor="">Aidat (₺)</label>
+          <label htmlFor="">
+            Aidat (₺) <span className="optional">( Opsiyonel )</span>
+          </label>
           <input type="number" placeholder="70₺.." />
         </div>
         <div className="krediye-uygun form-element">
@@ -280,7 +572,9 @@ function RealEstateAdd() {
           </select>
         </div>
         <div className="tapu-durumu form-element">
-          <label htmlFor="">Tapu durumu</label>
+          <label htmlFor="">
+            Tapu durumu <span className="optional">( Opsiyonel )</span>
+          </label>
           <select>
             <option value="">Bilinmiyor</option>
             <option value="">Kat Mülkiyetli</option>
@@ -297,6 +591,8 @@ function RealEstateAdd() {
             <option value="">Hayır</option>
           </select>
         </div>
+        <button className="submit-button">Ekle</button>
+        <p className="error-text">Error Text!</p>
       </div>
     </div>
   );

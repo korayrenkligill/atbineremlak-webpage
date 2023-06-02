@@ -2,18 +2,23 @@
   margin: 3rem 0px;
   padding: var(--page-padding);
   display: grid;
-  grid-template-columns: 220px 1fr;
+  grid-template-columns: 220px minmax(200px, 1fr);
   gap: 3rem;
-}
-.admin-page .sidebar {
-  padding: 20px;
-  border-radius: 10px;
-  background-color: var(--color-primary-background);
-  box-shadow: var(--boxshadow);
 }
 .admin-page .content {
   padding: 30px;
   border-radius: 10px;
   background-color: var(--color-primary-background);
   box-shadow: var(--boxshadow);
+}
+@media screen and (max-width: 768px) {
+  .admin-page {
+    grid-template-columns: minmax(250px, 1fr);
+    gap: 0px;
+    margin: 0px;
+  }
+  .admin-page .content {
+    box-shadow: none;
+    padding: 14px;
+  }
 }
