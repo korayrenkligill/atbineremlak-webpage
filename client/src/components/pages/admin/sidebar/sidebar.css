@@ -52,4 +52,12 @@
   .admin-page-sidebar {
     box-shadow: none;
   }
+  .admin-page-sidebar .links {
+    max-height: 2000px;
+    display: none;
+  }
+  .admin-page-sidebar .links.open {
+    max-height: 2000px;
+    display: flex;
+  }
 }

@@ -107,11 +107,9 @@ nav.navbar-mobile .navbar-logo .mobile-input input {
   display: none;
 }
 nav.navbar-mobile .navbar-links {
-  display: flex;
+  display: none;
   flex-direction: column;
   color: var(--color-primary-text);
-  max-height: 0;
-  transition: max-height 0.6s ease;
   overflow: hidden;
   height: calc(100vh - 64px);
 }
@@ -127,11 +125,9 @@ nav.navbar-mobile .navbar-links button {
 nav.navbar-mobile .navbar-links a.ilan-ver {
   background-color: var(--color-primary-blue);
   color: var(--color-primary-whitetext);
-  margin-top: auto;
   text-align: center;
   font-size: 1.2rem;
 }
 nav.navbar-mobile .navbar-links.open {
-  max-height: 2000px;
-  transition: max-height 0.6s;
+  display: flex;
 }

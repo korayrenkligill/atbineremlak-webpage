@@ -23,6 +23,9 @@ function Sidebar() {
     function handleWindowResize() {
       setWindowSize(getWindowSize());
     }
+    if (getWindowSize().innerWidth <= 768) {
+      setIsOpen(false);
+    }
 
     window.addEventListener("resize", handleWindowResize);
 
