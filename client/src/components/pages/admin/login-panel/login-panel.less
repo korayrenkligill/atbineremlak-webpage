@@ -1,0 +1,42 @@
+.login-screen {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px;
+    border-radius: 10px;
+    background-color: var(--color-primary-background);
+    box-shadow: var(--boxshadow);
+    div.form-item {
+      display: flex;
+      flex-direction: column;
+      min-width: 300px;
+      margin-bottom: 0.5rem;
+      label {
+        color: var(--color-tertiary-text);
+        font-size: 0.8rem;
+        margin-left: 10px;
+      }
+    }
+    h2 {
+      margin-bottom: 1rem;
+    }
+    button.submit-button {
+      padding: 10px;
+      font-size: 0.9rem;
+      color: var(--color-primary-blue);
+      transition: color 0.4s;
+    }
+    button:hover {
+      color: var(--color-primary-text);
+    }
+    p.error-text {
+      font-size: 0.8rem;
+      text-align: center;
+      color: var(--color-primary-red);
+    }
+  }
+}

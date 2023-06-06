@@ -1,7 +1,4 @@
 import React from "react";
-import { BsTelephoneFill } from "react-icons/bs";
-import { IoMail } from "react-icons/io5";
-import { RiWhatsappFill } from "react-icons/ri";
 
 import "./contact.css";
 

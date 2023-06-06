@@ -71,3 +71,7 @@
 .real-estate-list .items-list .item:hover .remove-item-button {
   display: flex;
 }
+.real-estate-list .items-list-null {
+  text-align: center;
+  color: var(--color-tertiary-text);
+}

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { IoCall, IoHome } from "react-icons/io5";
 import { IoIosMenu, IoIosClose } from "react-icons/io";
 import { BsFillCarFrontFill, BsFillGridFill } from "react-icons/bs";
-import { MdRealEstateAgent } from "react-icons/md";
+import { MdRealEstateAgent, MdAdminPanelSettings } from "react-icons/md";
 import { Link, NavLink } from "react-router-dom";
 
 import "./navbar.css";
@@ -11,7 +11,7 @@ function getWindowSize() {
   const { innerWidth, innerHeight } = window;
   return { innerWidth, innerHeight };
 }
-function Navbar() {
+function Navbar({ user }) {
   const [windowSize, setWindowSize] = useState(getWindowSize());
 
   const [isOpen, setIsOpen] = useState(false);
@@ -50,12 +50,18 @@ function Navbar() {
             <BsFillCarFrontFill className="icon-transform" />
             Araç İlanları
           </NavLink>
+          {user && (
+            <NavLink to="/admin">
+              <MdAdminPanelSettings className="icon-transform" />
+              Yönetim paneli
+            </NavLink>
+          )}
         </div>
         <div className="contact">
-          <button className="navbar-contact">
+          <Link className="navbar-contact">
             <IoCall className="icon-transform" /> İletişime geç
-          </button>
-          <Link>İlan ver</Link>
+          </Link>
+          <Link className="ilan-ver">İlan ver</Link>
         </div>
       </nav>
     );

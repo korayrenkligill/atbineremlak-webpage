@@ -61,7 +61,7 @@ nav.navbar-pc .contact .navbar-contact {
 nav.navbar-pc .contact .navbar-contact:hover {
   color: var(--color-primary-text);
 }
-nav.navbar-pc .contact a {
+nav.navbar-pc .contact .ilan-ver {
   display: inline-block;
   padding: 10px 30px;
   background-color: var(--color-primary-blue);

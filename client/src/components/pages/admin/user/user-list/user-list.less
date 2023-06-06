@@ -1,0 +1,37 @@
+.user-list {
+  .table-container {
+    overflow-x: scroll;
+    table {
+      width: 100%;
+      min-width: 1200px;
+      th {
+        text-align: left;
+      }
+      td {
+        padding: 10px 0px;
+        .frame {
+          width: 100%;
+          max-width: 55px;
+          aspect-ratio: 1;
+          background-color: var(--color-tertiary-background);
+          border-radius: 100px;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+        }
+        .actions {
+          height: 100%;
+          text-align: left;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          gap: 1rem;
+          button {
+            padding: 10px;
+            font-size: 1rem;
+          }
+        }
+      }
+    }
+  }
+}

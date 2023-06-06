@@ -3,7 +3,15 @@ import { BiImageAdd } from "react-icons/bi";
 import { BsFillTrash3Fill, BsPencilSquare } from "react-icons/bs";
 import ReactQuill from "react-quill";
 import YouTube from "react-youtube";
-import "./cat-add.css";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+import {
+  ErrorNotification,
+  SuccessNotification,
+} from "../../../../elements/toastify";
+import { useNavigate } from "react-router-dom";
+
+import "./car-add.css";
 
 const otomobilModelleri = [
   "Audi",
@@ -41,12 +49,98 @@ const getVideoIdFromUrl = (url) => {
   }
 };
 
-function CarAdd() {
+const getNowDate = () => {
+  const date = new Date();
+  let realEstateDate = "";
+  let minute = date.getMinutes().toString();
+  if (minute.length < 2) {
+    minute = "0" + minute;
+  }
+  let hour = date.getHours().toString();
+  if (hour.length < 2) {
+    hour = "0" + hour;
+  }
+  let day = date.getDate().toString();
+  if (day.length < 2) {
+    day = "0" + day;
+  }
+  const month = date.getMonth();
+  let monthString = "";
+  switch (month) {
+    case 0:
+      monthString = "Ocak";
+      break;
+    case 1:
+      monthString = "Şubat";
+      break;
+    case 2:
+      monthString = "Mart";
+      break;
+    case 3:
+      monthString = "Nisan";
+      break;
+    case 4:
+      monthString = "Mayıs";
+      break;
+    case 5:
+      monthString = "Haziran";
+      break;
+    case 6:
+      monthString = "Temmuz";
+      break;
+    case 7:
+      monthString = "Ağustos";
+      break;
+    case 8:
+      monthString = "Eylül";
+      break;
+    case 9:
+      monthString = "Ekim";
+      break;
+    case 10:
+      monthString = "Kasım";
+      break;
+    case 11:
+      monthString = "Aralık";
+      break;
+    default:
+      monthString = "Belirtilmedi";
+      break;
+  }
+  let year = date.getFullYear();
+
+  return `${minute}:${hour} - ${day} ${monthString} ${year}`;
+};
+
+function CarAdd({ user }) {
+  const navigation = useNavigate();
+
   const [selectedImages, setSelectedImages] = useState([]);
   const [videoLink, setVideoLink] = useState("");
   const [videoId, setVideoId] = useState("");
 
+  const [baslik, setBaslik] = useState("");
   const [content, setContent] = useState("");
+  const [fiyat, setFiyat] = useState(0);
+  const [pazarlik, setPazarlik] = useState("Var");
+  const [marka, setMarka] = useState("Audi");
+  const [seri, setSeri] = useState("");
+  const [model, setModel] = useState("");
+  const [yil, setYil] = useState(0);
+  const [yakit, setYakit] = useState("Benzin");
+  const [vites, setVites] = useState("Manuel");
+  const [aracDurumu, setAracDurumu] = useState("İkinci El");
+  const [km, setKm] = useState(0);
+  const [kasa, setKasa] = useState("Cabrio");
+  const [motorGucu, setMotorGucu] = useState(0);
+  const [motorHacmi, setMotorHacmi] = useState("");
+  const [cekis, setCekis] = useState("Önden Çekiş");
+  const [renk, setRenk] = useState("");
+  const [agirHasarli, setAgirHasarli] = useState("Hayır");
+  const [takas, setTakas] = useState("Hayır");
+  const [advertiserName, setAdvertiserName] = useState("");
+  const [advertiserSurname, setAdvertiserSurname] = useState("");
+  const [advertiserPhone, setAdvertiserPhone] = useState("");
 
   const [imageOrVideo, setImageOrVideo] = useState("image");
 
@@ -106,12 +200,84 @@ function CarAdd() {
   const handleChange = (value) => {
     setContent(value);
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let error = false;
+    if (selectedImages.length < 1) {
+      ErrorNotification("En az 1 resim seçmelisin");
+      error = true;
+    }
+    if (baslik.length < 5) {
+      ErrorNotification("Daha uzun bir ilan başlığı girmelisin");
+      error = true;
+    }
+    if (fiyat === 0) {
+      ErrorNotification("0 Fiyat etiketi girilemez");
+      error = true;
+    }
+    if (yil === 0) {
+      ErrorNotification("Araba yılı 0 olarak girilemez");
+      error = true;
+    }
+    if (advertiserName.length <= 0) {
+      ErrorNotification("İlan sahibi adı boş bırakılamaz");
+      error = true;
+    }
+    if (advertiserSurname.length <= 0) {
+      ErrorNotification("İlan sahibi soyadı boş bırakılamaz");
+      error = true;
+    }
+    if (advertiserPhone.length !== 10) {
+      ErrorNotification("İlan sahibi numarası boş veya hatalı");
+      error = true;
+    }
+    if (!error) {
+      const newCar = {
+        id: uuidv4(),
+        baslik: baslik,
+        aciklama: content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
+        fiyat: fiyat,
+        pazarlik: pazarlik,
+        marka: marka,
+        seri: seri,
+        model: model,
+        yil: yil,
+        yakit: yakit,
+        vites: vites,
+        aracDurumu: aracDurumu,
+        km: km,
+        kasa: kasa,
+        motorGucu: motorGucu,
+        motorHacmi: motorHacmi,
+        cekis: cekis,
+        renk: renk,
+        agirHasarli: agirHasarli,
+        takas: takas,
+        date: getNowDate(),
+        user: user,
+        advertiserName: advertiserName,
+        advertiserSurname: advertiserSurname,
+        advertiserPhone: `+90${advertiserPhone}`,
+        images: selectedImages,
+        youtubeId: videoId,
+      };
+      axios
+        .post("http://localhost:4000/cars", newCar)
+        .then((response) => console.log(response))
+        .then(() => {
+          SuccessNotification("İlan başarıyla eklendi");
+          navigation("/admin/otomobiller/");
+        });
+    }
+  };
   return (
     <div className="car-add">
       <h1 className="admin-title">Otomobil İlanı Ekle</h1>
-      <div className="car-add-form">
+      <form className="car-add-form" onSubmit={handleSubmit}>
         <div className="image-video-buttons">
           <button
+            type="button"
             className={imageOrVideo === "image" ? "active" : ""}
             onClick={() => {
               setImageOrVideo("image");
@@ -120,6 +286,7 @@ function CarAdd() {
             Resimler
           </button>
           <button
+            type="button"
             className={imageOrVideo === "video" ? "active" : ""}
             onClick={() => {
               setImageOrVideo("video");
@@ -136,6 +303,7 @@ function CarAdd() {
                   <div className="frame">
                     <img src={item} alt={`image_${key}`} />
                     <button
+                      type="button"
                       className="remove-button"
                       onClick={() => {
                         handleClearFileInputSingle(key);
@@ -193,6 +361,7 @@ function CarAdd() {
                 }}
               />
               <button
+                type="button"
                 onClick={() => {
                   setVideoId(getVideoIdFromUrl(videoLink));
                 }}
@@ -205,6 +374,7 @@ function CarAdd() {
 
         {imageOrVideo === "image" ? (
           <button
+            type="button"
             className="clear-all-images-button"
             onClick={() => {
               setSelectedImages([]);
@@ -213,16 +383,24 @@ function CarAdd() {
             <BsFillTrash3Fill className="icon" /> Tüm resimleri kaldır
           </button>
         ) : (
-          <button className="clear-all-images-button">
+          <button type="button" className="clear-all-images-button">
             <BsFillTrash3Fill className="icon" /> Videoyu kaldır
           </button>
         )}
         <div className="title form-element">
-          <label htmlFor="">İlan başlığı</label>
-          <input type="text" placeholder="ilan başlığı giriniz.." />
+          <label htmlFor="car-add-form-title">İlan başlığı</label>
+          <input
+            value={baslik}
+            onChange={(e) => {
+              setBaslik(e.target.value);
+            }}
+            id="car-add-form-title"
+            type="text"
+            placeholder="ilan başlığı giriniz.."
+          />
         </div>
         <div className="description form-element">
-          <label htmlFor="">
+          <label htmlFor="car-add-form-description">
             İlan Açıklaması <span className="optional">( Opsiyonel )</span>
           </label>
           <ReactQuill
@@ -232,115 +410,286 @@ function CarAdd() {
           />
         </div>
         <div className="floor form-element">
-          <label htmlFor="">Fiyat</label>
-          <input type="number" placeholder="İlan fiyatı.." />
+          <label htmlFor="car-add-form-price">Fiyat</label>
+          <input
+            value={fiyat}
+            onChange={(e) => {
+              setFiyat(e.target.value);
+            }}
+            id="car-add-form-price"
+            type="number"
+            placeholder="İlan fiyatı.."
+          />
         </div>
         <div className="Type form-element">
-          <label htmlFor="">Pazarlık</label>
-          <select>
-            <option value="Test">Var</option>
-            <option value="Test">Yok</option>
+          <label htmlFor="car-add-form-pazarlik">Pazarlık</label>
+          <select
+            id="car-add-form-pazarlik"
+            value={pazarlik}
+            onChange={(e) => {
+              setPazarlik(e.target.value);
+            }}
+          >
+            <option value="Var">Var</option>
+            <option value="Yok">Yok</option>
           </select>
         </div>
         <div className="Type form-element">
-          <label htmlFor="">Marka</label>
-          <select>
+          <label htmlFor="car-add-form-marka">Marka</label>
+          <select
+            id="car-add-form-marka"
+            value={marka}
+            onChange={(e) => {
+              setMarka(e.target.value);
+            }}
+          >
             {otomobilModelleri.map((marka, key) => {
-              return <option value={marka}>{marka}</option>;
+              return (
+                <option value={marka} key={key}>
+                  {marka}
+                </option>
+              );
             })}
           </select>
         </div>
         <div className="floor form-element">
-          <label htmlFor="">Seri</label>
-          <input type="text" placeholder="seri.." />
+          <label htmlFor="car-add-form-seri">Seri</label>
+          <input
+            value={seri}
+            onChange={(e) => {
+              setSeri(e.target.value);
+            }}
+            id="car-add-form-seri"
+            type="text"
+            placeholder="seri.."
+          />
         </div>
         <div className="floor form-element">
-          <label htmlFor="">Model</label>
-          <input type="text" placeholder="model.." />
+          <label htmlFor="car-add-form-model">Model</label>
+          <input
+            value={model}
+            onChange={(e) => {
+              setModel(e.target.value);
+            }}
+            id="car-add-form-model"
+            type="text"
+            placeholder="model.."
+          />
         </div>
         <div className="floor form-element">
-          <label htmlFor="">Yıl</label>
-          <input type="number" placeholder="yıl.." />
+          <label htmlFor="car-add-form-yil">Yıl</label>
+          <input
+            value={yil}
+            onChange={(e) => {
+              setYil(e.target.value);
+            }}
+            id="car-add-form-yil"
+            type="number"
+            placeholder="yıl.."
+          />
         </div>
         <div className="heating form-element">
-          <label htmlFor="">Yakıt</label>
-          <select>
-            <option value="">Benzin</option>
-            <option value="">Benzin & LPG</option>
-            <option value="">Dizel</option>
-            <option value="">Hybrid</option>
-            <option value="">Elektrik</option>
+          <label htmlFor="car-add-form-yakit">Yakıt</label>
+          <select
+            value={yakit}
+            onChange={(e) => {
+              setYakit(e.target.value);
+            }}
+            id="car-add-form-yakit"
+          >
+            <option value="Benzin">Benzin</option>
+            <option value="Benzin & LPG">Benzin & LPG</option>
+            <option value="Dizel">Dizel</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Elektrik">Elektrik</option>
           </select>
         </div>
         <div className="heating form-element">
-          <label htmlFor="">Vites</label>
-          <select>
-            <option value="">Manuel</option>
-            <option value="">Otomatik</option>
+          <label htmlFor="car-add-form-vites">Vites</label>
+          <select
+            value={vites}
+            onChange={(e) => {
+              setVites(e.target.value);
+            }}
+            id="car-add-form-vites"
+          >
+            <option value="Manuel">Manuel</option>
+            <option value="Otomatik">Otomatik</option>
           </select>
         </div>
         <div className="heating form-element">
-          <label htmlFor="">Araç Durumu</label>
-          <select>
-            <option value="">İkinci El</option>
-            <option value="">Yurtdışından İthal Sıfır</option>
-            <option value="">Sıfır</option>
+          <label htmlFor="car-add-form-arac-durumu">Araç Durumu</label>
+          <select
+            value={aracDurumu}
+            onChange={(e) => {
+              setAracDurumu(e.target.value);
+            }}
+            id="car-add-form-arac-durumu"
+          >
+            <option value="İkinci El">İkinci El</option>
+            <option value="Yurtdışından İthal Sıfır">
+              Yurtdışından İthal Sıfır
+            </option>
+            <option value="Sıfır">Sıfır</option>
           </select>
         </div>
         <div className="floor form-element">
-          <label htmlFor="">KM</label>
-          <input type="number" placeholder="km.." />
+          <label htmlFor="car-add-form-km">KM</label>
+          <input
+            value={km}
+            onChange={(e) => {
+              setKm(e.target.value);
+            }}
+            id="car-add-form-km"
+            type="number"
+            placeholder="km.."
+          />
         </div>
         <div className="takas form-element">
-          <label htmlFor="">Kasa Tipi</label>
-          <select>
-            <option value="">Cabrio</option>
-            <option value="">Coupe</option>
-            <option value="">Hatchback</option>
-            <option value="">Sedan</option>
-            <option value="">Station Wagon</option>
-            <option value="">MPV</option>
-            <option value="">Roadster</option>
+          <label htmlFor="car-add-form-kasa-tipi">Kasa Tipi</label>
+          <select
+            value={kasa}
+            onChange={(e) => {
+              setKasa(e.target.value);
+            }}
+            id="car-add-form-kasa-tipi"
+          >
+            <option value="Cabrip">Cabrio</option>
+            <option value="Coupe">Coupe</option>
+            <option value="Hatchback">Hatchback</option>
+            <option value="Sedan">Sedan</option>
+            <option value="Station Wagon">Station Wagon</option>
+            <option value="MPV">MPV</option>
+            <option value="Roadster">Roadster</option>
           </select>
         </div>
         <div className="takas form-element">
-          <label htmlFor="">Motor Gücü</label>
-          <input type="number" placeholder="motor gücü.." />
+          <label htmlFor="car-add-form-motor-gucu">Motor Gücü</label>
+          <input
+            value={motorGucu}
+            onChange={(e) => {
+              setMotorGucu(e.target.value);
+            }}
+            id="car-add-form-motor-gucu"
+            type="number"
+            placeholder="motor gücü.."
+          />
         </div>
         <div className="takas form-element">
-          <label htmlFor="">Motor Hacmi</label>
-          <input type="text" placeholder="motor hacmi.." />
+          <label htmlFor="car-add-form-motor-hacmi">Motor Hacmi</label>
+          <input
+            value={motorHacmi}
+            onChange={(e) => {
+              setMotorHacmi(e.target.value);
+            }}
+            id="car-add-form-motor-hacmi"
+            type="text"
+            placeholder="motor hacmi.."
+          />
         </div>
         <div className="takas form-element">
-          <label htmlFor="">Çekiş</label>
-          <select>
-            <option value="">Önden Çekiş</option>
-            <option value="">Arkadan İtiş</option>
-            <option value="">4WD (Sürekli)</option>
-            <option value="">AWD (Elektronik)</option>
+          <label htmlFor="car-add-form-cekis">Çekiş</label>
+          <select
+            value={cekis}
+            onChange={(e) => {
+              setCekis(e.target.value);
+            }}
+            id="car-add-form-cekis"
+          >
+            <option value="Önden Çekiş">Önden Çekiş</option>
+            <option value="Arkadan İtiş">Arkadan İtiş</option>
+            <option value="4WD (Sürekli)">4WD (Sürekli)</option>
+            <option value="AWD (Elektronik)">AWD (Elektronik)</option>
           </select>
         </div>
         <div className="takas form-element">
-          <label htmlFor="">Renk</label>
-          <input type="text" placeholder="renk.." />
+          <label htmlFor="car-add-form-renk">Renk</label>
+          <input
+            value={renk}
+            onChange={(e) => {
+              setRenk(e.target.value);
+            }}
+            id="car-add-form-renk"
+            type="text"
+            placeholder="renk.."
+          />
         </div>
         <div className="takas form-element">
-          <label htmlFor="">Ağır Hasar Kayıtlı</label>
-          <select>
-            <option>Hayır</option>
-            <option>Evet</option>
+          <label htmlFor="car-add-form-agir-hasarli">Ağır Hasar Kayıtlı</label>
+          <select
+            value={agirHasarli}
+            onChange={(e) => {
+              setAgirHasarli(e.target.value);
+            }}
+            id="car-add-form-agir-hasarli"
+          >
+            <option value="Hayır">Hayır</option>
+            <option value="Evet">Evet</option>
           </select>
         </div>
         <div className="takas form-element">
-          <label htmlFor="">Takas</label>
-          <select>
-            <option value="">Evet</option>
-            <option value="">Hayır</option>
+          <label htmlFor="car-add-form-takas">Takas</label>
+          <select
+            value={takas}
+            onChange={(e) => {
+              setTakas(e.target.value);
+            }}
+            id="car-add-form-takas"
+          >
+            <option value="Hayır">Hayır</option>
+            <option value="Evet">Evet</option>
           </select>
         </div>
-        <button className="submit-button">Ekle</button>
-        <p className="error-text">Error Text!</p>
-      </div>
+        <hr />
+        <div className="area form-element-double">
+          <span>
+            <label htmlFor="real-estate-add-form-advertiser-name">
+              İlan Sahibinin Adı
+            </label>
+            <input
+              id="real-estate-add-form-advertiser-name"
+              type="text"
+              placeholder="ilan sahibinin adı.."
+              value={advertiserName}
+              onChange={(e) => {
+                setAdvertiserName(e.target.value);
+              }}
+            />
+          </span>
+          <span>
+            <label htmlFor="real-estate-add-form-advertiser-surname">
+              İlan Sahibinin Soyadı
+            </label>
+            <input
+              id="real-estate-add-form-advertiser-surname"
+              type="text"
+              placeholder="ilan sahibinin soyadı.."
+              value={advertiserSurname}
+              onChange={(e) => {
+                setAdvertiserSurname(e.target.value);
+              }}
+            />
+          </span>
+        </div>
+        <div className="side-adi form-element">
+          <label htmlFor="real-estate-add-form-advertiser-phone">
+            İlan sahibinin numarası
+            <span className="optional">( 5554443322 )</span>
+          </label>
+          <input
+            id="real-estate-add-form-advertiser-phone"
+            type="text"
+            placeholder="ilan sahibinin numarası.."
+            value={advertiserPhone}
+            onChange={(e) => {
+              setAdvertiserPhone(e.target.value);
+            }}
+          />
+        </div>
+        <button type="submit" className="submit-button">
+          Ekle
+        </button>
+      </form>
     </div>
   );
 }

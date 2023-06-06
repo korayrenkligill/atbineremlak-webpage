@@ -1,0 +1,51 @@
+.are-you-sure-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.226);
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  z-index: 9999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .are-you-sure {
+    padding: 3rem;
+    border-radius: 20px;
+    box-shadow: var(--boxshadow);
+    min-width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    background-color: var(--color-primary-background);
+    position: relative;
+    p {
+      text-align: center;
+      font-size: 1.1rem;
+    }
+    .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      button {
+        padding: 10px 20px;
+        font-size: 1rem;
+        background-color: transparent;
+      }
+      button:nth-child(1) {
+        color: var(--color-primary-red);
+      }
+      button:nth-child(2) {
+        color: var(--color-primary-blue);
+      }
+    }
+    .close-button {
+      padding: 10px;
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: transparent;
+    }
+  }
+}

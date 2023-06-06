@@ -71,3 +71,7 @@
 .car-list .items-list .item:hover .remove-item-button {
   display: flex;
 }
+.car-list .items-list-null {
+  text-align: center;
+  color: var(--color-tertiary-text);
+}

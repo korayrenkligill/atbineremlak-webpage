@@ -1,9 +1,17 @@
 import React, { useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
-import { BsFillTrash3Fill, BsPencilSquare } from "react-icons/bs";
+import { BsFillTrash3Fill } from "react-icons/bs";
 import ReactQuill from "react-quill";
 import YouTube from "react-youtube";
+import {
+  ErrorNotification,
+  SuccessNotification,
+} from "../../../../elements/toastify";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
+
 import "./real-estate-add.css";
+import { useNavigate } from "react-router-dom";
 
 const manisaIlceleri = [
   {
@@ -181,27 +189,120 @@ const getVideoIdFromUrl = (url) => {
   }
 };
 
-function RealEstateAdd() {
+const getNowDate = () => {
+  const date = new Date();
+  let realEstateDate = "";
+  let minute = date.getMinutes().toString();
+  if (minute.length < 2) {
+    minute = "0" + minute;
+  }
+  let hour = date.getHours().toString();
+  if (hour.length < 2) {
+    hour = "0" + hour;
+  }
+  let day = date.getDate().toString();
+  if (day.length < 2) {
+    day = "0" + day;
+  }
+  const month = date.getMonth();
+  let monthString = "";
+  switch (month) {
+    case 0:
+      monthString = "Ocak";
+      break;
+    case 1:
+      monthString = "Şubat";
+      break;
+    case 2:
+      monthString = "Mart";
+      break;
+    case 3:
+      monthString = "Nisan";
+      break;
+    case 4:
+      monthString = "Mayıs";
+      break;
+    case 5:
+      monthString = "Haziran";
+      break;
+    case 6:
+      monthString = "Temmuz";
+      break;
+    case 7:
+      monthString = "Ağustos";
+      break;
+    case 8:
+      monthString = "Eylül";
+      break;
+    case 9:
+      monthString = "Ekim";
+      break;
+    case 10:
+      monthString = "Kasım";
+      break;
+    case 11:
+      monthString = "Aralık";
+      break;
+    default:
+      monthString = "Belirtilmedi";
+      break;
+  }
+  let year = date.getFullYear();
+
+  return `${minute}:${hour} - ${day} ${monthString} ${year}`;
+};
+
+function RealEstateAdd({ user }) {
+  const navigation = useNavigate();
+
   const [selectedImages, setSelectedImages] = useState([]);
   const [videoLink, setVideoLink] = useState("");
   const [videoId, setVideoId] = useState("");
 
+  const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-
+  const [price, setPrice] = useState(0);
+  const [bargain, setBargain] = useState("Var");
   const [ilce, setIlce] = useState("Şehzadeler");
+  const [mahalle, setMahalle] = useState("seçiniz");
+  const [type, setType] = useState("Satılık");
+  const [grossArea, setGrossArea] = useState("");
+  const [netArea, setNetArea] = useState("");
+  const [roomCount, setRoomCount] = useState("Stüdyo (1 + 0)");
+  const [buildAge, setBuildAge] = useState("0");
+  const [floor, setFloor] = useState(0);
+  const [totalFloor, setTotalFloor] = useState(0);
+  const [heating, setHeating] = useState("Yok");
+  const [bathroomCount, setBathroomCount] = useState(0);
+  const [balcony, setBalcony] = useState("Var");
+  const [furnished, setFurnished] = useState("Hayır");
+  const [usingState, setUsingState] = useState("Boş");
+  const [onSite, setOnSite] = useState("Hayır");
+  const [siteName, setSiteName] = useState("");
+  const [dues, setDues] = useState(0);
+  const [suitableForCredit, setSuitableForCredit] = useState("Evet");
+  const [titleStatus, setTitleStatus] = useState("Bilinmiyor");
+  const [swap, setSwap] = useState("Hayır");
+  const [advertiserName, setAdvertiserName] = useState("");
+  const [advertiserSurname, setAdvertiserSurname] = useState("");
+  const [advertiserPhone, setAdvertiserPhone] = useState("");
 
   const [imageOrVideo, setImageOrVideo] = useState("image");
 
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files;
-    for (let i = 0; i < file.length; i++) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file[i]);
+    if (file.length + selectedImages.length < 26) {
+      for (let i = 0; i < file.length; i++) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file[i]);
 
-      reader.onload = () => {
-        setSelectedImages((oldArray) => [...oldArray, reader.result]);
-      };
+        reader.onload = () => {
+          setSelectedImages((oldArray) => [...oldArray, reader.result]);
+        };
+      }
+    } else {
+      ErrorNotification("En fazla 25 resim yükleyebilirsin!");
     }
   };
 
@@ -220,7 +321,7 @@ function RealEstateAdd() {
         };
       }
     } else {
-      alert("En fazla 25 resim yükleyebilirsin!");
+      ErrorNotification("En fazla 25 resim yükleyebilirsin!");
     }
   };
 
@@ -248,12 +349,99 @@ function RealEstateAdd() {
   const handleChange = (value) => {
     setContent(value);
   };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    let error = false;
+    if (selectedImages.length < 1) {
+      ErrorNotification("En az 1 resim seçmelisin");
+      error = true;
+    }
+    if (title.length < 5) {
+      ErrorNotification("Daha uzun bir ilan başlığı girmelisin");
+      error = true;
+    }
+    if (price === 0) {
+      ErrorNotification("0 Fiyat etiketi girilemez");
+      error = true;
+    }
+    if (mahalle.length <= 0 || mahalle === "seçiniz") {
+      ErrorNotification("Bir mahalle seçmelisin!");
+      error = true;
+    }
+    if (grossArea.length <= 0) {
+      ErrorNotification("m² (Brüt) boş bırakılamaz");
+      error = true;
+    }
+    if (netArea.length <= 0) {
+      ErrorNotification("m² (Net) boş bırakılamaz");
+      error = true;
+    }
+    if (advertiserName.length <= 0) {
+      ErrorNotification("İlan sahibi adı boş bırakılamaz");
+      error = true;
+    }
+    if (advertiserSurname.length <= 0) {
+      ErrorNotification("İlan sahibi soyadı boş bırakılamaz");
+      error = true;
+    }
+    if (advertiserPhone.length !== 10) {
+      ErrorNotification("İlan sahibi numarası boş veya hatalı");
+      error = true;
+    }
+    if (!error) {
+      const newRealEstate = {
+        id: uuidv4(),
+        title: title,
+        description:
+          content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
+        price: price,
+        bargain: bargain,
+        ilce: ilce,
+        mahalle: mahalle,
+        type: type,
+        grossArea: grossArea,
+        netArea: netArea,
+        roomCount: roomCount,
+        buildAge: buildAge,
+        floor: floor,
+        totalFloor: totalFloor,
+        heating: heating,
+        bathroomCount: bathroomCount,
+        balcony: balcony,
+        furnished: furnished,
+        usingState: usingState,
+        onSite: onSite,
+        siteName: onSite === "Evet" ? siteName : "",
+        dues: dues,
+        suitableForCredit: suitableForCredit,
+        titleStatus: titleStatus,
+        swap: swap,
+        date: getNowDate(),
+        user: user,
+        advertiserName: advertiserName,
+        advertiserSurname: advertiserSurname,
+        advertiserPhone: `+90${advertiserPhone}`,
+        images: selectedImages,
+        youtubeId: videoId,
+      };
+      axios
+        .post("http://localhost:4000/real-estates", newRealEstate)
+        .then((response) => console.log(response))
+        .then(() => {
+          SuccessNotification("İlan başarıyla eklendi");
+          navigation("/admin/konutlar/");
+        });
+    }
+  };
+
   return (
     <div className="real-estate-add">
       <h1 className="admin-title">Konut İlanı Ekle</h1>
-      <div className="real-estate-add-form">
+      <form className="real-estate-add-form" onSubmit={handleSubmit}>
         <div className="image-video-buttons">
           <button
+            type="button"
             className={imageOrVideo === "image" ? "active" : ""}
             onClick={() => {
               setImageOrVideo("image");
@@ -262,6 +450,7 @@ function RealEstateAdd() {
             Resimler
           </button>
           <button
+            type="button"
             className={imageOrVideo === "video" ? "active" : ""}
             onClick={() => {
               setImageOrVideo("video");
@@ -278,6 +467,7 @@ function RealEstateAdd() {
                   <div className="frame">
                     <img src={item} alt={`image_${key}`} />
                     <button
+                      type="button"
                       className="remove-button"
                       onClick={() => {
                         handleClearFileInputSingle(key);
@@ -335,6 +525,7 @@ function RealEstateAdd() {
                 }}
               />
               <button
+                type="button"
                 onClick={() => {
                   setVideoId(getVideoIdFromUrl(videoLink));
                 }}
@@ -347,6 +538,7 @@ function RealEstateAdd() {
 
         {imageOrVideo === "image" ? (
           <button
+            type="button"
             className="clear-all-images-button"
             onClick={() => {
               setSelectedImages([]);
@@ -355,16 +547,24 @@ function RealEstateAdd() {
             <BsFillTrash3Fill className="icon" /> Tüm resimleri kaldır
           </button>
         ) : (
-          <button className="clear-all-images-button">
+          <button type="button" className="clear-all-images-button">
             <BsFillTrash3Fill className="icon" /> Videoyu kaldır
           </button>
         )}
         <div className="title form-element">
-          <label htmlFor="">İlan başlığı</label>
-          <input type="text" placeholder="ilan başlığı giriniz.." />
+          <label htmlFor="real-estate-add-form-title">İlan başlığı</label>
+          <input
+            type="text"
+            placeholder="ilan başlığı giriniz.."
+            id="real-estate-add-form-title"
+            value={title}
+            onChange={(e) => {
+              setTitle(e.target.value);
+            }}
+          />
         </div>
         <div className="description form-element">
-          <label htmlFor="">
+          <label>
             İlan Açıklaması <span className="optional">( Opsiyonel )</span>
           </label>
           <ReactQuill
@@ -374,19 +574,34 @@ function RealEstateAdd() {
           />
         </div>
         <div className="floor form-element">
-          <label htmlFor="">Fiyat</label>
-          <input type="number" placeholder="İlan fiyatı.." />
+          <label htmlFor="real-estate-add-form-price">Fiyat</label>
+          <input
+            type="number"
+            placeholder="İlan fiyatı.."
+            id="real-estate-add-form-price"
+            value={price}
+            onChange={(e) => {
+              setPrice(e.target.value);
+            }}
+          />
         </div>
         <div className="Type form-element">
-          <label htmlFor="">Pazarlık</label>
-          <select>
-            <option value="Test">Var</option>
-            <option value="Test">Yok</option>
+          <label htmlFor="real-estate-add-form-bargain">Pazarlık</label>
+          <select
+            id="real-estate-add-form-bargain"
+            value={bargain}
+            onChange={(e) => {
+              setBargain(e.target.value);
+            }}
+          >
+            <option value="Var">Var</option>
+            <option value="Yok">Yok</option>
           </select>
         </div>
         <div className="Type form-element">
-          <label htmlFor="">İlçe</label>
+          <label htmlFor="real-estate-add-form-ilce">İlçe</label>
           <select
+            id="real-estate-add-form-ilce"
             value={ilce}
             onChange={(e) => {
               setIlce(e.target.value);
@@ -397,8 +612,15 @@ function RealEstateAdd() {
           </select>
         </div>
         <div className="Type form-element">
-          <label htmlFor="">Mahalle</label>
-          <select>
+          <label htmlFor="real-estate-add-form-mahalle">Mahalle</label>
+          <select
+            id="real-estate-add-form-mahalle"
+            value={mahalle}
+            onChange={(e) => {
+              setMahalle(e.target.value);
+            }}
+          >
+            <option value="seçiniz">Mahalle seçiniz..</option>
             {manisaIlceleri.map((ilceItem, key) => {
               if (ilceItem.ilce === ilce) {
                 return ilceItem.mahalleler.map((mahalleItem, key2) => {
@@ -413,187 +635,366 @@ function RealEstateAdd() {
           </select>
         </div>
         <div className="Type form-element">
-          <label htmlFor="">İlan türü</label>
-          <select>
-            <option value="Test">Satılık</option>
-            <option value="Test">Kiralık</option>
+          <label htmlFor="real-estate-add-form-type">İlan türü</label>
+          <select
+            id="real-estate-add-form-type"
+            value={type}
+            onChange={(e) => {
+              setType(e.target.value);
+            }}
+          >
+            <option value="Satılık">Satılık</option>
+            <option value="Kiralık">Kiralık</option>
           </select>
         </div>
         <div className="area form-element-double">
           <span>
-            <label htmlFor="">m² (brüt)</label>
-            <input type="text" placeholder="120m²" />
+            <label htmlFor="real-estate-add-form-grossarea">m² (brüt)</label>
+            <input
+              id="real-estate-add-form-grossarea"
+              type="text"
+              placeholder="120m²"
+              value={grossArea}
+              onChange={(e) => {
+                setGrossArea(e.target.value);
+              }}
+            />
           </span>
           <span>
-            <label htmlFor="">m² (net)</label>
-            <input type="text" placeholder="110m²" />
+            <label htmlFor="real-estate-add-form-netarea">m² (net)</label>
+            <input
+              id="real-estate-add-form-netarea"
+              type="text"
+              placeholder="110m²"
+              value={netArea}
+              onChange={(e) => {
+                setNetArea(e.target.value);
+              }}
+            />
           </span>
         </div>
         <div className="room-count form-element">
-          <label htmlFor="">Oda sayısı</label>
-          <select>
-            <option value="Test">Stüdyo (1 + 0)</option>
-            <option value="Test">1 + 1</option>
-            <option value="Test">1.5 + 1</option>
-            <option value="Test">2 + 0</option>
-            <option value="Test">2 + 1</option>
-            <option value="Test">2.5 + 1</option>
-            <option value="Test">2 + 2</option>
-            <option value="Test">3 + 0</option>
-            <option value="Test">3 + 1</option>
-            <option value="Test">3.5 + 1</option>
-            <option value="Test">3 + 2</option>
-            <option value="Test">3 + 3</option>
-            <option value="Test">4 + 0</option>
-            <option value="Test">4 + 1</option>
-            <option value="Test">4.5 + 1</option>
-            <option value="Test">4 + 2</option>
-            <option value="Test">4 + 3</option>
-            <option value="Test">4 + 4</option>
-            <option value="Test">5 + 1</option>
-            <option value="Test">5.5 + 1</option>
-            <option value="Test">5 + 2</option>
-            <option value="Test">5 + 3</option>
-            <option value="Test">5 + 4</option>
-            <option value="Test">6 + 1</option>
-            <option value="Test">6.5 + 1</option>
-            <option value="Test">6 + 2</option>
-            <option value="Test">6 + 3</option>
-            <option value="Test">6 + 4</option>
-            <option value="Test">7 + 1</option>
-            <option value="Test">7 + 2</option>
-            <option value="Test">7 + 3</option>
-            <option value="Test">8 + 1</option>
-            <option value="Test">8 + 2</option>
-            <option value="Test">8 + 3</option>
-            <option value="Test">8 + 4</option>
-            <option value="Test">9 + 1</option>
-            <option value="Test">9 + 2</option>
-            <option value="Test">9 + 3</option>
-            <option value="Test">9 + 4</option>
-            <option value="Test">9 + 5</option>
-            <option value="Test">9 + 6</option>
-            <option value="Test">10 + 1</option>
-            <option value="Test">10 + 2</option>
-            <option value="Test">10 üzeri</option>
+          <label htmlFor="real-estate-add-form-roomcount">Oda sayısı</label>
+          <select
+            id="real-estate-add-form-roomcount"
+            value={roomCount}
+            onChange={(e) => {
+              setRoomCount(e.target.value);
+            }}
+          >
+            <option value="Stüdyo (1+0)">Stüdyo (1 + 0)</option>
+            <option value="1 + 1">1 + 1</option>
+            <option value="1.5 + 1">1.5 + 1</option>
+            <option value="2 + 0">2 + 0</option>
+            <option value="2 + 1">2 + 1</option>
+            <option value="2.5 + 1">2.5 + 1</option>
+            <option value="2 + 2">2 + 2</option>
+            <option value="3 + 0">3 + 0</option>
+            <option value="3 + 1">3 + 1</option>
+            <option value="3.5 + 1">3.5 + 1</option>
+            <option value="3 + 2">3 + 2</option>
+            <option value="3 + 3">3 + 3</option>
+            <option value="4 + 0">4 + 0</option>
+            <option value="4 + 1">4 + 1</option>
+            <option value="4.5 + 1">4.5 + 1</option>
+            <option value="4 + 2">4 + 2</option>
+            <option value="4 + 3">4 + 3</option>
+            <option value="4 + 4">4 + 4</option>
+            <option value="5 + 1">5 + 1</option>
+            <option value="5.5 + 1">5.5 + 1</option>
+            <option value="5 + 2">5 + 2</option>
+            <option value="5 + 3">5 + 3</option>
+            <option value="5 + 4">5 + 4</option>
+            <option value="6 + 1">6 + 1</option>
+            <option value="6.5 + 1">6.5 + 1</option>
+            <option value="6 + 2">6 + 2</option>
+            <option value="6 + 3">6 + 3</option>
+            <option value="6 + 4">6 + 4</option>
+            <option value="7 + 1">7 + 1</option>
+            <option value="7 + 2">7 + 2</option>
+            <option value="7 + 3">7 + 3</option>
+            <option value="8 + 1">8 + 1</option>
+            <option value="8 + 2">8 + 2</option>
+            <option value="8 + 3">8 + 3</option>
+            <option value="8 + 4">8 + 4</option>
+            <option value="9 + 1">9 + 1</option>
+            <option value="9 + 2">9 + 2</option>
+            <option value="9 + 3">9 + 3</option>
+            <option value="9 + 4">9 + 4</option>
+            <option value="9 + 5">9 + 5</option>
+            <option value="9 + 6">9 + 6</option>
+            <option value="10 + 1">10 + 1</option>
+            <option value="10 + 2">10 + 2</option>
+            <option value="10 üzeri">10 üzeri</option>
           </select>
         </div>
         <div className="age form-element">
-          <label htmlFor="">Bina yaşı</label>
-          <select>
-            <option value="">0</option>
-            <option value="">1</option>
-            <option value="">2</option>
-            <option value="">3</option>
-            <option value="">4</option>
-            <option value="">5-10 arası</option>
-            <option value="">11-15 arası</option>
-            <option value="">16-20 arası</option>
-            <option value="">21-25 arası</option>
-            <option value="">26-30 arası</option>
-            <option value="">31 ve üzeri</option>
+          <label htmlFor="real-estate-add-form-buildage">Bina yaşı</label>
+          <select
+            id="real-estate-add-form-buildage"
+            value={buildAge}
+            onChange={(e) => {
+              setBuildAge(e.target.value);
+            }}
+          >
+            <option value="0">0</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5-10 arası">5-10 arası</option>
+            <option value="11-15 arası">11-15 arası</option>
+            <option value="16-20 arası">16-20 arası</option>
+            <option value="21-25 arası">21-25 arası</option>
+            <option value="26-30 arası">26-30 arası</option>
+            <option value="31 ve üzeri">31 ve üzeri</option>
           </select>
         </div>
         <div className="floor form-element">
-          <label htmlFor="">Bulunduğu kat</label>
-          <input type="number" placeholder="bulunduğu kat.." />
+          <label htmlFor="real-estate-add-form-floor">Bulunduğu kat</label>
+          <input
+            id="real-estate-add-form-floor"
+            type="number"
+            placeholder="bulunduğu kat.."
+            value={floor}
+            onChange={(e) => {
+              setFloor(e.target.value);
+            }}
+          />
         </div>
-        <div className="total-floo form-element">
-          <label htmlFor="">Toplam kat sayısı</label>
-          <input type="number" placeholder="toplam kat.." />
+        <div className="total-floor form-element">
+          <label htmlFor="real-estate-add-form-totalfloor">
+            Toplam kat sayısı
+          </label>
+          <input
+            id="real-estate-add-form-totalfloor"
+            type="number"
+            placeholder="toplam kat.."
+            value={totalFloor}
+            onChange={(e) => {
+              setTotalFloor(e.target.value);
+            }}
+          />
         </div>
         <div className="heating form-element">
-          <label htmlFor="">Isıtma</label>
-          <select>
-            <option value="">Yok</option>
-            <option value="">Soba</option>
-            <option value="">Doğalgaz sobası</option>
-            <option value="">Kat kaloriferi</option>
-            <option value="">Merkezi</option>
-            <option value="">Merkezi (Pay Ölçer)</option>
-            <option value="">Kombi (Doğalgaz)</option>
-            <option value="">Kombi (Elektrik)</option>
-            <option value="">Yerden ısıtma</option>
-            <option value="">Klima</option>
-            <option value="">Güneş enerjisi</option>
-            <option value="">Şömine</option>
+          <label htmlFor="real-estate-add-form-heating">Isıtma</label>
+          <select
+            id="real-estate-add-form-heating"
+            value={heating}
+            onChange={(e) => {
+              setHeating(e.target.value);
+            }}
+          >
+            <option value="Yok">Yok</option>
+            <option value="Soba">Soba</option>
+            <option value="Doğalgaz sobası">Doğalgaz sobası</option>
+            <option value="Kat kaloriferi">Kat kaloriferi</option>
+            <option value="Merkezi">Merkezi</option>
+            <option value="Merkezi (Pay Ölçer)">Merkezi (Pay Ölçer)</option>
+            <option value="Kombi (Doğalgaz)">Kombi (Doğalgaz)</option>
+            <option value="Kombi (Elektrik)">Kombi (Elektrik)</option>
+            <option value="Yerden ısıtma">Yerden ısıtma</option>
+            <option value="Klima">Klima</option>
+            <option value="Güneş enerjisi">Güneş enerjisi</option>
+            <option value="Şömine">Şömine</option>
           </select>
         </div>
         <div className="bathroom-count form-element">
-          <label htmlFor="">Banyo sayısı</label>
-          <input type="number" placeholder="banyo sayısı.." />
+          <label htmlFor="real-estate-add-form-bathroom-count">
+            Banyo sayısı
+          </label>
+          <input
+            id="real-estate-add-form-bathroom-count"
+            type="number"
+            placeholder="banyo sayısı.."
+            value={bathroomCount}
+            onChange={(e) => {
+              setBathroomCount(e.target.value);
+            }}
+          />
         </div>
         <div className="balcony form-element">
-          <label htmlFor="">Balkon</label>
-          <select>
-            <option value="">Var</option>
-            <option value="">Yok</option>
+          <label htmlFor="real-estate-add-form-balcony">Balkon</label>
+          <select
+            id="real-estate-add-form-balcony"
+            value={balcony}
+            onChange={(e) => {
+              setBalcony(e.target.value);
+            }}
+          >
+            <option value="Var">Var</option>
+            <option value="Yok">Yok</option>
           </select>
         </div>
         <div className="esyali form-element">
-          <label htmlFor="">Eşyalı</label>
-          <select>
-            <option value="">Evet</option>
-            <option value="">Hayır</option>
+          <label htmlFor="real-estate-add-form-furnished">Eşyalı</label>
+          <select
+            id="real-estate-add-form-furnished"
+            value={furnished}
+            onChange={(e) => {
+              setFurnished(e.target.value);
+            }}
+          >
+            <option value="Hayır">Hayır</option>
+            <option value="Evet">Evet</option>
           </select>
         </div>
         <div className="kullanim-durumu form-element">
-          <label htmlFor="">Kullanım durumu</label>
-          <select>
-            <option value="">Boş</option>
-            <option value="">Kiracılı</option>
-            <option value="">Mülk sahibi</option>
+          <label htmlFor="real-estate-add-form-using-state">
+            Kullanım durumu
+          </label>
+          <select
+            id="real-estate-add-form-using-state"
+            value={usingState}
+            onChange={(e) => {
+              setUsingState(e.target.value);
+            }}
+          >
+            <option value="Boş">Boş</option>
+            <option value="Kiracılı">Kiracılı</option>
+            <option value="Mülk sahibi">Mülk sahibi</option>
           </select>
         </div>
         <div className="site-icerisinde form-element">
-          <label htmlFor="">Site içerisinde</label>
-          <select>
-            <option value="">Evet</option>
-            <option value="">Hayır</option>
+          <label htmlFor="real-estate-add-form-onsite">Site içerisinde</label>
+          <select
+            id="real-estate-add-form-onsite"
+            value={onSite}
+            onChange={(e) => {
+              setOnSite(e.target.value);
+            }}
+          >
+            <option value="Hayır">Hayır</option>
+            <option value="Evet">Evet</option>
           </select>
         </div>
-        <div className="side-adi form-element">
-          <label htmlFor="">
-            Site adı <span className="optional">( Opsiyonel )</span>
-          </label>
-          <input type="text" placeholder="site adı.." />
-        </div>
+        {onSite === "Evet" && (
+          <div className="side-adi form-element">
+            <label htmlFor="real-estate-add-form-site-name">
+              Site adı <span className="optional">( Opsiyonel )</span>
+            </label>
+            <input
+              id="real-estate-add-form-site-name"
+              type="text"
+              placeholder="site adı.."
+              value={siteName}
+              onChange={(e) => {
+                setSiteName(e.target.value);
+              }}
+            />
+          </div>
+        )}
         <div className="aidat form-element">
-          <label htmlFor="">
+          <label htmlFor="real-estate-add-form-dues">
             Aidat (₺) <span className="optional">( Opsiyonel )</span>
           </label>
-          <input type="number" placeholder="70₺.." />
+          <input
+            id="real-estate-add-form-dues"
+            type="number"
+            placeholder="70₺.."
+            value={dues}
+            onChange={(e) => {
+              setDues(e.target.value);
+            }}
+          />
         </div>
         <div className="krediye-uygun form-element">
-          <label htmlFor="">Krediye Uygun</label>
-          <select>
-            <option value="">Evet</option>
-            <option value="">Hayır</option>
+          <label htmlFor="real-estate-add-form-suitable-for-credit">
+            Krediye Uygun
+          </label>
+          <select
+            id="real-estate-add-form-suitable-for-credit"
+            value={suitableForCredit}
+            onChange={(e) => {
+              setSuitableForCredit(e.target.value);
+            }}
+          >
+            <option value="Evet">Evet</option>
+            <option value="Hayır">Hayır</option>
           </select>
         </div>
         <div className="tapu-durumu form-element">
-          <label htmlFor="">
+          <label htmlFor="real-estate-add-form-title-status">
             Tapu durumu <span className="optional">( Opsiyonel )</span>
           </label>
-          <select>
-            <option value="">Bilinmiyor</option>
-            <option value="">Kat Mülkiyetli</option>
-            <option value="">Kat İrtifaklı</option>
-            <option value="">Hisseli Tapulu</option>
-            <option value="">Müstakil Tapulu</option>
-            <option value="">Arsa Tapulu</option>
+          <select
+            id="real-estate-add-form-title-status"
+            value={titleStatus}
+            onChange={(e) => {
+              setTitleStatus(e.target.value);
+            }}
+          >
+            <option value="Bilinmiyor">Bilinmiyor</option>
+            <option value="Kat Mülkiyetli">Kat Mülkiyetli</option>
+            <option value="Kat İrtifaklı">Kat İrtifaklı</option>
+            <option value="Hisseli Tapulu">Hisseli Tapulu</option>
+            <option value="Müstakil Tapulu">Müstakil Tapulu</option>
+            <option value="Arsa Tapulu">Arsa Tapulu</option>
           </select>
         </div>
         <div className="takas form-element">
-          <label htmlFor="">Takas</label>
-          <select>
-            <option value="">Evet</option>
-            <option value="">Hayır</option>
+          <label htmlFor="real-estate-add-form-swap">Takas</label>
+          <select
+            id="real-estate-add-form-swap"
+            value={swap}
+            onChange={(e) => {
+              setSwap(e.target.value);
+            }}
+          >
+            <option value="Hayır">Hayır</option>
+            <option value="Evet">Evet</option>
           </select>
         </div>
-        <button className="submit-button">Ekle</button>
-        <p className="error-text">Error Text!</p>
-      </div>
+        <hr />
+        <div className="area form-element-double">
+          <span>
+            <label htmlFor="real-estate-add-form-advertiser-name">
+              İlan Sahibinin Adı
+            </label>
+            <input
+              id="real-estate-add-form-advertiser-name"
+              type="text"
+              placeholder="ilan sahibi adı.."
+              value={advertiserName}
+              onChange={(e) => {
+                setAdvertiserName(e.target.value);
+              }}
+            />
+          </span>
+          <span>
+            <label htmlFor="real-estate-add-form-advertiser-surname">
+              İlan Sahibinin Soyadı
+            </label>
+            <input
+              id="real-estate-add-form-advertiser-surname"
+              type="text"
+              placeholder="ilan sagibi soyadı.."
+              value={advertiserSurname}
+              onChange={(e) => {
+                setAdvertiserSurname(e.target.value);
+              }}
+            />
+          </span>
+        </div>
+        <div className="side-adi form-element">
+          <label htmlFor="real-estate-add-form-advertiser-phone">
+            İlan sahibinin numarası
+            <span className="optional">( 5554443322 )</span>
+          </label>
+          <input
+            id="real-estate-add-form-advertiser-phone"
+            type="text"
+            placeholder="site adı.."
+            value={advertiserPhone}
+            onChange={(e) => {
+              setAdvertiserPhone(e.target.value);
+            }}
+          />
+        </div>
+        <button className="submit-button" type="submit">
+          Ekle
+        </button>
+      </form>
     </div>
   );
 }

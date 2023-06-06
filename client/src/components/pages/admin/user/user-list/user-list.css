@@ -1,0 +1,35 @@
+.user-list .table-container {
+  overflow-x: scroll;
+}
+.user-list .table-container table {
+  width: 100%;
+  min-width: 1200px;
+}
+.user-list .table-container table th {
+  text-align: left;
+}
+.user-list .table-container table td {
+  padding: 10px 0px;
+}
+.user-list .table-container table td .frame {
+  width: 100%;
+  max-width: 55px;
+  aspect-ratio: 1;
+  background-color: var(--color-tertiary-background);
+  border-radius: 100px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+.user-list .table-container table td .actions {
+  height: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+.user-list .table-container table td .actions button {
+  padding: 10px;
+  font-size: 1rem;
+}

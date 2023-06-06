@@ -66,6 +66,76 @@ var Users = {
     fs.writeFileSync(JsonLocation, stringData);
   },
 };
+// REAL ESTATES FUNCTİONS --------------------------------------------------------------------------
+
+var RealEsstates = {
+  read: function () {
+    let data = readData();
+    let realEstates = data.realEstates;
+    return realEstates;
+  },
+  add: function (realEstate) {
+    let realEstates = RealEsstates.read();
+    realEstates.push(realEstate);
+    let data = readData();
+    data.realEstates = realEstates;
+    let stringData = JSON.stringify(data);
+    fs.writeFileSync(JsonLocation, stringData);
+  },
+  update: function (id, realEstate) {
+    let realEstates = RealEsstates.read();
+    let updatedRealEstate = realEstates.map((u) =>
+      u.id === id ? realEstate : u
+    );
+    let data = readData();
+    data.realEstates = updatedRealEstate;
+    let stringData = JSON.stringify(data);
+    fs.writeFileSync(JsonLocation, stringData);
+  },
+  delete: function (id) {
+    let realEstates = RealEsstates.read();
+    let updatedRealEstate = realEstates.filter(
+      (realEstate) => realEstate.id !== id
+    );
+    let data = readData();
+    data.realEstates = updatedRealEstate;
+    let stringData = JSON.stringify(data);
+    fs.writeFileSync(JsonLocation, stringData);
+  },
+};
+// CARS FUNCTİONS --------------------------------------------------------------------------
+
+var Cars = {
+  read: function () {
+    let data = readData();
+    let cars = data.cars;
+    return cars;
+  },
+  add: function (car) {
+    let cars = Cars.read();
+    cars.push(car);
+    let data = readData();
+    data.cars = cars;
+    let stringData = JSON.stringify(data);
+    fs.writeFileSync(JsonLocation, stringData);
+  },
+  update: function (id, car) {
+    let cars = Cars.read();
+    let updatedCars = cars.map((u) => (u.id === id ? car : u));
+    let data = readData();
+    data.cars = updatedCars;
+    let stringData = JSON.stringify(data);
+    fs.writeFileSync(JsonLocation, stringData);
+  },
+  delete: function (id) {
+    let cars = Cars.read();
+    let updatedCars = cars.filter((car) => car.id !== id);
+    let data = readData();
+    data.cars = updatedCars;
+    let stringData = JSON.stringify(data);
+    fs.writeFileSync(JsonLocation, stringData);
+  },
+};
 
 // USERS REQUESTS --------------------------------------------------------------------------
 
@@ -97,11 +167,88 @@ app.delete("/users/:id", (req, res) => {
   res.json({ message: "User deleted successfully" });
 });
 
+// Belirli bir kullanıcıyı döndüren GET isteği
 app.get("/users/:id", (req, res) => {
   let id = req.params.id;
   let users = Users.read();
-  let updatedUser = users.find((u) => u.id == id);
-  res.json(updatedUser);
+  let user = users.find((u) => u.id == id);
+  res.json(user);
+});
+
+// REAL ESTATE REQUESTS --------------------------------------------------------------------------
+
+// Tüm ilanları döndüren GET isteği
+app.get("/real-estates", (req, res) => {
+  let realEstates = RealEsstates.read();
+  res.json(realEstates);
+});
+
+// Yeni bir ilan ekleyen POST isteği
+app.post("/real-estates", (req, res) => {
+  let realEstate = req.body;
+  RealEsstates.add(realEstate);
+  res.json({ message: "Real estate added successfully" });
+});
+
+// Belirli bir ilanı güncelleyen PUT isteği
+app.put("/real-estates/:id", (req, res) => {
+  let id = req.params.id;
+  let realEstate = req.body;
+  RealEsstates.update(id, realEstate);
+  res.json({ message: "Real estate updated successfully" });
+});
+
+// Belirli bir ilanı silen DELETE isteği
+app.delete("/real-estates/:id", (req, res) => {
+  let id = req.params.id;
+  RealEsstates.delete(id);
+  res.json({ message: "Real estate deleted successfully" });
+});
+
+// Belirli bir ilanı döndüren GET isteği
+app.get("/real-estates/:id", (req, res) => {
+  let id = req.params.id;
+  let realEstates = RealEsstates.read();
+  let realEstate = realEstates.find((u) => u.id == id);
+  res.json(realEstate);
+});
+
+// CARS REQUESTS --------------------------------------------------------------------------
+
+// Tüm arabaları döndüren GET isteği
+app.get("/cars", (req, res) => {
+  let cars = Cars.read();
+  res.json(cars);
+});
+
+// Yeni bir araba ekleyen POST isteği
+app.post("/cars", (req, res) => {
+  let car = req.body;
+  Cars.add(car);
+  res.json({ message: "Car added successfully" });
+});
+
+// Belirli bir arabayı güncelleyen PUT isteği
+app.put("/cars/:id", (req, res) => {
+  let id = req.params.id;
+  let car = req.body;
+  Cars.update(id, car);
+  res.json({ message: "Car updated successfully" });
+});
+
+// Belirli bir arabayı silen DELETE isteği
+app.delete("/cars/:id", (req, res) => {
+  let id = req.params.id;
+  Cars.delete(id);
+  res.json({ message: "Car deleted successfully" });
+});
+
+// Belirli bir arabayı döndüren GET isteği
+app.get("/cars/:id", (req, res) => {
+  let id = req.params.id;
+  let cars = Cars.read();
+  let car = cars.find((u) => u.id == id);
+  res.json(car);
 });
 
 // API'nin dinlediği port
