@@ -10,7 +10,7 @@ import {
   SuccessNotification,
 } from "../../../../elements/toastify";
 import { useNavigate } from "react-router-dom";
-
+import { BACKEND_URL } from "../../../../elements/config";
 import "./car-add.css";
 
 const otomobilModelleri = [
@@ -263,7 +263,7 @@ function CarAdd({ user }) {
         youtubeId: videoId,
       };
       axios
-        .post("http://localhost:4000/cars", newCar)
+        .post(`${BACKEND_URL}/cars`, newCar)
         .then((response) => console.log(response))
         .then(() => {
           SuccessNotification("İlan başarıyla eklendi");

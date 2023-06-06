@@ -4,6 +4,7 @@ import PuffLoader from "react-spinners/PuffLoader";
 
 import "./login-panel.css";
 import PasswordInput from "../../../elements/password-input";
+import { BACKEND_URL } from "../../../elements/config";
 function LoginPanel({ user, setUser }) {
   const [loading, setLoading] = useState(true);
 
@@ -12,7 +13,7 @@ function LoginPanel({ user, setUser }) {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.get("http://localhost:4000/users").then((response) => {
+    axios.get(`${BACKEND_URL}/users`).then((response) => {
       const user = response.data.filter(
         (obj) => obj.email === email && obj.password === password
       );

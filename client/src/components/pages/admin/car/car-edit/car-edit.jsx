@@ -12,6 +12,7 @@ import {
 import { useNavigate, useParams } from "react-router-dom";
 
 import "./car-edit.css";
+import { BACKEND_URL } from "../../../../elements/config";
 
 const otomobilModelleri = [
   "Audi",
@@ -266,7 +267,7 @@ function CarEdit({ user }) {
         youtubeId: videoId,
       };
       axios
-        .put(`http://localhost:4000/cars/${id}`, newCar)
+        .put(`${BACKEND_URL}/cars/${id}`, newCar)
         .then((response) => console.log(response))
         .then(() => {
           SuccessNotification("İlan başarıyla güncellendi");
@@ -275,7 +276,7 @@ function CarEdit({ user }) {
     }
   };
   useEffect(() => {
-    axios.get(`http://localhost:4000/cars/${id}`).then((response) => {
+    axios.get(`${BACKEND_URL}/cars/${id}`).then((response) => {
       setOldCar(response.data);
       setSelectedImages(response.data.images);
       setVideoId(response.data.youtubeId);

@@ -3,9 +3,10 @@ import { BsFillTrash3Fill, BsPencilSquare } from "react-icons/bs";
 import PuffLoader from "react-spinners/PuffLoader";
 import { Link } from "react-router-dom";
 import AreYouSure from "../../../../elements/are-you-sure";
+import { BACKEND_URL } from "../../../../elements/config";
+import axios from "axios";
 
 import "./car-list.css";
-import axios from "axios";
 
 function CarList() {
   const [loading, setLoading] = useState(true);
@@ -18,7 +19,7 @@ function CarList() {
   };
   const acceptFunction = (id) => {
     axios
-      .delete(`http://localhost:4000/cars/${id}`)
+      .delete(`${BACKEND_URL}/cars/${id}`)
       .then(() => {
         setLoading(true);
       })
@@ -31,7 +32,7 @@ function CarList() {
   };
   const getCars = () => {
     axios
-      .get("http://localhost:4000/cars")
+      .get(`${BACKEND_URL}/cars`)
       .then((response) => {
         const cars = response.data;
         setCars(cars);

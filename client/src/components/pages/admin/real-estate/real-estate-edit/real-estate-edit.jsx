@@ -13,6 +13,7 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate, useParams } from "react-router-dom";
 
 import "./real-estate-edit.css";
+import { BACKEND_URL } from "../../../../elements/config";
 
 const manisaIlceleri = [
   {
@@ -432,7 +433,7 @@ function RealEstateEdit({ user }) {
         youtubeId: videoId,
       };
       axios
-        .put(`http://localhost:4000/real-estates/${id}`, newRealEstate)
+        .put(`${BACKEND_URL}/real-estates/${id}`, newRealEstate)
         .then((response) => console.log(response))
         .then(() => {
           SuccessNotification("İlan başarıyla güncellendi");
@@ -443,7 +444,7 @@ function RealEstateEdit({ user }) {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/real-estates/${id}`)
+      .get(`${BACKEND_URL}/real-estates/${id}`)
       .then((response) => {
         setOldRealEstate(response.data);
         setSelectedImages(response.data.images);

@@ -5,6 +5,7 @@ import axios from "axios";
 import PuffLoader from "react-spinners/PuffLoader";
 import AreYouSure from "../../../../elements/are-you-sure";
 import "./real-estate-list.css";
+import { BACKEND_URL } from "../../../../elements/config";
 
 function formatNumberWithCommas(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -21,7 +22,7 @@ function RealEstateList() {
   };
   const acceptFunction = (id) => {
     axios
-      .delete(`http://localhost:4000/real-estates/${id}`)
+      .delete(`${BACKEND_URL}/real-estates/${id}`)
       .then(() => {
         setLoading(true);
       })
@@ -35,7 +36,7 @@ function RealEstateList() {
 
   const getRealEstates = () => {
     axios
-      .get("http://localhost:4000/real-estates")
+      .get(`${BACKEND_URL}/real-estates`)
       .then((response) => {
         const realEstatesList = response.data;
         setRealEstates(realEstatesList);
@@ -44,7 +45,7 @@ function RealEstateList() {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:4000/real-estates")
+      .get(`${BACKEND_URL}/real-estates`)
       .then((response) => {
         const realEstatesList = response.data;
         setRealEstates(realEstatesList);

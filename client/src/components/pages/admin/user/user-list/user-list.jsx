@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { SuccessNotification } from "../../../../elements/toastify";
 
 import "./user-list.css";
+import { BACKEND_URL } from "../../../../elements/config";
 function UserList() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(true);
@@ -14,18 +15,21 @@ function UserList() {
   const [users, setUsers] = useState();
 
   const handleRemove = (id) => {
-    axios.delete(`http://localhost:4000/users/${id}`).then(() => {
+    axios.delete(`${BACKEND_URL}/users/${id}`).then(() => {
       SuccessNotification("Kullanıcı başarıyla kaldırıldı");
       setLoading(true);
       getUsers();
     });
   };
   const getUsers = () => {
-    axios.get("http://localhost:4000/users").then((response) => {
-      const usersList = response.data;
-      setUsers(usersList);
-      setLoading(false);
-    });
+    axios
+      .get(`${BACKEND_URL}/users`)
+      .then((response) => {
+        const usersList = response.data;
+        setUsers(usersList);
+        setLoading(false);
+      })
+      .catch((err) => console.log(err));
   };
   useEffect(() => {
     getUsers();

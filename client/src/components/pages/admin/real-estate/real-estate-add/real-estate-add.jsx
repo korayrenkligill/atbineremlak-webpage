@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 
 import "./real-estate-add.css";
 import { useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "../../../../elements/config";
 
 const manisaIlceleri = [
   {
@@ -426,7 +427,7 @@ function RealEstateAdd({ user }) {
         youtubeId: videoId,
       };
       axios
-        .post("http://localhost:4000/real-estates", newRealEstate)
+        .post(`${BACKEND_URL}/real-estates`, newRealEstate)
         .then((response) => console.log(response))
         .then(() => {
           SuccessNotification("İlan başarıyla eklendi");

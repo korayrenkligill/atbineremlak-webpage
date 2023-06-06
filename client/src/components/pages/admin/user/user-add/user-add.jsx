@@ -9,6 +9,7 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import "./user-add.css";
 import { useNavigate } from "react-router-dom";
+import { BACKEND_URL } from "../../../../elements/config";
 
 function UserAdd() {
   const navigation = useNavigate();
@@ -108,7 +109,7 @@ function UserAdd() {
       profile: selectedImage ? selectedImage : defaultImage,
     };
     if (!error) {
-      axios.post("http://localhost:4000/users", newUser).then(() => {
+      axios.post(`${BACKEND_URL}/users`, newUser).then(() => {
         navigation("/admin/kullanıcılar/");
         SuccessNotification("Kullanıcı başarıyla eklendi");
       });
@@ -116,7 +117,7 @@ function UserAdd() {
   };
   useEffect(() => {
     axios
-      .get("http://localhost:4000/users")
+      .get(`${BACKEND_URL}/users`)
       .then((response) => setUsers(response.data));
   }, []);
   return (

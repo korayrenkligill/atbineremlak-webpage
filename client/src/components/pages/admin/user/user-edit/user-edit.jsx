@@ -10,6 +10,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import PuffLoader from "react-spinners/PuffLoader";
 
 import "./user-edit.css";
+import { BACKEND_URL } from "../../../../elements/config";
 
 function UserEdit() {
   const navigation = useNavigate();
@@ -112,15 +113,15 @@ function UserEdit() {
       profile: selectedImage ? selectedImage : defaultImage,
     };
     if (!error) {
-      axios.put(`http://localhost:4000/users/${user.id}`, newUser).then(() => {
-        navigation("/admin/kullanıcılar/");
-        SuccessNotification("Kullanıcı başarıyla güncellendi");
-      });
+      axios
+        .put(`${BACKEND_URL}/users/${user.id}`, newUser)
+        .then(() => SuccessNotification("Kullanıcı başarıyla güncellendi"))
+        .then(() => navigation("/admin/kullanıcılar/"));
     }
   };
   useEffect(() => {
     axios
-      .get(`http://localhost:4000/users`)
+      .get(`${BACKEND_URL}/users`)
       .then((response) => {
         setUsers(response.data);
         const innerUser = response.data.find((u) => u.id == id);
