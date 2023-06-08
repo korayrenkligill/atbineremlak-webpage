@@ -1,5 +1,5 @@
 .car-requests .table-container {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .car-requests .table-container table {
   width: 100%;
@@ -37,4 +37,10 @@
 .car-requests .table-container table td .actions button {
   padding: 10px;
   font-size: 1.5rem;
+}
+.car-requests .table-container .items-list-null {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-tertiary-text);
 }

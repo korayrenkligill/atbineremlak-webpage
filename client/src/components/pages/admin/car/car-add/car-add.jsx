@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
-import { BsFillTrash3Fill, BsPencilSquare } from "react-icons/bs";
+import { BsFillTrash3Fill } from "react-icons/bs";
 import ReactQuill from "react-quill";
 import YouTube from "react-youtube";
 import axios from "axios";
@@ -10,7 +10,11 @@ import {
   SuccessNotification,
 } from "../../../../elements/toastify";
 import { useNavigate } from "react-router-dom";
-import { BACKEND_URL } from "../../../../elements/config";
+import {
+  BACKEND_URL,
+  cloudName,
+  uploadPreset,
+} from "../../../../elements/config";
 import "./car-add.css";
 
 const otomobilModelleri = [
@@ -51,7 +55,6 @@ const getVideoIdFromUrl = (url) => {
 
 const getNowDate = () => {
   const date = new Date();
-  let realEstateDate = "";
   let minute = date.getMinutes().toString();
   if (minute.length < 2) {
     minute = "0" + minute;
@@ -116,6 +119,7 @@ function CarAdd({ user }) {
   const navigation = useNavigate();
 
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImagesPreview, setSelectedImagesPreview] = useState([]);
   const [videoLink, setVideoLink] = useState("");
   const [videoId, setVideoId] = useState("");
 
@@ -147,13 +151,18 @@ function CarAdd({ user }) {
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files;
-    for (let i = 0; i < file.length; i++) {
-      const reader = new FileReader();
-      reader.readAsDataURL(file[i]);
+    if (file.length + selectedImages.length < 26) {
+      setSelectedImages((oldArray) => [...oldArray, ...file]);
+      for (let i = 0; i < file.length; i++) {
+        const reader = new FileReader();
+        reader.readAsDataURL(file[i]);
 
-      reader.onload = () => {
-        setSelectedImages((oldArray) => [...oldArray, reader.result]);
-      };
+        reader.onload = () => {
+          setSelectedImagesPreview((oldArray) => [...oldArray, reader.result]);
+        };
+      }
+    } else {
+      ErrorNotification("En fazla 25 resim yükleyebilirsin!");
     }
   };
 
@@ -163,37 +172,46 @@ function CarAdd({ user }) {
 
   const handleFileInputChange = (e) => {
     const file = e.target.files;
-    if (file.length + selectedImages.length < 21) {
+    if (file.length + selectedImages.length < 26) {
+      setSelectedImages((oldArray) => [...oldArray, ...file]);
       for (let i = 0; i < file.length; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(file[i]);
         reader.onload = () => {
-          setSelectedImages((oldArray) => [...oldArray, reader.result]);
+          setSelectedImagesPreview((oldArray) => [...oldArray, reader.result]);
         };
       }
     } else {
-      alert("En fazla 25 resim yükleyebilirsin!");
+      ErrorNotification("En fazla 25 resim yükleyebilirsin!");
     }
   };
 
   const handleFileInputChangeSingle = (e, key) => {
     const file = e.target.files[0];
+    const imagesPreviewArray = [...selectedImagesPreview];
     const imagesArray = [...selectedImages];
-    console.log(key);
     if (file && file.type.startsWith("image/")) {
+      imagesArray[key] = file;
+      setSelectedImages(imagesArray);
       const reader = new FileReader();
       reader.onload = () => {
-        imagesArray[key] = reader.result;
-        setSelectedImages(imagesArray);
+        imagesPreviewArray[key] = reader.result;
+        setSelectedImagesPreview(imagesArray);
       };
       reader.readAsDataURL(file);
     }
   };
   const handleClearFileInputSingle = (key) => {
+    const imagesPreviewArray = [...selectedImagesPreview];
     const imagesArray = [...selectedImages];
+    const newArrayPreview = [];
     const newArray = [];
     for (let i = 0; i < imagesArray.length; i++)
-      if (i !== key) newArray.push(imagesArray[i]);
+      if (i !== key) {
+        newArrayPreview.push(imagesPreviewArray[i]);
+        newArray.push(imagesArray[i]);
+      }
+    setSelectedImagesPreview(newArrayPreview);
     setSelectedImages(newArray);
   };
 
@@ -204,6 +222,8 @@ function CarAdd({ user }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     let error = false;
+    let imageUrls = [];
+
     if (selectedImages.length < 1) {
       ErrorNotification("En az 1 resim seçmelisin");
       error = true;
@@ -233,42 +253,62 @@ function CarAdd({ user }) {
       error = true;
     }
     if (!error) {
-      const newCar = {
-        id: uuidv4(),
-        baslik: baslik,
-        aciklama: content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
-        fiyat: fiyat,
-        pazarlik: pazarlik,
-        marka: marka,
-        seri: seri,
-        model: model,
-        yil: yil,
-        yakit: yakit,
-        vites: vites,
-        aracDurumu: aracDurumu,
-        km: km,
-        kasa: kasa,
-        motorGucu: motorGucu,
-        motorHacmi: motorHacmi,
-        cekis: cekis,
-        renk: renk,
-        agirHasarli: agirHasarli,
-        takas: takas,
-        date: getNowDate(),
-        user: user,
-        advertiserName: advertiserName,
-        advertiserSurname: advertiserSurname,
-        advertiserPhone: `+90${advertiserPhone}`,
-        images: selectedImages,
-        youtubeId: videoId,
-      };
-      axios
-        .post(`${BACKEND_URL}/cars`, newCar)
-        .then((response) => console.log(response))
-        .then(() => {
-          SuccessNotification("İlan başarıyla eklendi");
-          navigation("/admin/otomobiller/");
-        });
+      for (let i = 0; i < selectedImages.length; i++) {
+        const formData = new FormData();
+        formData.append("file", selectedImages[i]);
+        formData.append("upload_preset", uploadPreset); // Cloudinary yükleme ön tanımlaması
+        formData.append("folder", "otomobil");
+        axios
+          .post(
+            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+            formData
+          )
+          .then((response) => {
+            imageUrls.push(response.data.secure_url);
+          })
+          .then(() => {
+            if (i === selectedImages.length - 1) {
+              const newCar = {
+                id: uuidv4(),
+                baslik: baslik,
+                aciklama:
+                  content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
+                fiyat: fiyat,
+                pazarlik: pazarlik,
+                marka: marka,
+                seri: seri,
+                model: model,
+                yil: yil,
+                yakit: yakit,
+                vites: vites,
+                aracDurumu: aracDurumu,
+                km: km,
+                kasa: kasa,
+                motorGucu: motorGucu,
+                motorHacmi: motorHacmi,
+                cekis: cekis,
+                renk: renk,
+                agirHasarli: agirHasarli,
+                takas: takas,
+                date: getNowDate(),
+                user: user,
+                advertiserName: advertiserName,
+                advertiserSurname: advertiserSurname,
+                advertiserPhone: `+90${advertiserPhone}`,
+                images: imageUrls,
+                youtubeId: videoId,
+                request: false,
+              };
+              axios
+                .post(`${BACKEND_URL}/cars`, newCar)
+                .then((response) => console.log(response))
+                .then(() => {
+                  SuccessNotification("İlan başarıyla eklendi");
+                  navigation("/admin/otomobiller/");
+                });
+            }
+          });
+      }
     }
   };
   return (
@@ -297,7 +337,7 @@ function CarAdd({ user }) {
         </div>
         {imageOrVideo === "image" ? (
           <div className="images-list">
-            {selectedImages.map((item, key) => {
+            {selectedImagesPreview.map((item, key) => {
               return (
                 <label htmlFor={`image-selector-single-${key}`} key={key}>
                   <div className="frame">

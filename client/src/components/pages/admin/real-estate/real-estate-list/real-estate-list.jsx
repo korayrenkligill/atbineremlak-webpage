@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BsFillTrash3Fill, BsPencilSquare } from "react-icons/bs";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import PuffLoader from "react-spinners/PuffLoader";
 import AreYouSure from "../../../../elements/are-you-sure";
@@ -47,7 +47,8 @@ function RealEstateList() {
     axios
       .get(`${BACKEND_URL}/real-estates`)
       .then((response) => {
-        const realEstatesList = response.data;
+        let realEstatesList = response.data;
+        realEstatesList = realEstatesList.filter((u) => u.request === false);
         setRealEstates(realEstatesList);
       })
       .then(() => setLoading(false));
@@ -55,7 +56,7 @@ function RealEstateList() {
   if (loading)
     return (
       <div className="loading-screen">
-        <PuffLoader color="#008cff" />;
+        <PuffLoader color="#008cff" />
       </div>
     );
   else

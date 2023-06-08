@@ -23,6 +23,7 @@ import { ToastContainer } from "react-toastify";
 import UserEdit from "./components/pages/admin/user/user-edit/user-edit";
 import RealEstateEdit from "./components/pages/admin/real-estate/real-estate-edit/real-estate-edit";
 import CarEdit from "./components/pages/admin/car/car-edit/car-edit";
+import IlanVer from "./components/pages/ilan-ver/ilan-ver-main";
 function App() {
   const [user, setUser] = useState(null);
 
@@ -36,11 +37,12 @@ function App() {
         <Route path="/" element={<MainPage />} />
         <Route path="/emlak" element={<Emlak />} />
         <Route path="/otomobil" element={<Otomobil />} />
+        <Route path="/ilan-ver" element={<IlanVer />} />
         <Route
           path="/admin"
           element={<AdminPanel user={user} setUser={setUser} />}
         >
-          <Route path="/admin/" element={<Dashboard />} />
+          <Route path="/admin/" element={<Dashboard />} />0
           <Route path="/admin/konutlar/" element={<RealEstateList />} />
           <Route
             path="/admin/konut/ekle/"

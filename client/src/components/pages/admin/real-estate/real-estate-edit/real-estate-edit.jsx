@@ -13,7 +13,11 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { useNavigate, useParams } from "react-router-dom";
 
 import "./real-estate-edit.css";
-import { BACKEND_URL } from "../../../../elements/config";
+import {
+  BACKEND_URL,
+  cloudName,
+  uploadPreset,
+} from "../../../../elements/config";
 
 const manisaIlceleri = [
   {
@@ -263,6 +267,7 @@ function RealEstateEdit({ user }) {
   const [oldRealEstate, setOldRealEstate] = useState({});
 
   const [selectedImages, setSelectedImages] = useState([]);
+  const [selectedImagesPreview, setSelectedImagesPreview] = useState([]);
   const [videoLink, setVideoLink] = useState("");
   const [videoId, setVideoId] = useState("");
 
@@ -300,12 +305,13 @@ function RealEstateEdit({ user }) {
     e.preventDefault();
     const file = e.dataTransfer.files;
     if (file.length + selectedImages.length < 26) {
+      setSelectedImages((oldArray) => [...oldArray, ...file]);
       for (let i = 0; i < file.length; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(file[i]);
 
         reader.onload = () => {
-          setSelectedImages((oldArray) => [...oldArray, reader.result]);
+          setSelectedImagesPreview((oldArray) => [...oldArray, reader.result]);
         };
       }
     } else {
@@ -320,11 +326,12 @@ function RealEstateEdit({ user }) {
   const handleFileInputChange = (e) => {
     const file = e.target.files;
     if (file.length + selectedImages.length < 26) {
+      setSelectedImages((oldArray) => [...oldArray, ...file]);
       for (let i = 0; i < file.length; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(file[i]);
         reader.onload = () => {
-          setSelectedImages((oldArray) => [...oldArray, reader.result]);
+          setSelectedImagesPreview((oldArray) => [...oldArray, reader.result]);
         };
       }
     } else {
@@ -334,22 +341,30 @@ function RealEstateEdit({ user }) {
 
   const handleFileInputChangeSingle = (e, key) => {
     const file = e.target.files[0];
+    const imagesPreviewArray = [...selectedImagesPreview];
     const imagesArray = [...selectedImages];
-    console.log(key);
     if (file && file.type.startsWith("image/")) {
+      imagesArray[key] = file;
+      setSelectedImages(imagesArray);
       const reader = new FileReader();
       reader.onload = () => {
-        imagesArray[key] = reader.result;
-        setSelectedImages(imagesArray);
+        imagesPreviewArray[key] = reader.result;
+        setSelectedImagesPreview(imagesArray);
       };
       reader.readAsDataURL(file);
     }
   };
   const handleClearFileInputSingle = (key) => {
+    const imagesPreviewArray = [...selectedImagesPreview];
     const imagesArray = [...selectedImages];
+    const newArrayPreview = [];
     const newArray = [];
     for (let i = 0; i < imagesArray.length; i++)
-      if (i !== key) newArray.push(imagesArray[i]);
+      if (i !== key) {
+        newArrayPreview.push(imagesPreviewArray[i]);
+        newArray.push(imagesArray[i]);
+      }
+    setSelectedImagesPreview(newArrayPreview);
     setSelectedImages(newArray);
   };
 
@@ -360,6 +375,8 @@ function RealEstateEdit({ user }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     let error = false;
+    let imageUrls = [];
+
     if (selectedImages.length < 1) {
       ErrorNotification("En az 1 resim seçmelisin");
       error = true;
@@ -396,7 +413,69 @@ function RealEstateEdit({ user }) {
       ErrorNotification("İlan sahibi numarası boş veya hatalı");
       error = true;
     }
-    if (!error) {
+    if (!error && selectedImages !== oldRealEstate.images) {
+      for (let i = 0; i < selectedImages.length; i++) {
+        const formData = new FormData();
+        formData.append("file", selectedImages[i]);
+        formData.append("upload_preset", uploadPreset); // Cloudinary yükleme ön tanımlaması
+        formData.append("folder", "konut");
+        axios
+          .post(
+            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
+            formData
+          )
+          .then((response) => {
+            imageUrls.push(response.data.secure_url);
+          })
+          .then(() => {
+            if (i === selectedImages.length - 1) {
+              const newRealEstate = {
+                id: oldRealEstate.id,
+                title: title,
+                description:
+                  content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
+                price: price,
+                bargain: bargain,
+                ilce: ilce,
+                mahalle: mahalle,
+                type: type,
+                grossArea: grossArea,
+                netArea: netArea,
+                roomCount: roomCount,
+                buildAge: buildAge,
+                floor: floor,
+                totalFloor: totalFloor,
+                heating: heating,
+                bathroomCount: bathroomCount,
+                balcony: balcony,
+                furnished: furnished,
+                usingState: usingState,
+                onSite: onSite,
+                siteName: onSite === "Evet" ? siteName : "",
+                dues: dues,
+                suitableForCredit: suitableForCredit,
+                titleStatus: titleStatus,
+                swap: swap,
+                date: getNowDate(),
+                user: user,
+                advertiserName: advertiserName,
+                advertiserSurname: advertiserSurname,
+                advertiserPhone: `+90${advertiserPhone}`,
+                images: imageUrls,
+                youtubeId: videoId,
+                request: false,
+              };
+              axios
+                .put(`${BACKEND_URL}/real-estates/${id}`, newRealEstate)
+                .then((response) => console.log(response))
+                .then(() => {
+                  SuccessNotification("İlan başarıyla güncellendi");
+                  navigation("/admin/konutlar/");
+                });
+            }
+          });
+      }
+    } else if (!error && selectedImages === oldRealEstate.images) {
       const newRealEstate = {
         id: oldRealEstate.id,
         title: title,
@@ -431,6 +510,7 @@ function RealEstateEdit({ user }) {
         advertiserPhone: `+90${advertiserPhone}`,
         images: selectedImages,
         youtubeId: videoId,
+        request: false,
       };
       axios
         .put(`${BACKEND_URL}/real-estates/${id}`, newRealEstate)
@@ -448,6 +528,7 @@ function RealEstateEdit({ user }) {
       .then((response) => {
         setOldRealEstate(response.data);
         setSelectedImages(response.data.images);
+        setSelectedImagesPreview(response.data.images);
         setVideoId(response.data.youtubeId);
         setTitle(response.data.title);
         setContent(response.data.description);
@@ -484,7 +565,7 @@ function RealEstateEdit({ user }) {
   if (loading)
     return (
       <div className="loading-screen">
-        <PuffLoader color="#008cff" />;
+        <PuffLoader color="#008cff" />
       </div>
     );
   else
@@ -514,7 +595,7 @@ function RealEstateEdit({ user }) {
           </div>
           {imageOrVideo === "image" ? (
             <div className="images-list">
-              {selectedImages.map((item, key) => {
+              {selectedImagesPreview.map((item, key) => {
                 return (
                   <label htmlFor={`image-selector-single-${key}`} key={key}>
                     <div className="frame">

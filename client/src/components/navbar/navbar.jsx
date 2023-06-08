@@ -61,7 +61,9 @@ function Navbar({ user }) {
           <Link className="navbar-contact">
             <IoCall className="icon-transform" /> İletişime geç
           </Link>
-          <Link className="ilan-ver">İlan ver</Link>
+          <Link to="/ilan-ver" className="ilan-ver">
+            İlan ver
+          </Link>
         </div>
       </nav>
     );
@@ -120,6 +122,7 @@ function Navbar({ user }) {
             <IoCall className="icon-transform" /> İletişime geç
           </button>
           <Link
+            to="/ilan-ver"
             className="ilan-ver"
             onClick={() => {
               setIsOpen(false);

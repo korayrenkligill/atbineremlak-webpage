@@ -151,6 +151,9 @@
   margin-bottom: 1rem;
 }
 @media screen and (max-width: 768px) {
+  .real-estate-add .real-estate-add-form .images-list .frame button {
+    display: flex;
+  }
   .real-estate-add .real-estate-add-form .form-element-double {
     flex-direction: column;
     align-items: stretch;

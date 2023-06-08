@@ -5,34 +5,34 @@ import PuffLoader from "react-spinners/PuffLoader";
 import "./login-panel.css";
 import PasswordInput from "../../../elements/password-input";
 import { BACKEND_URL } from "../../../elements/config";
+import { ErrorNotification } from "../../../elements/toastify";
 function LoginPanel({ user, setUser }) {
   const [loading, setLoading] = useState(true);
-
+  const [users, setUsers] = useState([]);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    axios.get(`${BACKEND_URL}/users`).then((response) => {
-      const user = response.data.filter(
-        (obj) => obj.email === email && obj.password === password
-      );
-      if (user.length > 0) {
-        setUser(user[0]);
-      } else {
-        console.log("Kullanıcı bulunamadı!");
-      }
-    });
+    const user = users.filter(
+      (obj) => obj.email === email && obj.password === password
+    );
+    if (user.length > 0) {
+      setUser(user[0]);
+    } else {
+      ErrorNotification("Kullanıcı bulunamadı!");
+    }
   };
   useState(() => {
-    if (loading !== undefined) {
+    axios.get(`${BACKEND_URL}/users`).then((response) => {
+      setUsers(response.data);
       setLoading(false);
-    }
+    });
   }, []);
   if (loading)
     return (
       <div className="loading-screen">
-        <PuffLoader color="#008cff" />;
+        <PuffLoader color="#008cff" />
       </div>
     );
   else

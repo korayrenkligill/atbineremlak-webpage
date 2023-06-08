@@ -14,7 +14,7 @@ function getWindowSize() {
   return { innerWidth, innerHeight };
 }
 
-function Sidebar() {
+function Sidebar({ realEstateReqCount, carReqCount }) {
   const [windowSize, setWindowSize] = useState(getWindowSize());
 
   const [isOpen, setIsOpen] = useState(true);
@@ -99,7 +99,10 @@ function Sidebar() {
             }
           }}
         >
-          <TbHomeDot className="icon" /> Konut İlanı İstekleri
+          <TbHomeDot className="icon" /> Konut İlanı İstekleri{" "}
+          {realEstateReqCount > 0 && (
+            <span className="notification">{realEstateReqCount}</span>
+          )}
         </NavLink>
         <h2 className="header">Otomobil</h2>
         <NavLink
@@ -142,6 +145,9 @@ function Sidebar() {
           }}
         >
           <FiUsers className="icon" /> Kullanıcı Listesi
+          {carReqCount > 0 && (
+            <span className="notification">{carReqCount}</span>
+          )}
         </NavLink>
         <NavLink
           to="/admin/kullanıcı/ekle/"

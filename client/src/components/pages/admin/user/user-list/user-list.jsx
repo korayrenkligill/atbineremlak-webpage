@@ -37,7 +37,7 @@ function UserList() {
   if (loading)
     return (
       <div className="loading-screen">
-        <PuffLoader color="#008cff" />;
+        <PuffLoader color="#008cff" />
       </div>
     );
   else
