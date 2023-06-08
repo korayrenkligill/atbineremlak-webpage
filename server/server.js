@@ -3,6 +3,7 @@ const express = require("express");
 const cors = require("cors"); // cors modülünü çağır
 const bodyParser = require("body-parser");
 const session = require("express-session");
+const multer = require("multer");
 const app = express();
 const fs = require("fs");
 const port = 4000;
@@ -25,6 +26,17 @@ app.use(
     credentials: true, // Oturum bilgisi gibi özel başlıkların gönderilmesine izin vermek için
   })
 );
+
+// Multer ayarları
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "uploads"); // Resimlerin kaydedileceği klasör
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname); // Dosyanın orijinal adıyla kaydedilmesi
+  },
+});
+const upload = multer({ storage: storage });
 
 // JSON verilerini okuyan ve döndüren fonksiyon
 function readData() {
@@ -138,6 +150,15 @@ var Cars = {
 };
 
 // USERS REQUESTS --------------------------------------------------------------------------
+// POST isteği işleme
+app.post("/upload", upload.single("profileImage"), (req, res) => {
+  if (!req.file) {
+    return res.status(400).send("Yüklenecek bir resim dosyası bulunamadı.");
+  }
+
+  // Başarı durumunda geri dönüş
+  res.send("Resim başarıyla yüklendi.");
+});
 
 // Tüm kullanıcıları döndüren GET isteği
 app.get("/users", (req, res) => {
