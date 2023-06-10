@@ -1,0 +1,63 @@
+.emlak-sidebar {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-primary-background);
+  border-radius: 10px;
+  box-shadow: var(--boxshadow);
+  padding: 20px;
+  gap: 1rem;
+  h2.title {
+    font-size: 1.3rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    .icon {
+      display: none;
+    }
+  }
+  .sidebar-element {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    label {
+      font-size: 0.8rem;
+      color: var(--color-tertiary-text);
+    }
+  }
+  .sidebar-element-double {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    h2.inner-title {
+      font-size: 0.8rem;
+      color: var(--color-tertiary-text);
+      font-weight: normal;
+    }
+    span {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      label {
+        font-size: 0.8rem;
+        color: var(--color-tertiary-text);
+      }
+    }
+  }
+}
+@media screen and (max-width: 768px) {
+  .emlak-sidebar {
+    border-radius: 0px;
+    h2.title {
+      .icon {
+        display: block;
+      }
+    }
+    .mobile-menu {
+      display: none;
+    }
+    .mobile-menu-open {
+      display: block;
+    }
+  }
+}

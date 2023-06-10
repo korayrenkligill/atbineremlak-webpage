@@ -14,10 +14,10 @@ function AdminPanel({ user, setUser }) {
   const getRealEstateReqCount = () => {
     setLoading(true);
     axios
-      .get(`${BACKEND_URL}/real-estates/requests`)
+      .get(`${BACKEND_URL}/real-estates/requests/count`)
       .then((response) => {
-        let realEstatesList = response.data;
-        setRealEstateReqCount(realEstatesList.length);
+        let realEstatesListCount = response.data;
+        setRealEstateReqCount(realEstatesListCount);
       })
       .then(() => {
         setLoading(false);
@@ -26,10 +26,10 @@ function AdminPanel({ user, setUser }) {
   const getCarReqCount = () => {
     setLoading(true);
     axios
-      .get(`${BACKEND_URL}/cars/requests`)
+      .get(`${BACKEND_URL}/cars/requests/count`)
       .then((response) => {
-        let carsList = response.data;
-        setCarReqCount(carsList.length);
+        let carsListCount = response.data;
+        setCarReqCount(carsListCount);
       })
       .then(() => {
         setLoading(false);

@@ -272,8 +272,8 @@ function RealEstateAdd({ user }) {
   const [ilce, setIlce] = useState("Şehzadeler");
   const [mahalle, setMahalle] = useState("seçiniz");
   const [type, setType] = useState("Satılık");
-  const [grossArea, setGrossArea] = useState("");
-  const [netArea, setNetArea] = useState("");
+  const [grossArea, setGrossArea] = useState(0);
+  const [netArea, setNetArea] = useState(0);
   const [roomCount, setRoomCount] = useState("Stüdyo (1 + 0)");
   const [buildAge, setBuildAge] = useState("0");
   const [floor, setFloor] = useState(0);
@@ -696,7 +696,7 @@ function RealEstateAdd({ user }) {
             <label htmlFor="real-estate-add-form-grossarea">m² (brüt)</label>
             <input
               id="real-estate-add-form-grossarea"
-              type="text"
+              type="number"
               placeholder="120m²"
               value={grossArea}
               onChange={(e) => {
@@ -708,7 +708,7 @@ function RealEstateAdd({ user }) {
             <label htmlFor="real-estate-add-form-netarea">m² (net)</label>
             <input
               id="real-estate-add-form-netarea"
-              type="text"
+              type="number"
               placeholder="110m²"
               value={netArea}
               onChange={(e) => {

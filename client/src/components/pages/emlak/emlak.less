@@ -1,3 +1,15 @@
-a {
-  color: var(--color-primary-text);
+.emlak-page {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: 2rem;
+  padding: var(--page-padding);
+  margin: 50px 0px;
+}
+@media screen and (max-width: 768px) {
+  .emlak-page {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    margin-top: 20px;
+  }
 }

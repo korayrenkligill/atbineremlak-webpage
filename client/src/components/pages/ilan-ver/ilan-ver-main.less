@@ -48,9 +48,9 @@
         flex-direction: column;
         gap: 10px;
         button {
-          background-color: var(--color-fifth-blue);
+          background-color: var(--color-primary-background);
           padding: 20px;
-          border-radius: 40px;
+          border-radius: 10px;
           font-size: 1.5rem;
           display: flex;
           justify-content: space-between;
@@ -60,6 +60,8 @@
           div.left {
             display: flex;
             align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
             gap: 1rem;
             span {
               font-weight: bold;
@@ -180,6 +182,28 @@
       button.back-button {
         font-size: 1rem;
         color: var(--color-primary-text);
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .ilan-ver {
+    .stage-container {
+      max-width: 90vw;
+      .stage-inner-container {
+        .form-element-double {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 1rem;
+        }
+        .stage {
+          min-width: 90vw;
+        }
+        .stage-1 {
+          button {
+          }
+        }
       }
     }
   }

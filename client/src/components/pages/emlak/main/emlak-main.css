@@ -1,0 +1,62 @@
+.emlak-main {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.emlak-main .emlak-item {
+  background-color: var(--color-primary-background);
+  box-shadow: var(--boxshadow);
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.emlak-main .emlak-item .frame {
+  aspect-ratio: 16 / 9;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-color: var(--color-secondary-background);
+  position: relative;
+}
+.emlak-main .emlak-item .frame .image-count {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  position: absolute;
+  bottom: 5px;
+  left: 5px;
+  background-color: rgba(255, 255, 255, 0.705);
+  color: #242424;
+}
+.emlak-main .emlak-item .texts {
+  margin: 5px 20px 10px 20px;
+}
+.emlak-main .emlak-item .texts h1 {
+  font-size: 1rem;
+}
+.emlak-main .emlak-item .texts p {
+  font-size: 0.9rem;
+  color: var(--color-secondary-text);
+}
+.emlak-main .emlak-item .texts p span {
+  color: var(--color-tertiary-text);
+}
+.emlak-main .emlak-item p.price {
+  display: block;
+  text-align: center;
+  padding: 10px;
+  margin-top: auto;
+  background-color: var(--color-primary-blue);
+  color: var(--color-primary-whitetext);
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+@media screen and (max-width: 768px) {
+  .emlak-main {
+    padding: 0px 5%;
+  }
+}

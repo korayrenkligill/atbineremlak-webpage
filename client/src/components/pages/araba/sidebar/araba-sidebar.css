@@ -1,0 +1,61 @@
+.emlak-sidebar {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-primary-background);
+  border-radius: 10px;
+  box-shadow: var(--boxshadow);
+  padding: 20px;
+  gap: 1rem;
+}
+.emlak-sidebar h2.title {
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.emlak-sidebar h2.title .icon {
+  display: none;
+}
+.emlak-sidebar .sidebar-element {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.emlak-sidebar .sidebar-element label {
+  font-size: 0.8rem;
+  color: var(--color-tertiary-text);
+}
+.emlak-sidebar .sidebar-element-double {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.emlak-sidebar .sidebar-element-double h2.inner-title {
+  font-size: 0.8rem;
+  color: var(--color-tertiary-text);
+  font-weight: normal;
+}
+.emlak-sidebar .sidebar-element-double span {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.emlak-sidebar .sidebar-element-double span label {
+  font-size: 0.8rem;
+  color: var(--color-tertiary-text);
+}
+@media screen and (max-width: 768px) {
+  .emlak-sidebar {
+    border-radius: 0px;
+  }
+  .emlak-sidebar h2.title .icon {
+    display: block;
+  }
+  .emlak-sidebar .mobile-menu {
+    display: none;
+  }
+  .emlak-sidebar .mobile-menu-open {
+    display: block;
+  }
+}

@@ -885,7 +885,7 @@ function IlanVer() {
                 className="back-button"
                 onClick={() => {
                   setSelectedImages([]);
-                  selectedImagesPreview([]);
+                  setSelectedImagesPreview([]);
                   setStage(stage - 1);
                 }}
               >

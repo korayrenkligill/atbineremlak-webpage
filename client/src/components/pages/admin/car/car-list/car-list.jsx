@@ -34,7 +34,7 @@ function CarList() {
     axios
       .get(`${BACKEND_URL}/cars`)
       .then((response) => {
-        const cars = response.data;
+        const cars = response.data.filter((u) => u.request === false);
         setCars(cars);
       })
       .then(() => setLoading(false));

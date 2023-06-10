@@ -3,7 +3,6 @@ import Navbar from "./components/navbar/navbar";
 import Footer from "./components/footer/footer";
 import MainPage from "./components/pages/main-page/main-page";
 import Emlak from "./components/pages/emlak/emlak";
-import Otomobil from "./components/pages/otomobil/otomobil";
 import { Route, Routes } from "react-router-dom";
 import AdminPanel from "./components/pages/admin/admin-panel";
 import Dashboard from "./components/pages/admin/dashboard/dashboard";
@@ -24,6 +23,7 @@ import UserEdit from "./components/pages/admin/user/user-edit/user-edit";
 import RealEstateEdit from "./components/pages/admin/real-estate/real-estate-edit/real-estate-edit";
 import CarEdit from "./components/pages/admin/car/car-edit/car-edit";
 import IlanVer from "./components/pages/ilan-ver/ilan-ver-main";
+import Araba from "./components/pages/araba/araba";
 function App() {
   const [user, setUser] = useState(null);
 
@@ -36,7 +36,7 @@ function App() {
       <Routes>
         <Route path="/" element={<MainPage />} />
         <Route path="/emlak" element={<Emlak />} />
-        <Route path="/otomobil" element={<Otomobil />} />
+        <Route path="/otomobil" element={<Araba />} />
         <Route path="/ilan-ver" element={<IlanVer />} />
         <Route
           path="/admin"

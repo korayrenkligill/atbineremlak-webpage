@@ -341,6 +341,7 @@ function CarEdit({ user }) {
         advertiserPhone: `+90${advertiserPhone}`,
         images: selectedImages,
         youtubeId: videoId,
+        request: false,
       };
       axios
         .put(`${BACKEND_URL}/cars/${id}`, newCar)
