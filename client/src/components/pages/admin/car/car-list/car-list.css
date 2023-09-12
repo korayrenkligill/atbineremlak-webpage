@@ -13,6 +13,7 @@
   border-radius: 10px;
   position: relative;
   box-shadow: var(--boxshadow);
+  background-color: var(--color-secondary-background);
   cursor: pointer;
 }
 .car-list .items-list .item img {

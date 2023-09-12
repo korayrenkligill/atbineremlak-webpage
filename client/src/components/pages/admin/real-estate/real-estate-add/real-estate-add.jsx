@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { BiImageAdd } from "react-icons/bi";
 import { BsFillTrash3Fill } from "react-icons/bs";
+import { SlArrowDown, SlArrowUp } from "react-icons/sl";
 import ReactQuill from "react-quill";
-import YouTube from "react-youtube";
 import {
   ErrorNotification,
   SuccessNotification,
@@ -14,9 +14,17 @@ import "./real-estate-add.css";
 import { useNavigate } from "react-router-dom";
 import {
   BACKEND_URL,
-  cloudName,
-  uploadPreset,
+  cepheListesi,
+  disOzelliklerListesi,
+  icOzelliklerListesi,
+  konutTipiListesi,
+  manzaraListesi,
+  muhitListesi,
+  ulasimListesi,
 } from "../../../../elements/config";
+import PuffLoader from "react-spinners/PuffLoader";
+import PhoneInput from "react-phone-input-2";
+import { toast } from "react-toastify";
 
 const manisaIlceleri = [
   {
@@ -184,16 +192,6 @@ const manisaIlceleri = [
   },
 ];
 
-const getVideoIdFromUrl = (url) => {
-  const videoIdRegex = /[?&]v=([^?&]+)/;
-  const match = url.match(videoIdRegex);
-  if (match && match[1]) {
-    return match[1];
-  } else {
-    return null; // Geçersiz URL
-  }
-};
-
 const getNowDate = () => {
   const date = new Date();
   let realEstateDate = "";
@@ -259,11 +257,10 @@ const getNowDate = () => {
 
 function RealEstateAdd({ user }) {
   const navigation = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImagesPreview, setSelectedImagesPreview] = useState([]);
-  const [videoLink, setVideoLink] = useState("");
-  const [videoId, setVideoId] = useState("");
 
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
@@ -292,21 +289,86 @@ function RealEstateAdd({ user }) {
   const [advertiserName, setAdvertiserName] = useState("");
   const [advertiserSurname, setAdvertiserSurname] = useState("");
   const [advertiserPhone, setAdvertiserPhone] = useState("");
+  const [advertiserNote, setAdvertiserNote] = useState("");
+  const [cephe, setCephe] = useState([]);
+  const [icOzellikler, setIcOzellikler] = useState([]);
+  const [disOzellikler, setDisOzellikler] = useState([]);
+  const [muhit, setMuhit] = useState([]);
+  const [ulasim, setUlasim] = useState([]);
+  const [manzara, setManzara] = useState([]);
+  const [konutTipi, setKonutTipi] = useState([]);
+
+  const [cepheIsOpen, setCepheIsOpen] = useState(true);
+  const [icIsOpen, setIcIsOpen] = useState(false);
+  const [disIsOpen, setDisIsOpen] = useState(false);
+  const [muhitIsOpen, setMuhitIsOpen] = useState(false);
+  const [ulasimIsOpen, setUlasimIsOpen] = useState(false);
+  const [manzaraIsOpen, setManzaraIsOpen] = useState(false);
+  const [konutTipiIsOpen, setKonutTipiIsOpen] = useState(false);
 
   const [imageOrVideo, setImageOrVideo] = useState("image");
+
+  const imagesPerPage = 3;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [currentImages, setCurrentImages] = useState([]);
+  const [pageNumbers, setPageNumbers] = useState([1]);
+
+  const showPeginate = (list, page = 1) => {
+    const indexOfLastImage = page * imagesPerPage;
+    const indexOfFirstImage = indexOfLastImage - imagesPerPage;
+    const currentImagesTemp = list.slice(indexOfFirstImage, indexOfLastImage);
+    setCurrentImages(currentImagesTemp);
+    const pageNumbersTemp = [];
+    // console.log(
+    //   list.length,
+    //   imagesPerPage,
+    //   list.length / imagesPerPage,
+    //   Math.ceil(list.length / imagesPerPage)
+    // );
+    for (let i = 1; i <= Math.ceil(list.length / imagesPerPage); i++) {
+      pageNumbersTemp.push(i);
+      if (i === Math.ceil(list.length / imagesPerPage)) {
+        console.log(pageNumbersTemp);
+        setPageNumbers(pageNumbersTemp);
+      }
+    }
+    setCurrentPage(page);
+  };
+  const paginate = (pageNumber) => {
+    var listTemp = selectedImagesPreview;
+    showPeginate(listTemp, pageNumber);
+    setCurrentPage(pageNumber);
+  };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files;
     if (file.length + selectedImages.length < 26) {
       setSelectedImages((oldArray) => [...oldArray, ...file]);
+      var list2Temp = [];
+      var selectedImagesPreviewTemp = selectedImagesPreview;
       for (let i = 0; i < file.length; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(file[i]);
 
         reader.onload = () => {
           setSelectedImagesPreview((oldArray) => [...oldArray, reader.result]);
+          list2Temp.push(reader.result);
+          if (i === file.length - 1) {
+            //Döngü sonunda
+            var listTemp = selectedImagesPreviewTemp.concat(list2Temp);
+            showPeginate(listTemp);
+          }
         };
+        toast.success("Resimler başarıyla yüklendi", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } else {
       ErrorNotification("En fazla 25 resim yükleyebilirsin!");
@@ -321,13 +383,29 @@ function RealEstateAdd({ user }) {
     const file = e.target.files;
     if (file.length + selectedImages.length < 26) {
       setSelectedImages((oldArray) => [...oldArray, ...file]);
+      var list2Temp = [];
+      var selectedImagesPreviewTemp = selectedImagesPreview;
       for (let i = 0; i < file.length; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(file[i]);
         reader.onload = () => {
           setSelectedImagesPreview((oldArray) => [...oldArray, reader.result]);
+          list2Temp.push(reader.result);
+          if (i === file.length - 1) {
+            //Döngü sonunda
+            var listTemp = selectedImagesPreviewTemp.concat(list2Temp);
+            showPeginate(listTemp);
+          }
         };
       }
+      toast.success("Resimler başarıyla yüklendi", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     } else {
       ErrorNotification("En fazla 25 resim yükleyebilirsin!");
     }
@@ -343,7 +421,16 @@ function RealEstateAdd({ user }) {
       const reader = new FileReader();
       reader.onload = () => {
         imagesPreviewArray[key] = reader.result;
-        setSelectedImagesPreview(imagesArray);
+        setSelectedImagesPreview(imagesPreviewArray);
+        showPeginate(imagesPreviewArray);
+        toast.success("Resim başarıyla değiştirildi", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -360,128 +447,144 @@ function RealEstateAdd({ user }) {
       }
     setSelectedImagesPreview(newArrayPreview);
     setSelectedImages(newArray);
+    showPeginate(newArrayPreview);
+    toast.success("Resim başarıyla kaldırıldı", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
   const handleChange = (value) => {
     setContent(value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    setLoading(true);
     let error = false;
-    let imageUrls = [];
-
+    let newNumber = "";
     if (selectedImages.length < 1) {
       ErrorNotification("En az 1 resim seçmelisin");
       error = true;
+      setLoading(false);
     }
     if (title.length < 5) {
       ErrorNotification("Daha uzun bir ilan başlığı girmelisin");
       error = true;
+      setLoading(false);
     }
     if (price === 0) {
       ErrorNotification("0 Fiyat etiketi girilemez");
       error = true;
+      setLoading(false);
     }
     if (mahalle.length <= 0 || mahalle === "seçiniz") {
       ErrorNotification("Bir mahalle seçmelisin!");
       error = true;
+      setLoading(false);
     }
     if (grossArea.length <= 0) {
       ErrorNotification("m² (Brüt) boş bırakılamaz");
       error = true;
+      setLoading(false);
     }
     if (netArea.length <= 0) {
       ErrorNotification("m² (Net) boş bırakılamaz");
       error = true;
+      setLoading(false);
     }
-    if (advertiserName.length <= 0) {
-      ErrorNotification("İlan sahibi adı boş bırakılamaz");
+    if (advertiserPhone.length !== 12 && advertiserPhone.length !== 0) {
+      ErrorNotification("Doğru bir numara girişi yapılmadı");
       error = true;
-    }
-    if (advertiserSurname.length <= 0) {
-      ErrorNotification("İlan sahibi soyadı boş bırakılamaz");
-      error = true;
-    }
-    if (advertiserPhone.length !== 10) {
-      ErrorNotification("İlan sahibi numarası boş veya hatalı");
-      error = true;
+      setLoading(false);
+    } else {
+      newNumber = "+" + advertiserPhone;
     }
     if (!error) {
-      for (let i = 0; i < selectedImages.length; i++) {
-        const formData = new FormData();
-        formData.append("file", selectedImages[i]);
-        formData.append("upload_preset", uploadPreset); // Cloudinary yükleme ön tanımlaması
-        formData.append("folder", "konut");
-        axios
-          .post(
-            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-            formData
-          )
-          .then((response) => {
-            imageUrls.push(response.data.secure_url);
+      const formData = new FormData();
+      formData.append("id", uuidv4());
+      formData.append("title", title);
+      formData.append("description", content);
+      formData.append("price", price.toString());
+      formData.append("bargain", bargain);
+      formData.append("ilce", ilce);
+      formData.append("mahalle", mahalle);
+      formData.append("type", type);
+      formData.append("grossArea", grossArea.toString());
+      formData.append("netArea", netArea.toString());
+      formData.append("roomCount", roomCount);
+      formData.append("buildAge", buildAge);
+      formData.append("floor", floor.toString());
+      formData.append("totalFloor", totalFloor.toString());
+      formData.append("heating", heating);
+      formData.append("bathroomCount", bathroomCount.toString());
+      formData.append("balcony", balcony);
+      formData.append("furnished", furnished);
+      formData.append("usingState", usingState);
+      formData.append("onSite", onSite);
+      formData.append("siteName", onSite === "Evet" ? siteName : "");
+      formData.append("dues", dues.toString());
+      formData.append("suitableForCredit", suitableForCredit);
+      formData.append("titleStatus", titleStatus);
+      formData.append("swap", swap);
+      formData.append("cephe", JSON.stringify(cephe));
+      formData.append("icOzellikler", JSON.stringify(icOzellikler));
+      formData.append("disOzellikler", JSON.stringify(disOzellikler));
+      formData.append("muhit", JSON.stringify(muhit));
+      formData.append("ulasim", JSON.stringify(ulasim));
+      formData.append("manzara", JSON.stringify(manzara));
+      formData.append("konutTipi", JSON.stringify(konutTipi));
+      formData.append("date", getNowDate());
+      formData.append("activity", "Aktif");
+      formData.append("user", JSON.stringify(user));
+      formData.append("advertiserName", advertiserName);
+      formData.append("advertiserSurname", advertiserSurname);
+      formData.append("advertiserPhone", newNumber);
+      formData.append("advertiserNote", advertiserNote);
+      formData.append("request", false.toString());
+      selectedImages.forEach((image) => {
+        formData.append(`images`, image);
+      });
+      try {
+        await axios
+          .post(`${BACKEND_URL}/real-estates`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           })
           .then(() => {
-            if (i === selectedImages.length - 1) {
-              const newRealEstate = {
-                id: uuidv4(),
-                title: title,
-                description:
-                  content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
-                price: price,
-                bargain: bargain,
-                ilce: ilce,
-                mahalle: mahalle,
-                type: type,
-                grossArea: grossArea,
-                netArea: netArea,
-                roomCount: roomCount,
-                buildAge: buildAge,
-                floor: floor,
-                totalFloor: totalFloor,
-                heating: heating,
-                bathroomCount: bathroomCount,
-                balcony: balcony,
-                furnished: furnished,
-                usingState: usingState,
-                onSite: onSite,
-                siteName: onSite === "Evet" ? siteName : "",
-                dues: dues,
-                suitableForCredit: suitableForCredit,
-                titleStatus: titleStatus,
-                swap: swap,
-                date: getNowDate(),
-                user: user,
-                advertiserName: advertiserName,
-                advertiserSurname: advertiserSurname,
-                advertiserPhone: `+90${advertiserPhone}`,
-                images: imageUrls,
-                youtubeId: videoId,
-                request: false,
-              };
-              axios
-                .post(`${BACKEND_URL}/real-estates`, newRealEstate)
-                .then((response) => console.log(response))
-                .then(() => {
-                  SuccessNotification("İlan başarıyla eklendi");
-                  navigation("/admin/konutlar/");
-                });
-            }
+            SuccessNotification("İlan başarıyla eklendi");
+            navigation("/admin/konutlar/");
+          })
+          .catch(() => {
+            ErrorNotification(
+              "İlan eklenirken hata ile karşılaşıldı tekrar deneyiniz"
+            );
           });
+        console.log("Resimler yüklendi!");
+      } catch (error) {
+        console.error("Resimler yüklenirken bir hata oluştu:", error);
       }
     }
   };
-
+  if (loading)
+    return (
+      <div className="loading-screen">
+        <PuffLoader color="#008cff" />
+        <h2>İlan yayınlanıyor</h2>
+        <p>
+          "bu işlem seçilen fotoğraf sayısına bağlı olarak biraz zaman alabilir
+          sabrınız için teşekkürler"
+        </p>
+      </div>
+    );
   return (
     <div className="real-estate-add">
-      <h1
-        className="admin-title"
-        onClick={() => {
-          console.log(selectedImages, selectedImagesPreview);
-        }}
-      >
-        Konut İlanı Ekle
-      </h1>
+      <h1 className="admin-title">Konut İlanı Ekle</h1>
       <form className="real-estate-add-form" onSubmit={handleSubmit}>
         <div className="image-video-buttons">
           <button
@@ -493,46 +596,42 @@ function RealEstateAdd({ user }) {
           >
             Resimler
           </button>
-          <button
-            type="button"
-            className={imageOrVideo === "video" ? "active" : ""}
-            onClick={() => {
-              setImageOrVideo("video");
-            }}
-          >
-            Video
-          </button>
         </div>
-        {imageOrVideo === "image" ? (
-          <div className="images-list">
-            {selectedImagesPreview.map((item, key) => {
-              return (
-                <label htmlFor={`image-selector-single-${key}`} key={key}>
-                  <div className="frame">
-                    <img src={item} alt={`image_${key}`} />
-                    <button
-                      type="button"
-                      className="remove-button"
-                      onClick={() => {
-                        handleClearFileInputSingle(key);
-                      }}
-                    >
-                      <BsFillTrash3Fill className="icon" />
-                    </button>
-                  </div>
-                  <input
-                    id={`image-selector-single-${key}`}
-                    type="file"
-                    accept="image/*"
-                    multiple={true}
-                    onChange={(e) => {
-                      handleFileInputChangeSingle(e, key);
+        <div className="images-list">
+          {currentImages.map((item, key) => {
+            return (
+              <label htmlFor={`image-selector-single-${key}`} key={key}>
+                <div className="frame">
+                  <img src={item} alt={`image_${key}`} loading="lazy" />
+                  <button
+                    type="button"
+                    className="remove-button"
+                    onClick={() => {
+                      handleClearFileInputSingle(
+                        imagesPerPage * (currentPage - 1) + key
+                      );
                     }}
-                    style={{ display: "none" }}
-                  />
-                </label>
-              );
-            })}
+                  >
+                    <BsFillTrash3Fill className="icon" />
+                  </button>
+                </div>
+                <input
+                  id={`image-selector-single-${key}`}
+                  type="file"
+                  accept="image/*"
+                  multiple={true}
+                  onChange={(e) => {
+                    handleFileInputChangeSingle(
+                      e,
+                      imagesPerPage * (currentPage - 1) + key
+                    );
+                  }}
+                  style={{ display: "none" }}
+                />
+              </label>
+            );
+          })}
+          {pageNumbers.length === currentPage && (
             <label
               htmlFor="image-selector"
               className="image-uploader drop-area"
@@ -552,60 +651,55 @@ function RealEstateAdd({ user }) {
                 style={{ display: "none" }}
               />
             </label>
-          </div>
-        ) : (
-          <div className="video-container">
-            {videoId.length > 0 ? (
-              <YouTube className="video-player" videoId={videoId} />
-            ) : (
-              <div>Video adresi giriniz</div>
-            )}
-            <div className="input-container">
-              <input
-                type="text"
-                value={videoLink}
-                onChange={(e) => {
-                  setVideoLink(e.target.value);
-                }}
-              />
+          )}
+        </div>
+        <div className="paginateButtons">
+          {pageNumbers.map((number) => {
+            return (
               <button
                 type="button"
+                key={number}
                 onClick={() => {
-                  setVideoId(getVideoIdFromUrl(videoLink));
+                  paginate(number);
                 }}
+                className={`paginateButton ${
+                  number === currentPage && "active"
+                }`}
               >
-                +
+                {number}
               </button>
-            </div>
-          </div>
-        )}
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          className="clear-all-images-button"
+          onClick={() => {
+            setSelectedImages([]);
+            setSelectedImagesPreview([]);
+            showPeginate([], 1);
+          }}
+        >
+          <BsFillTrash3Fill className="icon" /> Tüm resimleri kaldır
+        </button>
 
-        {imageOrVideo === "image" ? (
-          <button
-            type="button"
-            className="clear-all-images-button"
-            onClick={() => {
-              setSelectedImages([]);
-            }}
-          >
-            <BsFillTrash3Fill className="icon" /> Tüm resimleri kaldır
-          </button>
-        ) : (
-          <button type="button" className="clear-all-images-button">
-            <BsFillTrash3Fill className="icon" /> Videoyu kaldır
-          </button>
-        )}
         <div className="title form-element">
           <label htmlFor="real-estate-add-form-title">İlan başlığı</label>
           <input
             type="text"
             placeholder="ilan başlığı giriniz.."
             id="real-estate-add-form-title"
+            minLength="0"
+            maxLength="80"
             value={title}
             onChange={(e) => {
               setTitle(e.target.value);
             }}
           />
+          <p className="element-description">
+            "İlanınızın ana sayfada görünecek olan başlığıdır. İlk 45 Karakteri
+            özenle seçmenizi tavsiye ederiz."
+          </p>
         </div>
         <div className="description form-element">
           <label>
@@ -616,6 +710,12 @@ function RealEstateAdd({ user }) {
             onChange={handleChange}
             placeholder="İlan açıklaması giriniz.."
           />
+          <p className="element-description">
+            "İlanınızı tanıtabilir özelliklerinden bahsedebilirsiniz."
+            <br />
+            "Açıklama bölümüne şahsi iletişim adresi veya şirket ismi yazılması
+            durumunda ilanınız onaylanmayacaktır"
+          </p>
         </div>
         <div className="floor form-element">
           <label htmlFor="real-estate-add-form-price">Fiyat</label>
@@ -990,10 +1090,18 @@ function RealEstateAdd({ user }) {
           </select>
         </div>
         <hr />
+        <p className="element-description">
+          "İlan hakkında not alabileceğiniz bu bölümdeki yazıları yalnızca
+          yetkililer görebilir"
+          <br />
+          "Bilgilerin bilinmemesi veya girilmeye gerek duyulmaması durumunda boş
+          bırakılabilir"
+        </p>
         <div className="area form-element-double">
           <span>
             <label htmlFor="real-estate-add-form-advertiser-name">
               İlan Sahibinin Adı
+              <span className="optional">(Opsiyonel)</span>
             </label>
             <input
               id="real-estate-add-form-advertiser-name"
@@ -1008,11 +1116,12 @@ function RealEstateAdd({ user }) {
           <span>
             <label htmlFor="real-estate-add-form-advertiser-surname">
               İlan Sahibinin Soyadı
+              <span className="optional">(Opsiyonel)</span>
             </label>
             <input
               id="real-estate-add-form-advertiser-surname"
               type="text"
-              placeholder="ilan sagibi soyadı.."
+              placeholder="ilan sahibi soyadı.."
               value={advertiserSurname}
               onChange={(e) => {
                 setAdvertiserSurname(e.target.value);
@@ -1020,20 +1129,313 @@ function RealEstateAdd({ user }) {
             />
           </span>
         </div>
-        <div className="side-adi form-element">
+        <div className="form-element">
           <label htmlFor="real-estate-add-form-advertiser-phone">
             İlan sahibinin numarası
-            <span className="optional">( 5554443322 )</span>
+            <span className="optional">(Opsiyonel)</span>
           </label>
-          <input
-            id="real-estate-add-form-advertiser-phone"
-            type="text"
-            placeholder="site adı.."
+          <PhoneInput
+            country={"tr"}
             value={advertiserPhone}
-            onChange={(e) => {
-              setAdvertiserPhone(e.target.value);
-            }}
+            onChange={(phone) => setAdvertiserPhone(phone)}
           />
+        </div>
+        <div className="form-element">
+          <label htmlFor="real-estate-add-form-advertiser-note">
+            İlan Notu
+            <span className="optional">(Opsiyonel)</span>
+          </label>
+          <textarea
+            rows="10"
+            id="real-estate-add-form-advertiser-note"
+            type="text"
+            placeholder="ilan notu.."
+            value={advertiserNote}
+            onChange={(e) => {
+              setAdvertiserNote(e.target.value);
+            }}
+          ></textarea>
+        </div>
+        <hr />
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setCepheIsOpen(!cepheIsOpen);
+              setIcIsOpen(false);
+              setDisIsOpen(false);
+              setMuhitIsOpen(false);
+              setUlasimIsOpen(false);
+              setManzaraIsOpen(false);
+              setKonutTipiIsOpen(false);
+            }}
+          >
+            <span>
+              Cephe <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${cepheIsOpen ? "open" : "close"}`}>
+            {cepheListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    cephe.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (cephe.some((u) => u === item)) {
+                      setCephe(cephe.filter((u) => u !== item));
+                    } else {
+                      setCephe((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setIcIsOpen(!icIsOpen);
+              setCepheIsOpen(false);
+              setDisIsOpen(false);
+              setMuhitIsOpen(false);
+              setUlasimIsOpen(false);
+              setManzaraIsOpen(false);
+              setKonutTipiIsOpen(false);
+            }}
+          >
+            <span>
+              İç Özellikler <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${icIsOpen ? "open" : "close"}`}>
+            {icOzelliklerListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    icOzellikler.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (icOzellikler.some((u) => u === item)) {
+                      setIcOzellikler(icOzellikler.filter((u) => u !== item));
+                    } else {
+                      setIcOzellikler((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setDisIsOpen(!disIsOpen);
+              setCepheIsOpen(false);
+              setIcIsOpen(false);
+              setMuhitIsOpen(false);
+              setUlasimIsOpen(false);
+              setManzaraIsOpen(false);
+              setKonutTipiIsOpen(false);
+            }}
+          >
+            <span>
+              Dış Özellikler <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${disIsOpen ? "open" : "close"}`}>
+            {disOzelliklerListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    disOzellikler.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (disOzellikler.some((u) => u === item)) {
+                      setDisOzellikler(disOzellikler.filter((u) => u !== item));
+                    } else {
+                      setDisOzellikler((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setMuhitIsOpen(!muhitIsOpen);
+              setCepheIsOpen(false);
+              setIcIsOpen(false);
+              setDisIsOpen(false);
+              setUlasimIsOpen(false);
+              setManzaraIsOpen(false);
+              setKonutTipiIsOpen(false);
+            }}
+          >
+            <span>
+              Çevre <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${muhitIsOpen ? "open" : "close"}`}>
+            {muhitListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    muhit.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (muhit.some((u) => u === item)) {
+                      setMuhit(muhit.filter((u) => u !== item));
+                    } else {
+                      setMuhit((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setUlasimIsOpen(!ulasimIsOpen);
+              setCepheIsOpen(false);
+              setIcIsOpen(false);
+              setDisIsOpen(false);
+              setMuhitIsOpen(false);
+              setManzaraIsOpen(false);
+              setKonutTipiIsOpen(false);
+            }}
+          >
+            <span>
+              Ulaşım <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${ulasimIsOpen ? "open" : "close"}`}>
+            {ulasimListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    ulasim.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (ulasim.some((u) => u === item)) {
+                      setUlasim(ulasim.filter((u) => u !== item));
+                    } else {
+                      setUlasim((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setManzaraIsOpen(!manzaraIsOpen);
+              setCepheIsOpen(false);
+              setIcIsOpen(false);
+              setDisIsOpen(false);
+              setMuhitIsOpen(false);
+              setUlasimIsOpen(false);
+              setKonutTipiIsOpen(false);
+            }}
+          >
+            <span>
+              Manzara <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${manzaraIsOpen ? "open" : "close"}`}>
+            {manzaraListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    manzara.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (manzara.some((u) => u === item)) {
+                      setManzara(manzara.filter((u) => u !== item));
+                    } else {
+                      setManzara((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setKonutTipiIsOpen(!konutTipiIsOpen);
+              setCepheIsOpen(false);
+              setIcIsOpen(false);
+              setDisIsOpen(false);
+              setMuhitIsOpen(false);
+              setUlasimIsOpen(false);
+              setManzaraIsOpen(false);
+            }}
+          >
+            <span>
+              Konut Tipi <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${konutTipiIsOpen ? "open" : "close"}`}>
+            {konutTipiListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    konutTipi.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (konutTipi.some((u) => u === item)) {
+                      setKonutTipi(konutTipi.filter((u) => u !== item));
+                    } else {
+                      setKonutTipi((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
         </div>
         <button className="submit-button" type="submit">
           Ekle

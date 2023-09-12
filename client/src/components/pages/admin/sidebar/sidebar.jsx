@@ -1,13 +1,20 @@
 import React, { useEffect, useState } from "react";
 import "./sidebar.css";
 import { NavLink } from "react-router-dom";
-import { MdSpaceDashboard } from "react-icons/md";
-import { SlGraph } from "react-icons/sl";
 import { TbHomeSearch, TbHomePlus, TbHomeDot } from "react-icons/tb";
-import { BiCar, BiDownArrow, BiUpArrow } from "react-icons/bi";
+import {
+  BiCar,
+  BiDownArrow,
+  BiUpArrow,
+  BiColorFill,
+  BiMenu,
+} from "react-icons/bi";
+import { GiClick } from "react-icons/gi";
 import { AiOutlinePlus } from "react-icons/ai";
+import { BsPhoneVibrate } from "react-icons/bs";
 import { IoListCircleOutline } from "react-icons/io5";
 import { FiUsers, FiUserPlus } from "react-icons/fi";
+import { VscTools } from "react-icons/vsc";
 
 function getWindowSize() {
   const { innerWidth, innerHeight } = window;
@@ -41,35 +48,9 @@ function Sidebar({ realEstateReqCount, carReqCount }) {
           setIsOpen(!isOpen);
         }}
       >
-        Sayfalar{" "}
-        {isOpen ? (
-          <BiUpArrow className="icon" />
-        ) : (
-          <BiDownArrow className="icon" />
-        )}
+        Sayfalar <GiClick className="icon" />
       </h1>
       <div className={`links ${isOpen && "open"}`}>
-        <h2 className="header">İstatistikler</h2>
-        <NavLink
-          to="/admin/"
-          onClick={() => {
-            if (windowSize.innerWidth <= 768) {
-              setIsOpen(false);
-            }
-          }}
-        >
-          <MdSpaceDashboard className="icon" /> Analizler
-        </NavLink>
-        <NavLink
-          to="/admin/graphs/"
-          onClick={() => {
-            if (windowSize.innerWidth <= 768) {
-              setIsOpen(false);
-            }
-          }}
-        >
-          <SlGraph className="icon" /> Grafikler
-        </NavLink>
         <h2 className="header">Konut</h2>
         <NavLink
           to="/admin/konutlar/"
@@ -134,6 +115,17 @@ function Sidebar({ realEstateReqCount, carReqCount }) {
           <IoListCircleOutline className="icon" /> Otomobil İlanı İstekleri
           {carReqCount > 0 && <span className="notification"></span>}
         </NavLink>
+        <h2 className="header">İletişim</h2>
+        <NavLink
+          to="/admin/iletisim/"
+          onClick={() => {
+            if (windowSize.innerWidth <= 768) {
+              setIsOpen(false);
+            }
+          }}
+        >
+          <BsPhoneVibrate className="icon" /> İletişim İstekleri
+        </NavLink>
         <h2 className="header">Kullanıcı</h2>
         <NavLink
           to="/admin/kullanıcılar/"
@@ -154,6 +146,29 @@ function Sidebar({ realEstateReqCount, carReqCount }) {
           }}
         >
           <FiUserPlus className="icon" /> Kullanıcı Ekle
+        </NavLink>
+
+        <h2 className="header">Tadilat</h2>
+        <NavLink
+          to="/admin/tadilat/ekle/"
+          onClick={() => {
+            if (windowSize.innerWidth <= 768) {
+              setIsOpen(false);
+            }
+          }}
+        >
+          <VscTools className="icon" /> Tadilat Ekle
+        </NavLink>
+        <h2 className="header">Ayarlar</h2>
+        <NavLink
+          to="/admin/ayarlar/renk/"
+          onClick={() => {
+            if (windowSize.innerWidth <= 768) {
+              setIsOpen(false);
+            }
+          }}
+        >
+          <BiColorFill className="icon" /> Tema Ayarı
         </NavLink>
       </div>
     </div>

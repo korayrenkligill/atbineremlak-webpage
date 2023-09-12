@@ -36,6 +36,7 @@ function AdminPanel({ user, setUser }) {
       });
   };
   useEffect(() => {
+    document.title = "Atbiner Emlak : Yönetim Paneli";
     getRealEstateReqCount();
     getCarReqCount();
   }, []);

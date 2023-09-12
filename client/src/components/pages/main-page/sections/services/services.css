@@ -1,3 +1,6 @@
+main.main-page .services {
+  padding: var(--page-padding);
+}
 main.main-page .services .services-list {
   display: flex;
   gap: 3rem;
@@ -30,7 +33,9 @@ main.main-page .services .services-list .service .texts p {
   text-align: justify;
   word-wrap: break-word;
 }
-main.main-page .services .services-list .service .texts button {
+main.main-page .services .services-list .service .texts a {
+  display: block;
+  text-align: center;
   margin-top: 1rem;
   width: 100%;
   padding: 10px;
@@ -38,7 +43,7 @@ main.main-page .services .services-list .service .texts button {
   font-size: 1rem;
   transition: color 0.4s;
 }
-main.main-page .services .services-list .service .texts button:hover {
+main.main-page .services .services-list .service .texts a:hover {
   color: var(--color-primary-text);
 }
 main.main-page .services .services-list .service:hover {

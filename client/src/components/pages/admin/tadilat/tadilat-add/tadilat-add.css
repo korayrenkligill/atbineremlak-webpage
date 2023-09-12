@@ -1,0 +1,231 @@
+.real-estate-add .real-estate-add-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.real-estate-add .real-estate-add-form .image-video-buttons {
+  display: flex;
+  gap: 1rem;
+}
+.real-estate-add .real-estate-add-form .image-video-buttons button {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 10px;
+  color: var(--color-tertiary-text);
+  background-color: var(--color-secondary-background);
+}
+.real-estate-add .real-estate-add-form .image-video-buttons button.active {
+  background-color: var(--color-primary-blue);
+  color: var(--color-primary-whitetext);
+}
+.real-estate-add .real-estate-add-form .images-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+.real-estate-add .real-estate-add-form .images-list .frame {
+  border-radius: 10px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-tertiary-background);
+  aspect-ratio: 16 / 9;
+}
+.real-estate-add .real-estate-add-form .images-list .frame img {
+  height: 100%;
+}
+.real-estate-add .real-estate-add-form .images-list .frame button {
+  width: 40px;
+  height: 40px;
+  border-radius: 30px;
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  background-color: var(--color-primary-red);
+  color: var(--color-primary-whitetext);
+  transition: color 0.4s, background-color 0.4s;
+}
+.real-estate-add .real-estate-add-form .images-list .frame button:hover {
+  color: var(--color-primary-red);
+  background-color: var(--color-primary-whitetext);
+}
+.real-estate-add .real-estate-add-form .images-list .frame:hover button {
+  display: flex;
+}
+.real-estate-add .real-estate-add-form .images-list .drop-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: 10px;
+  overflow: hidden;
+  background-color: var(--color-secondary-background);
+  color: var(--color-primary-text);
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+.real-estate-add .real-estate-add-form .images-list .drop-area .placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.real-estate-add .real-estate-add-form .images-list .drop-area .placeholder .icon {
+  font-size: 2rem;
+}
+.real-estate-add .real-estate-add-form .paginateButtons {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.real-estate-add .real-estate-add-form .paginateButtons .paginateButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 0.5rem;
+  background-color: var(--color-secondary-background);
+}
+.real-estate-add .real-estate-add-form .paginateButtons .paginateButton.active {
+  background-color: var(--color-primary-blue);
+}
+.real-estate-add .real-estate-add-form .video-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-tertiary-background);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.real-estate-add .real-estate-add-form .video-container .video-player {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+}
+.real-estate-add .real-estate-add-form .video-container .video-player iframe {
+  width: 100%;
+  height: 100%;
+}
+.real-estate-add .real-estate-add-form .video-container .input-container {
+  display: flex;
+}
+.real-estate-add .real-estate-add-form .video-container .input-container input {
+  border-radius: 0px;
+  width: 100%;
+}
+.real-estate-add .real-estate-add-form .video-container .input-container button {
+  padding: 10px;
+  background-color: var(--color-primary-blue);
+  color: var(--color-primary-whitetext);
+}
+.real-estate-add .real-estate-add-form p.element-description {
+  font-size: 0.8rem;
+  color: var(--color-quaternary-text);
+  margin-left: 5px;
+}
+.real-estate-add .real-estate-add-form .form-element {
+  display: flex;
+  flex-direction: column;
+}
+.real-estate-add .real-estate-add-form .form-element input {
+  width: 100%;
+}
+.real-estate-add .real-estate-add-form .form-element span.optional {
+  font-size: 0.7rem;
+  color: var(--color-tertiary-text);
+  margin-left: 5px;
+}
+.real-estate-add .real-estate-add-form .form-element-dropdown {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-quaternary-text);
+  border-radius: 10px;
+}
+.real-estate-add .real-estate-add-form .form-element-dropdown button {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+.real-estate-add .real-estate-add-form .form-element-dropdown button span.optional {
+  font-size: 0.7rem;
+  color: var(--color-quaternary-text);
+  margin-left: 5px;
+}
+.real-estate-add .real-estate-add-form .form-element-dropdown .dropdown.open {
+  padding: 0px 10px 10px 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  overflow: hidden;
+}
+.real-estate-add .real-estate-add-form .form-element-dropdown .dropdown.open .dropdown-item {
+  background-color: var(--color-secondary-background);
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.real-estate-add .real-estate-add-form .form-element-dropdown .dropdown.open .dropdown-item.selected {
+  background-color: var(--color-tertiary-blue);
+  color: var(--color-primary-whitetext);
+}
+.real-estate-add .real-estate-add-form .form-element-dropdown .dropdown.close {
+  display: none;
+}
+.real-estate-add .real-estate-add-form .form-element-double {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.real-estate-add .real-estate-add-form .form-element-double span:not(.optional) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.real-estate-add .real-estate-add-form .form-element-double span:not(.optional) span.optional {
+  font-size: 0.7rem;
+  color: var(--color-tertiary-text);
+  margin-left: 5px;
+}
+.real-estate-add .real-estate-add-form button.submit-button {
+  padding: 10px;
+  font-size: 1rem;
+  border-radius: 10px;
+  background-color: var(--color-primary-blue);
+  color: var(--color-primary-whitetext);
+  transition: background-color 0.4s, color 0.4s;
+}
+.real-estate-add .real-estate-add-form button.submit-button:hover {
+  background-color: var(--color-primary-background);
+  color: var(--color-primary-blue);
+}
+.real-estate-add .real-estate-add-form button.clear-all-images-button {
+  font-size: 1rem;
+  color: var(--color-primary-red);
+  transition: color 0.4s;
+}
+.real-estate-add .real-estate-add-form button.clear-all-images-button:hover {
+  color: var(--color-primary-text);
+}
+.real-estate-add .real-estate-add-form p.error-text {
+  text-align: center;
+  color: var(--color-primary-red);
+  margin-bottom: 1rem;
+}
+@media screen and (max-width: 768px) {
+  .real-estate-add .real-estate-add-form .images-list .frame button {
+    display: flex;
+  }
+  .real-estate-add .real-estate-add-form .form-element-double {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1rem;
+  }
+}

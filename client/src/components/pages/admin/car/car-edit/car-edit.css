@@ -20,7 +20,7 @@
 }
 .car-edit .car-edit-form .images-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 1rem;
 }
 .car-edit .car-edit-form .images-list .frame {
@@ -80,10 +80,26 @@
 .car-edit .car-edit-form .images-list .drop-area .placeholder .icon {
   font-size: 2rem;
 }
+.car-edit .car-edit-form .paginateButtons {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+.car-edit .car-edit-form .paginateButtons .paginateButton {
+  width: 30px;
+  height: 30px;
+  border-radius: 0.5rem;
+  background-color: var(--color-secondary-background);
+}
+.car-edit .car-edit-form .paginateButtons .paginateButton.active {
+  background-color: var(--color-primary-blue);
+}
 .car-edit .car-edit-form .video-container {
   display: flex;
   flex-direction: column;
-  background-color: var(--color-tertiary-background);
+  background-color: transparent !important;
   border-radius: 10px;
   overflow: hidden;
 }
@@ -95,12 +111,16 @@
   width: 100%;
   height: 100%;
 }
+.car-edit .car-edit-form .video-container div {
+  color: var(--color-secondary-text);
+}
 .car-edit .car-edit-form .video-container .input-container {
   display: flex;
 }
 .car-edit .car-edit-form .video-container .input-container input {
   border-radius: 0px;
   width: 100%;
+  color: var(--color-primary-text);
 }
 .car-edit .car-edit-form .video-container .input-container button {
   padding: 10px;
@@ -111,19 +131,95 @@
   display: flex;
   flex-direction: column;
 }
+.car-edit .car-edit-form .form-element label {
+  color: var(--color-secondary-text);
+  padding-bottom: 8px;
+}
+.car-edit .car-edit-form .form-element .ql-picker,
+.car-edit .car-edit-form .form-element .ql-editor.ql-blank::before,
+.car-edit .car-edit-form .form-element .ql-toolbar {
+  color: var(--color-primary-text) !important;
+}
+.car-edit .car-edit-form .form-element input,
+.car-edit .car-edit-form .form-element select,
+.car-edit .car-edit-form .form-element textarea,
+.car-edit .car-edit-form .form-element .quill {
+  width: 100%;
+  color: var(--color-primary-text);
+}
 .car-edit .car-edit-form .form-element span.optional {
   font-size: 0.7rem;
   color: var(--color-tertiary-text);
+  margin-left: 5px;
+}
+.car-edit .car-edit-form .form-element-dropdown {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-quaternary-text);
+  border-radius: 10px;
+}
+.car-edit .car-edit-form .form-element-dropdown button {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+.car-edit .car-edit-form .form-element-dropdown button span {
+  color: var(--color-secondary-text);
+}
+.car-edit .car-edit-form .form-element-dropdown button span.optional {
+  font-size: 0.7rem;
+  color: var(--color-quaternary-text);
+  margin-left: 5px;
+}
+.car-edit .car-edit-form .form-element-dropdown .dropdown.open {
+  padding: 0px 10px 10px 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  overflow: hidden;
+}
+.car-edit .car-edit-form .form-element-dropdown .dropdown.open .dropdown-item {
+  background-color: var(--color-secondary-background);
+  color: var(--color-primary-text);
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.car-edit .car-edit-form .form-element-dropdown .dropdown.open .dropdown-item.selected {
+  background-color: var(--color-tertiary-blue);
+  color: var(--color-primary-whitetext);
+}
+.car-edit .car-edit-form .form-element-dropdown .dropdown.close {
+  display: none;
 }
 .car-edit .car-edit-form .form-element-double {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
-.car-edit .car-edit-form .form-element-double span {
+.car-edit .car-edit-form .form-element-double label {
+  color: var(--color-secondary-text);
+  padding-bottom: 8px;
+}
+.car-edit .car-edit-form .form-element-double input,
+.car-edit .car-edit-form .form-element-double select,
+.car-edit .car-edit-form .form-element-double textarea,
+.car-edit .car-edit-form .form-element-double .quill {
+  width: 100%;
+  color: var(--color-primary-text);
+}
+.car-edit .car-edit-form .form-element-double span:not(.optional) {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+.car-edit .car-edit-form .form-element-double span:not(.optional) span.optional {
+  font-size: 0.7rem;
+  color: var(--color-tertiary-text);
+  margin-left: 5px;
 }
 .car-edit .car-edit-form button.submit-button {
   padding: 10px;

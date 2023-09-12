@@ -1,0 +1,141 @@
+.tadilat .lastest-slider {
+  position: relative;
+  overflow: hidden;
+  max-width: 100vw;
+}
+.tadilat .lastest-slider .tadilat-slider-item {
+  position: relative;
+}
+.tadilat .lastest-slider .tadilat-slider-item .tadilat-slider-background {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 400px;
+}
+.tadilat .lastest-slider .tadilat-slider-front {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.687);
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.tadilat .lastest-slider .tadilat-slider-front .contact-button {
+  background-color: transparent;
+  border: 2px solid var(--color-primary-whitetext);
+  color: var(--color-primary-whitetext);
+  padding: 10px 25px;
+  font-size: 1.3rem;
+  transition: color 0.4s, background-color 0.4s;
+}
+.tadilat .lastest-slider .tadilat-slider-front .contact-button:hover {
+  background-color: var(--color-primary-whitetext);
+  color: var(--color-primary-blue);
+}
+.tadilat .tadilat-projects {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0px 20%;
+}
+.tadilat .tadilat-projects .tadilat-projects-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.tadilat .tadilat-projects .tadilat-projects-list .item {
+  overflow: hidden;
+  background-image: linear-gradient(var(--color-primary-blue), var(--color-primary-blue)), linear-gradient(transparent, transparent);
+  background-size: 0 2px, auto;
+  background-repeat: no-repeat;
+  background-position: center bottom;
+  transition: all 0.2s ease-out;
+}
+.tadilat .tadilat-projects .tadilat-projects-list .item .image {
+  width: 100%;
+  height: 200px;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.tadilat .tadilat-projects .tadilat-projects-list .item .item-title {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.2rem;
+  font-weight: bold;
+  padding: 5px 10px;
+  color: var(--color-primary-text);
+}
+.tadilat .tadilat-projects .tadilat-projects-list .item:hover {
+  background-size: 100% 2px, auto;
+}
+.tadilat .tadilat-projects button.more {
+  align-self: center;
+  margin-top: 10px;
+  padding: 6px 35px;
+  border: 1px solid var(--color-primary-text);
+  color: var(--color-primary-text);
+  font-size: 1rem;
+}
+.tadilat .iletisim {
+  margin: 50px 20% 0px 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+}
+.tadilat .iletisim .web {
+  font-weight: bold;
+  color: var(--color-primary-text);
+}
+.tadilat .iletisim p {
+  color: var(--color-secondary-text);
+}
+.tadilat .iletisim img.logo {
+  width: 100px;
+}
+.tadilat .iletisim .adres {
+  font-weight: bold;
+  color: var(--color-primary-text);
+}
+.tadilat .iletisim .telefon {
+  font-weight: bold;
+  color: var(--color-primary-blue);
+}
+.tadilat .iletisim .whatsapp-link {
+  font-weight: bold;
+  color: var(--color-primary-blue);
+  margin-bottom: 6rem;
+}
+.tadilat .iletisim hr {
+  width: 100%;
+  margin: 10px 0px;
+  opacity: 0.4;
+}
+.tadilat .iletisim iframe {
+  width: 100vw;
+  height: 170px;
+}
+@media screen and (max-width: 1440px) {
+  .tadilat .tadilat-projects {
+    margin: 0px 10%;
+  }
+  .tadilat .iletisim {
+    margin: 50px 10% 0px 10%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .tadilat .tadilat-projects {
+    margin: 0px 5%;
+  }
+  .tadilat .iletisim {
+    margin: 50px 5% 0px 5%;
+  }
+}

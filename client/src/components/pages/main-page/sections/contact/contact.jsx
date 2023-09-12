@@ -2,9 +2,9 @@ import React from "react";
 
 import "./contact.css";
 
-function Contact() {
+function Contact({ users }) {
   return (
-    <section className="contact">
+    <section className="contact" id="contact">
       <h1 className="title">İletişim seçenekleri</h1>
       <div className="contact-container">
         <div className="contact-form">
@@ -40,78 +40,52 @@ function Contact() {
         ></iframe>
       </div>
       <div className="numbers">
-        <div className="person">
-          <div className="profile-name">
-            <div
-              className="profile"
-              style={{
-                backgroundImage: `url(https://randomuser.me/api/portraits/men/79.jpg)`,
-              }}
-            />
-            <div>
-              <p>Name Surname</p>
-              <span>Position</span>
+        {users.map((user) => {
+          return (
+            <div className="person" key={user.id}>
+              <div className="profile-name">
+                <div
+                  className="profile"
+                  style={{
+                    backgroundImage: `url(${user.profile})`,
+                  }}
+                />
+                <div>
+                  <p>
+                    {user.name} {user.surname}
+                  </p>
+                  <span>Yönetici</span>
+                </div>
+              </div>
+              <div className="contact-informations">
+                <a href={`tel:${user.phone}`}>
+                  <img
+                    src="/images/call.png"
+                    alt="icon"
+                    className="image-icon"
+                  />
+                  {user.phone}
+                </a>
+                <a href={`https://wa.me/${user.phone}`}>
+                  <img
+                    src="/images/whatsapp.png"
+                    alt="icon"
+                    className="image-icon"
+                  />
+                  Mesaj Gönder
+                </a>
+                <a href={`mailto:${user.email}`}>
+                  <img
+                    src="/images/message.png"
+                    alt="icon"
+                    className="image-icon"
+                  />
+                  {user.email}
+                </a>
+              </div>
             </div>
-          </div>
-          <div className="contact-informations">
-            <a href="tel:+905534421797">
-              <img src="/images/call.png" alt="icon" className="image-icon" />
-              +90 553 442 1797
-            </a>
-            <a href="https://wa.me/+905534421797">
-              <img
-                src="/images/whatsapp.png"
-                alt="icon"
-                className="image-icon"
-              />
-              Mesaj Gönder
-            </a>
-            <a href="mailto:koray.renkligill@gmail.com">
-              <img
-                src="/images/message.png"
-                alt="icon"
-                className="image-icon"
-              />
-              koray.renkligill@gmail.com
-            </a>
-          </div>
-        </div>
-        <div className="person">
-          <div className="profile-name">
-            <div
-              className="profile"
-              style={{
-                backgroundImage: `url(https://randomuser.me/api/portraits/men/81.jpg)`,
-              }}
-            />
-            <div>
-              <p>Name Surname</p>
-              <span>Position</span>
-            </div>
-          </div>
-          <div className="contact-informations">
-            <a href="tel:+905534421797">
-              <img src="/images/call.png" alt="icon" className="image-icon" />
-              +90 553 442 1797
-            </a>
-            <a href="https://wa.me/+905534421797">
-              <img
-                src="/images/whatsapp.png"
-                alt="icon"
-                className="image-icon"
-              />
-              Mesaj Gönder
-            </a>
-            <a href="mailto:korayrenkligill@gmail.com">
-              <img
-                src="/images/message.png"
-                alt="icon"
-                className="image-icon"
-              />
-              korayrenkligill@gmail.com
-            </a>
-          </div>
-        </div>
+          );
+        })}
       </div>
     </section>
   );

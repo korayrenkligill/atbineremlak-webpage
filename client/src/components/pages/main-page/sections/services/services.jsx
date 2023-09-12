@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import "./services.css";
 function Services() {
   return (
@@ -16,7 +17,7 @@ function Services() {
               uzmanlarımız, size özel ihtiyaçlarınızı anlamak ve bütçenize uygun
               bir konut bulmak için burada.
             </p>
-            <button>Devamı</button>
+            <Link to="/">Devamı</Link>
           </div>
         </div>
         <div className="service">
@@ -31,7 +32,7 @@ function Services() {
               arasından beklentilerinize uygun bir kiralık daire bulmanızı
               sağlıyoruz.
             </p>
-            <button>Devamı</button>
+            <Link to="/">Devamı</Link>
           </div>
         </div>
         <div className="service">
@@ -45,7 +46,21 @@ function Services() {
               oluyoruz. Geniş araç seçenekleri arasından istediğiniz marka,
               model ve özelliklere sahip bir aracı bulmanızı sağlıyoruz.
             </p>
-            <button>Devamı</button>
+            <Link to="/otomobil">Devamı</Link>
+          </div>
+        </div>
+        <div className="service">
+          <div className="frame">
+            <img src="/images/renovation.png" alt="" />
+          </div>
+          <div className="texts">
+            <h2 className="title">Ev Tadilatı</h2>
+            <p>
+              Ev, hayatımızın en değerli alanlarından biridir. Onu daha güzel,
+              daha fonksiyonel ve konforlu hale getirmek için buradayız. Ev
+              tadilatı hizmetimizle, evinizi hayallerinizin ötesine taşıyoruz.
+            </p>
+            <Link to="/tadilat">Devamı</Link>
           </div>
         </div>
       </div>

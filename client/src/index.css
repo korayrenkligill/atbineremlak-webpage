@@ -6,21 +6,30 @@
   --color-quaternary-blue: #ebf6ff;
   --color-fifth-blue: #dbefff;
   --color-primary-green: #01ff48;
+  --color-secondary-green: #caffd9;
   --color-primary-red: #ff624d;
+  --color-secondary-red: #ffada2;
   --color-primary-transparentblue: #008cff2f;
   --color-secondary-transparentblue: #008cff15;
-  --color-primary-text: rgb(31, 31, 31);
+
+  --color-primary-text: #1f1f1f;
   --color-secondary-text: #575757;
-  --color-tertiary-text: gray;
-  --color-quaternary-text: rgb(187, 187, 187);
-  --color-fifth-text: rgb(245, 245, 245);
-  --color-primary-whitetext: rgb(255, 255, 255);
-  --color-secondary-whitetext: rgb(223, 223, 223);
-  --color-primary-background: rgb(255, 255, 255);
-  --color-secondary-background: rgb(249, 249, 249);
-  --color-tertiary-background: rgb(223, 223, 223);
-  --color-bottomfooter-background: rgb(48, 48, 48);
-  --boxshadow: 0px 0px 20px rgba(0, 0, 0, 0.1);
+  --color-tertiary-text: #808080;
+  --color-quaternary-text: #bbbbbb;
+  --color-fifth-text: #f5f5f5;
+
+  --color-primary-background: #ffffff;
+  --color-secondary-background: #f9f9f9;
+  --color-tertiary-background: #dfdfdf;
+  --color-quaternary-background: #d3d3d3;
+
+  --color-primary-whitetext: #ffffff;
+  --color-secondary-whitetext: #dfdfdf;
+  --color-tertiary-whitetext: #a9a9a9;
+
+  --color-bottomfooter-background: #303030;
+
+  --boxshadow: 0px 0px 20px #0000001a;
 }
 
 body {
@@ -55,8 +64,8 @@ body::-webkit-scrollbar {
 
 .icon-transform {
   transform: translateY(2px);
-  margin-right: 5px;
-  font-size: 1.1rem;
+  margin-right: 3px;
+  font-size: 1.05rem;
 }
 a {
   text-decoration: none;

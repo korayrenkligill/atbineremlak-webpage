@@ -1,0 +1,27 @@
+.contact-list .table-container {
+  overflow-x: scroll;
+}
+.contact-list .table-container table {
+  width: 100%;
+  min-width: 1200px;
+}
+.contact-list .table-container table th {
+  text-align: left;
+  color: var(--color-secondary-text);
+}
+.contact-list .table-container table td {
+  padding: 10px 0px;
+  color: var(--color-primary-text);
+}
+.contact-list .table-container table td .actions {
+  height: 100%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+.contact-list .table-container table td .actions button {
+  padding: 10px;
+  font-size: 1rem;
+}

@@ -21,10 +21,44 @@ function Araba() {
   const [kasa, setKasa] = useState("");
 
   const [cars, setCars] = useState([]);
+  const [carsFullList, setCarsFullList] = useState([]);
+
+  const handleFilterChanged = () => {
+    let filtredArray = carsFullList.filter((item) => {
+      return (
+        item.marka.includes(marka) &&
+        item.seri.includes(seri) &&
+        item.yakit.includes(yakit) &&
+        item.vites.includes(vites) &&
+        item.aracDurumu.includes(aracDurumu) &&
+        item.kasa.includes(kasa) &&
+        (yil === 0 || !yil || Number(yil) === Number(item.yil)) &&
+        (km === 0 || !km || km > Number(km)) &&
+        (minPrice === 0 || !minPrice || minPrice < Number(item.fiyat)) &&
+        (maxPrice === 0 || !maxPrice || maxPrice > Number(item.fiyat))
+      );
+    });
+    setCars(filtredArray);
+    console.log(filtredArray);
+  };
+  const handleClearFilter = () => {
+    setMarka("");
+    setSeri("");
+    setYil("");
+    setMinPrice(0);
+    setMaxPrice(0);
+    setYakit("");
+    setVites("");
+    setAracDurumu("");
+    setKm(0);
+    setKasa("");
+    setCars(carsFullList);
+  };
 
   useEffect(() => {
     axios.get(`${BACKEND_URL}/cars`).then((response) => {
       let carsArray = response.data.filter((u) => u.request === false);
+      setCarsFullList(carsArray);
       setCars(carsArray);
       setLoading(false);
     });
@@ -60,6 +94,8 @@ function Araba() {
             setKm={setKm}
             kasa={kasa}
             setKasa={setKasa}
+            handleFilterChanged={handleFilterChanged}
+            handleClearFilter={handleClearFilter}
           />
         </div>
         <div>

@@ -4,12 +4,18 @@
   background-color: var(--color-primary-background);
   box-shadow: var(--boxshadow);
   h1.header {
+    background-color: transparent;
+    box-shadow: none;
+    padding: 0rem;
+    border-radius: 0rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
     font-size: 1.3rem;
+    color: var(--color-primary-text);
     .icon {
-      font-size: 1rem;
+      font-size: 1.5rem;
+      animation: PagesClickAnimation 1s infinite;
     }
   }
   .links {
@@ -18,6 +24,7 @@
     max-height: 0px;
     overflow: hidden;
     transition: max-height 0.4s;
+
     h2.header {
       font-size: 0.8rem;
       font-weight: normal;
@@ -59,20 +66,38 @@
     }
   }
   .links.open {
-    max-height: 550px;
+    max-height: 650px;
     transition: max-height 0.6s;
   }
 }
 @media screen and (max-width: 768px) {
   .admin-page-sidebar {
     box-shadow: none;
+    h1.header {
+      background-color: var(--color-secondary-background);
+      box-shadow: 0px 4px 10px 3px rgba(0, 0, 0, 0.1);
+      padding: 1rem;
+      border-radius: 0.5rem;
+    }
     .links {
-      max-height: 2000px;
-      display: none;
+      max-height: 0px;
+      // display: none;
     }
     .links.open {
-      max-height: 2000px;
-      display: flex;
+      max-height: 650px;
+      // display: flex;
     }
+  }
+}
+
+@keyframes PagesClickAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }

@@ -10,6 +10,7 @@ nav.navbar-pc {
   position: sticky;
   top: 0px;
   z-index: 99999;
+  user-select: none;
 }
 nav.navbar-pc .navbar-logo {
   display: flex;
@@ -48,6 +49,41 @@ nav.navbar-pc .contact {
   display: flex;
   align-items: center;
   gap: 1rem;
+}
+nav.navbar-pc .contact .theme-change-switcher {
+  width: 48px;
+  height: 25px;
+  background-color: var(--color-quaternary-background);
+  box-shadow: 0px 0px 4px var(--color-quaternary-background);
+  border-radius: 20px;
+  position: relative;
+}
+nav.navbar-pc .contact .theme-change-switcher .theme-change-switcher-inner {
+  width: 20px;
+  height: 20px;
+  margin: 2px;
+  background: var(--color-secondary-blue);
+  border-radius: 100px;
+  position: absolute;
+  top: 0px;
+  z-index: 10;
+  transition: left 0.5s, transform 0.5s;
+}
+nav.navbar-pc .contact .theme-change-switcher .theme-icon {
+  position: absolute;
+  z-index: 5;
+  color: var(--color-primary-text);
+  opacity: 0.8;
+}
+nav.navbar-pc .contact .theme-change-switcher .moon {
+  left: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+nav.navbar-pc .contact .theme-change-switcher .sun {
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
 }
 nav.navbar-pc .contact .navbar-contact {
   display: inline-block;
@@ -102,6 +138,7 @@ nav.navbar-mobile .navbar-logo .frame img {
 }
 nav.navbar-mobile .navbar-logo .mobile-input label {
   font-size: 2rem;
+  color: var(--color-primary-text);
 }
 nav.navbar-mobile .navbar-logo .mobile-input input {
   display: none;
@@ -127,7 +164,34 @@ nav.navbar-mobile .navbar-links a.ilan-ver {
   color: var(--color-primary-whitetext);
   text-align: center;
   font-size: 1.2rem;
+  display: block;
 }
 nav.navbar-mobile .navbar-links.open {
   display: flex;
+}
+@media screen and (max-width: 1100px) {
+  nav.navbar-pc .navbar-links {
+    gap: 0rem;
+  }
+  nav.navbar-pc .navbar-links a {
+    font-size: 0.8rem;
+  }
+  nav.navbar-pc .navbar-links a .icon-transform {
+    display: none;
+  }
+  nav.navbar-pc .contact {
+    gap: 0rem;
+  }
+  nav.navbar-pc .contact a,
+  nav.navbar-pc .contact a.navbar-contact,
+  nav.navbar-pc .contact a.ilan-ver,
+  nav.navbar-pc .contact button {
+    font-size: 0.8rem;
+  }
+  nav.navbar-pc .contact a .icon-transform,
+  nav.navbar-pc .contact a.navbar-contact .icon-transform,
+  nav.navbar-pc .contact a.ilan-ver .icon-transform,
+  nav.navbar-pc .contact button .icon-transform {
+    display: none;
+  }
 }

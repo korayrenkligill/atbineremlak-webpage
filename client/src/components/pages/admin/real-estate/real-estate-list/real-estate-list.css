@@ -13,6 +13,7 @@
   border-radius: 10px;
   position: relative;
   box-shadow: var(--boxshadow);
+  background-color: var(--color-secondary-background);
   cursor: pointer;
 }
 .real-estate-list .items-list .item img {
@@ -25,6 +26,26 @@
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
+  position: relative;
+}
+.real-estate-list .items-list .item .image-background .sold {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.real-estate-list .items-list .item .image-background .sold p {
+  font-size: 2rem;
+  font-weight: bolder;
+  letter-spacing: 2px;
+  color: var(--color-primary-whitetext);
+}
+.real-estate-list .items-list .item .image-background .hide {
+  display: none !important;
 }
 .real-estate-list .items-list .item .remove-item-button {
   display: none;
@@ -40,6 +61,7 @@
   background-color: var(--color-primary-red);
   color: var(--color-primary-whitetext);
   transition: color 0.4s, background-color 0.4s;
+  z-index: 200;
 }
 .real-estate-list .items-list .item .remove-item-button:hover {
   background-color: var(--color-primary-whitetext);

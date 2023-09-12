@@ -2,17 +2,31 @@ import React, { useEffect, useRef, useState } from "react";
 import { MdArrowForwardIos } from "react-icons/md";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import { BiImageAdd } from "react-icons/bi";
+import { SlArrowDown } from "react-icons/sl";
 import {
   ErrorNotification,
-  InfoNotification,
   SuccessNotification,
 } from "../../elements/toastify";
+import PuffLoader from "react-spinners/PuffLoader";
 import ReactQuill from "react-quill";
 import { v4 as uuidv4 } from "uuid";
-
+import PhoneInput from "react-phone-input-2";
 import "./ilan-ver-main.css";
 import axios from "axios";
-import { BACKEND_URL, cloudName, uploadPreset } from "../../elements/config";
+import {
+  BACKEND_URL,
+  cepheListesi,
+  disDonanimListesi,
+  disOzelliklerListesi,
+  guvenlikListesi,
+  icDonanimListesi,
+  icOzelliklerListesi,
+  konutTipiListesi,
+  manzaraListesi,
+  muhitListesi,
+  multimedyaListesi,
+  ulasimListesi,
+} from "../../elements/config";
 import { useNavigate } from "react-router-dom";
 
 const manisaIlceleri = [
@@ -268,6 +282,8 @@ const getNowDate = () => {
 };
 
 function IlanVer() {
+  const [loading, setLoading] = useState(false);
+
   const navigation = useNavigate();
   const stageRef = useRef();
 
@@ -311,6 +327,21 @@ function IlanVer() {
   const [suitableForCredit, setSuitableForCredit] = useState("Evet");
   const [titleStatus, setTitleStatus] = useState("Bilinmiyor");
   const [swap, setSwap] = useState("Hayır");
+  const [cephe, setCephe] = useState([]);
+  const [icOzellikler, setIcOzellikler] = useState([]);
+  const [disOzellikler, setDisOzellikler] = useState([]);
+  const [muhit, setMuhit] = useState([]);
+  const [ulasim, setUlasim] = useState([]);
+  const [manzara, setManzara] = useState([]);
+  const [konutTipi, setKonutTipi] = useState([]);
+
+  const [cepheIsOpen, setCepheIsOpen] = useState(true);
+  const [icIsOpen, setIcIsOpen] = useState(false);
+  const [disIsOpen, setDisIsOpen] = useState(false);
+  const [muhitIsOpen, setMuhitIsOpen] = useState(false);
+  const [ulasimIsOpen, setUlasimIsOpen] = useState(false);
+  const [manzaraIsOpen, setManzaraIsOpen] = useState(false);
+  const [konutTipiIsOpen, setKonutTipiIsOpen] = useState(false);
 
   const [baslik, setBaslik] = useState("");
   const [carContent, setCarContent] = useState("");
@@ -331,7 +362,15 @@ function IlanVer() {
   const [renk, setRenk] = useState("");
   const [agirHasarli, setAgirHasarli] = useState("Hayır");
   const [takas, setTakas] = useState("Hayır");
+  const [guvenlik, setGuvenlik] = useState([]);
+  const [icDonanim, setIcDonanim] = useState([]);
+  const [disDonanim, setDisDonanim] = useState([]);
+  const [multimedya, setMultimedya] = useState([]);
 
+  const [guvenlikIsOpen, setGuvenlikIsOpen] = useState(true);
+  const [icDonanimIsOpen, setIcDonanimIsOpen] = useState(false);
+  const [disDonanimIsOpen, setDisDonanimIsOpen] = useState(false);
+  const [multimedyaIsOpen, setMultimedyaIsOpen] = useState(false);
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files;
@@ -380,7 +419,7 @@ function IlanVer() {
       const reader = new FileReader();
       reader.onload = () => {
         imagesPreviewArray[key] = reader.result;
-        setSelectedImagesPreview(imagesArray);
+        setSelectedImagesPreview(imagesPreviewArray);
       };
       reader.readAsDataURL(file);
     }
@@ -406,205 +445,155 @@ function IlanVer() {
     setCarContent(value);
   };
 
-  const handleCarSubmit = () => {
+  const handleCarSubmit = async () => {
     let error = false;
-    let imageUrls = [];
-
-    if (selectedImages.length < 1) {
-      ErrorNotification("En az 1 resim seçmelisin");
+    let newNumber = "";
+    setLoading(true);
+    if (advertiserPhone.length !== 12 && advertiserPhone.length !== 0) {
+      ErrorNotification("Doğru bir numara girişi yapılmadı");
       error = true;
-    }
-    if (baslik.length < 5) {
-      ErrorNotification("Daha uzun bir ilan başlığı girmelisin");
-      error = true;
-    }
-    if (fiyat === 0) {
-      ErrorNotification("0 Fiyat etiketi girilemez");
-      error = true;
-    }
-    if (yil === 0) {
-      ErrorNotification("Araba yılı 0 olarak girilemez");
-      error = true;
-    }
-    if (advertiserName.length <= 0) {
-      ErrorNotification("İlan sahibi adı boş bırakılamaz");
-      error = true;
-    }
-    if (advertiserSurname.length <= 0) {
-      ErrorNotification("İlan sahibi soyadı boş bırakılamaz");
-      error = true;
-    }
-    if (advertiserPhone.length !== 10) {
-      ErrorNotification("İlan sahibi numarası boş veya hatalı");
-      error = true;
+      setLoading(false);
+    } else {
+      newNumber = "+" + advertiserPhone;
     }
     if (!error) {
-      for (let i = 0; i < selectedImages.length; i++) {
-        const formData = new FormData();
-        formData.append("file", selectedImages[i]);
-        formData.append("upload_preset", uploadPreset); // Cloudinary yükleme ön tanımlaması
-        formData.append("folder", "otomobil");
-        axios
-          .post(
-            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-            formData
-          )
-          .then((response) => {
-            imageUrls.push(response.data.secure_url);
+      const formData = new FormData();
+      formData.append("id", uuidv4());
+      formData.append("baslik", baslik);
+      formData.append("aciklama", content);
+      formData.append("fiyat", fiyat.toString());
+      formData.append("pazarlik", pazarlik);
+      formData.append("marka", marka);
+      formData.append("seri", seri);
+      formData.append("model", model);
+      formData.append("yil", yil.toString());
+      formData.append("yakit", yakit);
+      formData.append("vites", vites);
+      formData.append("aracDurumu", aracDurumu);
+      formData.append("km", km.toString());
+      formData.append("kasa", kasa);
+      formData.append("motorGucu", motorGucu.toString());
+      formData.append("mmotorHacmi", motorHacmi);
+      formData.append("cekis", cekis);
+      formData.append("renk", renk);
+      formData.append("agirHasarli", agirHasarli);
+      formData.append("takas", takas);
+      formData.append("guvenlik", JSON.stringify(guvenlik));
+      formData.append("icDonanim", JSON.stringify(icDonanim));
+      formData.append("disDonanim", JSON.stringify(disDonanim));
+      formData.append("multimedya", JSON.stringify(multimedya));
+      formData.append("date", getNowDate());
+      formData.append("activity", "Aktif");
+      formData.append("user", JSON.stringify({}));
+      formData.append("advertiserName", advertiserName);
+      formData.append("advertiserSurname", advertiserSurname);
+      formData.append("advertiserPhone", newNumber);
+      formData.append("advertiserNote", "");
+      formData.append("youtubeId", "");
+      formData.append("request", true.toString());
+      selectedImages.forEach((image) => {
+        formData.append(`images`, image);
+      });
+      try {
+        await axios
+          .post(`${BACKEND_URL}/cars`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           })
           .then(() => {
-            if (i === selectedImages.length - 1) {
-              const newCar = {
-                id: uuidv4(),
-                baslik: baslik,
-                aciklama:
-                  content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
-                fiyat: fiyat,
-                pazarlik: pazarlik,
-                marka: marka,
-                seri: seri,
-                model: model,
-                yil: yil,
-                yakit: yakit,
-                vites: vites,
-                aracDurumu: aracDurumu,
-                km: km,
-                kasa: kasa,
-                motorGucu: motorGucu,
-                motorHacmi: motorHacmi,
-                cekis: cekis,
-                renk: renk,
-                agirHasarli: agirHasarli,
-                takas: takas,
-                date: getNowDate(),
-                user: "",
-                advertiserName: advertiserName,
-                advertiserSurname: advertiserSurname,
-                advertiserPhone: `+90${advertiserPhone}`,
-                images: imageUrls,
-                youtubeId: "",
-                request: true,
-              };
-              axios
-                .post(`${BACKEND_URL}/cars`, newCar)
-                .then((response) => console.log(response))
-                .then(() => {
-                  SuccessNotification("İlan ekleme isteği gönderildi");
-                  InfoNotification(
-                    "Lütfen ilanın yetkililerimiz tarafından onaylanmasını bekleyiniz"
-                  );
-                  navigation("/");
-                });
-            }
+            SuccessNotification("İlan başarıyla eklendi");
+            navigation("/otomobil/");
+          })
+          .catch(() => {
+            ErrorNotification(
+              "İlan eklenirken hata ile karşılaşıldı tekrar deneyiniz"
+            );
+            navigation("/otomobil/");
           });
+        console.log("Resimler yüklendi!");
+      } catch (error) {
+        console.error("Resimler yüklenirken bir hata oluştu:", error);
       }
     }
   };
-
-  const handleRealEstateSubmit = () => {
+  const handleRealEstateSubmit = async () => {
+    setLoading(true);
     let error = false;
-    let imageUrls = [];
-
-    if (selectedImages.length < 1) {
-      ErrorNotification("En az 1 resim seçmelisin");
+    let newNumber = "";
+    if (advertiserPhone.length !== 12 && advertiserPhone.length !== 0) {
+      ErrorNotification("Doğru bir numara girişi yapılmadı");
       error = true;
-    }
-    if (title.length < 5) {
-      ErrorNotification("Daha uzun bir ilan başlığı girmelisin");
-      error = true;
-    }
-    if (price === 0) {
-      ErrorNotification("0 Fiyat etiketi girilemez");
-      error = true;
-    }
-    if (mahalle.length <= 0 || mahalle === "seçiniz") {
-      ErrorNotification("Bir mahalle seçmelisin!");
-      error = true;
-    }
-    if (grossArea.length <= 0) {
-      ErrorNotification("m² (Brüt) boş bırakılamaz");
-      error = true;
-    }
-    if (netArea.length <= 0) {
-      ErrorNotification("m² (Net) boş bırakılamaz");
-      error = true;
-    }
-    if (advertiserName.length <= 0) {
-      ErrorNotification("İlan sahibi adı boş bırakılamaz");
-      error = true;
-    }
-    if (advertiserSurname.length <= 0) {
-      ErrorNotification("İlan sahibi soyadı boş bırakılamaz");
-      error = true;
-    }
-    if (advertiserPhone.length !== 10) {
-      ErrorNotification("İlan sahibi numarası boş veya hatalı");
-      error = true;
+      setLoading(false);
+    } else {
+      newNumber = "+" + advertiserPhone;
     }
     if (!error) {
-      for (let i = 0; i < selectedImages.length; i++) {
-        const formData = new FormData();
-        formData.append("file", selectedImages[i]);
-        formData.append("upload_preset", uploadPreset); // Cloudinary yükleme ön tanımlaması
-        formData.append("folder", "konut");
-        axios
-          .post(
-            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-            formData
-          )
-          .then((response) => {
-            imageUrls.push(response.data.secure_url);
+      const formData = new FormData();
+      formData.append("id", uuidv4());
+      formData.append("title", title);
+      formData.append("description", content);
+      formData.append("price", price.toString());
+      formData.append("bargain", bargain);
+      formData.append("ilce", ilce);
+      formData.append("mahalle", mahalle);
+      formData.append("type", type);
+      formData.append("grossArea", grossArea.toString());
+      formData.append("netArea", netArea.toString());
+      formData.append("roomCount", roomCount);
+      formData.append("buildAge", buildAge);
+      formData.append("floor", floor.toString());
+      formData.append("totalFloor", totalFloor.toString());
+      formData.append("heating", heating);
+      formData.append("bathroomCount", bathroomCount.toString());
+      formData.append("balcony", balcony);
+      formData.append("furnished", furnished);
+      formData.append("usingState", usingState);
+      formData.append("onSite", onSite);
+      formData.append("siteName", onSite === "Evet" ? siteName : "");
+      formData.append("dues", dues.toString());
+      formData.append("suitableForCredit", suitableForCredit);
+      formData.append("titleStatus", titleStatus);
+      formData.append("swap", swap);
+      formData.append("cephe", JSON.stringify(cephe));
+      formData.append("icOzellikler", JSON.stringify(icOzellikler));
+      formData.append("disOzellikler", JSON.stringify(disOzellikler));
+      formData.append("muhit", JSON.stringify(muhit));
+      formData.append("ulasim", JSON.stringify(ulasim));
+      formData.append("manzara", JSON.stringify(manzara));
+      formData.append("konutTipi", JSON.stringify(konutTipi));
+      formData.append("date", getNowDate());
+      formData.append("activity", "Aktif");
+      formData.append("user", JSON.stringify({}));
+      formData.append("advertiserName", advertiserName);
+      formData.append("advertiserSurname", advertiserSurname);
+      formData.append("advertiserPhone", newNumber);
+      formData.append("advertiserNote", "");
+      formData.append("youtubeId", "");
+      formData.append("request", true.toString());
+      selectedImages.forEach((image) => {
+        formData.append(`images`, image);
+      });
+      try {
+        await axios
+          .post(`${BACKEND_URL}/real-estates`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           })
           .then(() => {
-            if (i === selectedImages.length - 1) {
-              const newRealEstate = {
-                id: uuidv4(),
-                title: title,
-                description:
-                  content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
-                price: price,
-                bargain: bargain,
-                ilce: ilce,
-                mahalle: mahalle,
-                type: type,
-                grossArea: grossArea,
-                netArea: netArea,
-                roomCount: roomCount,
-                buildAge: buildAge,
-                floor: floor,
-                totalFloor: totalFloor,
-                heating: heating,
-                bathroomCount: bathroomCount,
-                balcony: balcony,
-                furnished: furnished,
-                usingState: usingState,
-                onSite: onSite,
-                siteName: onSite === "Evet" ? siteName : "",
-                dues: dues,
-                suitableForCredit: suitableForCredit,
-                titleStatus: titleStatus,
-                swap: swap,
-                date: getNowDate(),
-                user: "",
-                advertiserName: advertiserName,
-                advertiserSurname: advertiserSurname,
-                advertiserPhone: `+90${advertiserPhone}`,
-                images: imageUrls,
-                youtubeId: "",
-                request: true,
-              };
-              axios
-                .post(`${BACKEND_URL}/real-estates`, newRealEstate)
-                .then((response) => console.log(response))
-                .then(() => {
-                  SuccessNotification("İlan ekleme isteği gönderildi");
-                  InfoNotification(
-                    "Lütfen ilanın yetkililerimiz tarafından onaylanmasını bekleyiniz"
-                  );
-                  navigation("/");
-                });
-            }
+            SuccessNotification("İlan başarıyla eklendi");
+            navigation("/");
+          })
+          .catch(() => {
+            ErrorNotification(
+              "İlan eklenirken hata ile karşılaşıldı tekrar deneyiniz"
+            );
+            navigation("/");
           });
+        console.log("Resimler yüklendi!");
+      } catch (error) {
+        console.error("Resimler yüklenirken bir hata oluştu:", error);
       }
     }
   };
@@ -619,11 +608,21 @@ function IlanVer() {
 
     window.addEventListener("resize", handleResize);
     handleResize(); // İlk render'da width değerini almak için
-
     return () => {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+  if (loading)
+    return (
+      <div className="loading-screen">
+        <PuffLoader color="#008cff" />
+        <h2>İlan isteği gönderiliyor</h2>
+        <p>
+          "seçilen fotoğraf sayısına bağlı olarak bu işlem biraz sürebilir
+          lütfen sayfadan çıkış yapmayaınız"
+        </p>
+      </div>
+    );
   return (
     <div className="ilan-ver">
       <div className="stage-container">
@@ -637,14 +636,14 @@ function IlanVer() {
             : "İlan bilgieri"}
         </h2>
         <div>
-          <p className="stage-info">{stage + 1}/4</p>
+          <p className="stage-info">{stage + 1}/5</p>
           <div
             style={{
               height: "5px",
               backgroundColor: "var(--color-primary-blue)",
               borderRadius: "10px 10px 0px 0px",
               transition: "width 0.4s",
-              width: `${((stage + 1) / 4) * 100}%`,
+              width: `${((stage + 1) / 5) * 100}%`,
             }}
           ></div>
         </div>
@@ -719,16 +718,12 @@ function IlanVer() {
               </div>
               <div className="form-element">
                 <label htmlFor="ilan-ekle-advertiser-phone">
-                  İletişim numarası <span>(5554443322)</span>
+                  İletişim numarası
                 </label>
-                <input
-                  id="ilan-ekle-advertiser-phone"
+                <PhoneInput
+                  country={"tr"}
                   value={advertiserPhone}
-                  onChange={(e) => {
-                    setAdvertiserPhone(e.target.value);
-                  }}
-                  type="text"
-                  placeholder="iletişim numarası.."
+                  onChange={(phone) => setAdvertiserPhone(phone)}
                 />
               </div>
               <button
@@ -739,7 +734,7 @@ function IlanVer() {
                 disabled={
                   advertiserName.length > 0 &&
                   advertiserSurname.length > 0 &&
-                  advertiserPhone.length === 10
+                  advertiserPhone.length === 12
                     ? false
                     : true
                 }
@@ -895,7 +890,7 @@ function IlanVer() {
           </div>
           <div
             className="stage stage-4"
-            style={{ maxHeight: `${stage !== 3 ? "0px" : "2000px"}` }}
+            style={{ maxHeight: `${stage !== 3 ? "0px" : "4000px"}` }}
           >
             {ilanTipi === "Konut" ? (
               <div className="konut-ekle-ilan-bilgileri">
@@ -956,6 +951,7 @@ function IlanVer() {
                     value={ilce}
                     onChange={(e) => {
                       setIlce(e.target.value);
+                      setMahalle("seçiniz");
                     }}
                   >
                     <option value="Şehzadeler">Şehzadeler</option>
@@ -1005,7 +1001,7 @@ function IlanVer() {
                     </label>
                     <input
                       id="real-estate-add-form-grossarea"
-                      type="text"
+                      type="number"
                       placeholder="120m²"
                       value={grossArea}
                       onChange={(e) => {
@@ -1019,7 +1015,7 @@ function IlanVer() {
                     </label>
                     <input
                       id="real-estate-add-form-netarea"
-                      type="text"
+                      type="number"
                       placeholder="110m²"
                       value={netArea}
                       onChange={(e) => {
@@ -1312,10 +1308,21 @@ function IlanVer() {
                 </div>
                 <button
                   className="next-button"
-                  onClick={handleRealEstateSubmit}
-                  disabled={true ? false : true}
+                  onClick={() => {
+                    setStage(stage + 1);
+                  }}
+                  disabled={
+                    title.length > 0 &&
+                    price > 0 &&
+                    mahalle.length > 0 &&
+                    mahalle !== "seçiniz" &&
+                    grossArea > 0 &&
+                    netArea > 0
+                      ? false
+                      : true
+                  }
                 >
-                  İlan ver
+                  İleri
                 </button>
                 <button
                   className="back-button"
@@ -1586,9 +1593,513 @@ function IlanVer() {
                 </div>
                 <button
                   className="next-button"
-                  onClick={handleCarSubmit}
-                  disabled={true ? false : true}
+                  onClick={() => {
+                    setStage(stage + 1);
+                  }}
+                  disabled={
+                    baslik.length > 0 && fiyat > 0 && yil > 0 ? false : true
+                  }
                 >
+                  İleri
+                </button>
+                <button
+                  className="back-button"
+                  onClick={() => {
+                    setStage(stage - 1);
+                  }}
+                >
+                  Geri
+                </button>
+              </div>
+            )}
+          </div>
+          <div
+            className="stage stage-5"
+            style={{ maxHeight: `${stage !== 4 ? "0px" : "5000px"}` }}
+          >
+            {ilanTipi === "Konut" ? (
+              <div className="konut-stage-5">
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setCepheIsOpen(!cepheIsOpen);
+                      setIcIsOpen(false);
+                      setDisIsOpen(false);
+                      setMuhitIsOpen(false);
+                      setUlasimIsOpen(false);
+                      setManzaraIsOpen(false);
+                      setKonutTipiIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Cephe <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div className={`dropdown ${cepheIsOpen ? "open" : "close"}`}>
+                    {cepheListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            cephe.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (cephe.some((u) => u === item)) {
+                              setCephe(cephe.filter((u) => u !== item));
+                            } else {
+                              setCephe((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIcIsOpen(!icIsOpen);
+                      setCepheIsOpen(false);
+                      setDisIsOpen(false);
+                      setMuhitIsOpen(false);
+                      setUlasimIsOpen(false);
+                      setManzaraIsOpen(false);
+                      setKonutTipiIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      İç Özellikler{" "}
+                      <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div className={`dropdown ${icIsOpen ? "open" : "close"}`}>
+                    {icOzelliklerListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            icOzellikler.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (icOzellikler.some((u) => u === item)) {
+                              setIcOzellikler(
+                                icOzellikler.filter((u) => u !== item)
+                              );
+                            } else {
+                              setIcOzellikler((oldArray) => [
+                                ...oldArray,
+                                item,
+                              ]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDisIsOpen(!disIsOpen);
+                      setCepheIsOpen(false);
+                      setIcIsOpen(false);
+                      setMuhitIsOpen(false);
+                      setUlasimIsOpen(false);
+                      setManzaraIsOpen(false);
+                      setKonutTipiIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Dış Özellikler{" "}
+                      <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div className={`dropdown ${disIsOpen ? "open" : "close"}`}>
+                    {disOzelliklerListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            disOzellikler.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (disOzellikler.some((u) => u === item)) {
+                              setDisOzellikler(
+                                disOzellikler.filter((u) => u !== item)
+                              );
+                            } else {
+                              setDisOzellikler((oldArray) => [
+                                ...oldArray,
+                                item,
+                              ]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMuhitIsOpen(!muhitIsOpen);
+                      setCepheIsOpen(false);
+                      setIcIsOpen(false);
+                      setDisIsOpen(false);
+                      setUlasimIsOpen(false);
+                      setManzaraIsOpen(false);
+                      setKonutTipiIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Çevre <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div className={`dropdown ${muhitIsOpen ? "open" : "close"}`}>
+                    {muhitListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            muhit.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (muhit.some((u) => u === item)) {
+                              setMuhit(muhit.filter((u) => u !== item));
+                            } else {
+                              setMuhit((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setUlasimIsOpen(!ulasimIsOpen);
+                      setCepheIsOpen(false);
+                      setIcIsOpen(false);
+                      setDisIsOpen(false);
+                      setMuhitIsOpen(false);
+                      setManzaraIsOpen(false);
+                      setKonutTipiIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Ulaşım <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div
+                    className={`dropdown ${ulasimIsOpen ? "open" : "close"}`}
+                  >
+                    {ulasimListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            ulasim.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (ulasim.some((u) => u === item)) {
+                              setUlasim(ulasim.filter((u) => u !== item));
+                            } else {
+                              setUlasim((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setManzaraIsOpen(!manzaraIsOpen);
+                      setCepheIsOpen(false);
+                      setIcIsOpen(false);
+                      setDisIsOpen(false);
+                      setMuhitIsOpen(false);
+                      setUlasimIsOpen(false);
+                      setKonutTipiIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Manzara <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div
+                    className={`dropdown ${manzaraIsOpen ? "open" : "close"}`}
+                  >
+                    {manzaraListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            manzara.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (manzara.some((u) => u === item)) {
+                              setManzara(manzara.filter((u) => u !== item));
+                            } else {
+                              setManzara((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setKonutTipiIsOpen(!konutTipiIsOpen);
+                      setCepheIsOpen(false);
+                      setIcIsOpen(false);
+                      setDisIsOpen(false);
+                      setMuhitIsOpen(false);
+                      setUlasimIsOpen(false);
+                      setManzaraIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Konut Tipi <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div
+                    className={`dropdown ${konutTipiIsOpen ? "open" : "close"}`}
+                  >
+                    {konutTipiListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            konutTipi.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (konutTipi.some((u) => u === item)) {
+                              setKonutTipi(konutTipi.filter((u) => u !== item));
+                            } else {
+                              setKonutTipi((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <button
+                  className="next-button"
+                  onClick={handleRealEstateSubmit}
+                >
+                  İlan ver
+                </button>
+                <button
+                  className="back-button"
+                  onClick={() => {
+                    setStage(stage - 1);
+                  }}
+                >
+                  Geri
+                </button>
+              </div>
+            ) : (
+              <div className="otomobil-stage-5">
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setGuvenlikIsOpen(!guvenlikIsOpen);
+                      setIcDonanimIsOpen(false);
+                      setDisDonanimIsOpen(false);
+                      setMultimedyaIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Güvenlik <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div
+                    className={`dropdown ${guvenlikIsOpen ? "open" : "close"}`}
+                  >
+                    {guvenlikListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            guvenlik.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (guvenlik.some((u) => u === item)) {
+                              setGuvenlik(guvenlik.filter((u) => u !== item));
+                            } else {
+                              setGuvenlik((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIcDonanimIsOpen(!icDonanimIsOpen);
+                      setGuvenlikIsOpen(false);
+                      setDisDonanimIsOpen(false);
+                      setMultimedyaIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      İç Donanım <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div
+                    className={`dropdown ${icDonanimIsOpen ? "open" : "close"}`}
+                  >
+                    {icDonanimListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            icDonanim.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (icDonanim.some((u) => u === item)) {
+                              setIcDonanim(icDonanim.filter((u) => u !== item));
+                            } else {
+                              setIcDonanim((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setDisDonanimIsOpen(!disDonanimIsOpen);
+                      setIcDonanimIsOpen(false);
+                      setGuvenlikIsOpen(false);
+                      setMultimedyaIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Dış Donanım <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div
+                    className={`dropdown ${
+                      disDonanimIsOpen ? "open" : "close"
+                    }`}
+                  >
+                    {disDonanimListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            disDonanim.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (disDonanim.some((u) => u === item)) {
+                              setDisDonanim(
+                                disDonanim.filter((u) => u !== item)
+                              );
+                            } else {
+                              setDisDonanim((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className={`form-element-dropdown`}>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setMultimedyaIsOpen(!multimedyaIsOpen);
+                      setGuvenlikIsOpen(false);
+                      setIcDonanimIsOpen(false);
+                      setDisDonanimIsOpen(false);
+                    }}
+                  >
+                    <span>
+                      Multimedya Özellikleri{" "}
+                      <span className="optional">(Opsiyonel)</span>
+                    </span>
+                    <SlArrowDown className="icon" />
+                  </button>
+                  <div
+                    className={`dropdown ${
+                      multimedyaIsOpen ? "open" : "close"
+                    }`}
+                  >
+                    {multimedyaListesi.map((item, key) => {
+                      return (
+                        <p
+                          key={key}
+                          className={`dropdown-item ${
+                            multimedya.some((u) => u === item) && "selected"
+                          }`}
+                          onClick={() => {
+                            if (multimedya.some((u) => u === item)) {
+                              setMultimedya(
+                                multimedya.filter((u) => u !== item)
+                              );
+                            } else {
+                              setMultimedya((oldArray) => [...oldArray, item]);
+                            }
+                          }}
+                        >
+                          {item}
+                        </p>
+                      );
+                    })}
+                  </div>
+                </div>
+                <button className="next-button" onClick={handleCarSubmit}>
                   İlan ver
                 </button>
                 <button

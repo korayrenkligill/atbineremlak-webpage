@@ -21,10 +21,44 @@ function Emlak() {
   const [usingState, setUsingState] = useState("");
 
   const [realEstates, setRealEstates] = useState([]);
+  const [realEstatesFullList, setRealEstatesFullList] = useState([]);
+
+  const handleFilterChanged = () => {
+    let filtredArray = realEstatesFullList.filter((item) => {
+      return (
+        item.ilce.includes(ilce) &&
+        item.mahalle.includes(mahalle) &&
+        item.type.includes(type) &&
+        item.roomCount.includes(roomCount) &&
+        item.heating.includes(heating) &&
+        item.furnished.includes(furnished) &&
+        item.usingState.includes(usingState) &&
+        (floor === 0 || !floor || Number(floor) === Number(item.floor)) &&
+        (minPrice === 0 || !minPrice || minPrice < Number(item.price)) &&
+        (maxPrice === 0 || !maxPrice || maxPrice > Number(item.price))
+      );
+    });
+    setRealEstates(filtredArray);
+    console.log(filtredArray);
+  };
+  const handleClearFilter = () => {
+    setIlce("");
+    setMahalle("");
+    setType("");
+    setMinPrice(0);
+    setMaxPrice(0);
+    setRoomCount("");
+    setFloor(0);
+    setHeating("");
+    setFurnished("");
+    setUsingState("");
+    setRealEstates(realEstatesFullList);
+  };
 
   useEffect(() => {
     axios.get(`${BACKEND_URL}/real-estates`).then((response) => {
       let realEstateArray = response.data.filter((u) => u.request === false);
+      setRealEstatesFullList(realEstateArray);
       setRealEstates(realEstateArray);
       setLoading(false);
     });
@@ -60,6 +94,8 @@ function Emlak() {
             setFurnished={setFurnished}
             usingState={usingState}
             setUsingState={setUsingState}
+            handleFilterChanged={handleFilterChanged}
+            handleClearFilter={handleClearFilter}
           />
         </div>
         <div>

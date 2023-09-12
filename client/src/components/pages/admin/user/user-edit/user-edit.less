@@ -9,6 +9,8 @@
       width: 150px;
       height: 150px;
       background-color: var(--color-secondary-background);
+      color: var(--color-secondary-text);
+
       display: flex;
       align-items: center;
       justify-content: center;
@@ -18,7 +20,9 @@
       margin-bottom: 2rem;
       img {
         width: 100%;
-        aspect-ratio: 1;
+        height: 100%;
+        object-fit: cover;
+        object-position: center;
       }
       .icon {
         transform: translate(4px, 4px);
@@ -27,19 +31,52 @@
     .form-element {
       display: flex;
       flex-direction: column;
+      label {
+        color: var(--color-secondary-text);
+        padding-bottom: 8px;
+      }
+      .ql-picker,
+      .ql-editor.ql-blank::before,
+      .ql-toolbar {
+        color: var(--color-primary-text) !important;
+      }
+      input,
+      select,
+      textarea,
+      .quill {
+        width: 100%;
+        color: var(--color-primary-text);
+      }
       span.optional {
         font-size: 0.7rem;
         color: var(--color-tertiary-text);
+        margin-left: 5px;
       }
     }
     .form-element-double {
       display: flex;
       align-items: center;
       gap: 2rem;
-      span {
+      label {
+        color: var(--color-secondary-text);
+        padding-bottom: 8px;
+      }
+      input,
+      select,
+      textarea,
+      .quill {
+        width: 100%;
+        color: var(--color-primary-text);
+      }
+      span:not(.optional) {
         flex: 1;
         display: flex;
         flex-direction: column;
+        span.optional {
+          font-size: 0.7rem;
+          color: var(--color-tertiary-text);
+          margin-left: 5px;
+        }
       }
     }
     button.submit-button {

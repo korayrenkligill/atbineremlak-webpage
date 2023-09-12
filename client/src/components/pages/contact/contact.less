@@ -1,0 +1,52 @@
+.contact-page {
+  margin: 50px 20% 0px 20%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  text-align: center;
+  .web {
+    font-weight: bold;
+    color: var(--color-primary-text);
+  }
+  p {
+    color: var(--color-secondary-text);
+  }
+  img.logo {
+    width: 100px;
+  }
+  .adres {
+    font-weight: bold;
+    color: var(--color-primary-text);
+  }
+  .telefon {
+    font-weight: bold;
+    color: var(--color-primary-blue);
+  }
+  .whatsapp-link {
+    font-weight: bold;
+    color: var(--color-primary-blue);
+    margin-bottom: 6rem;
+  }
+  hr {
+    width: 100%;
+    margin: 10px 0px;
+    opacity: 0.4;
+  }
+  iframe {
+    width: 100vw;
+    height: 170px;
+  }
+}
+
+@media screen and (max-width: 1440px) {
+  .contact-page {
+    margin: 50px 10% 0px 10%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .contact-page {
+    margin: 50px 5% 0px 5%;
+  }
+}

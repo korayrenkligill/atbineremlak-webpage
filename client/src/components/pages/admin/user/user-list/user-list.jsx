@@ -15,11 +15,17 @@ function UserList() {
   const [users, setUsers] = useState();
 
   const handleRemove = (id) => {
-    axios.delete(`${BACKEND_URL}/users/${id}`).then(() => {
-      SuccessNotification("Kullanıcı başarıyla kaldırıldı");
-      setLoading(true);
-      getUsers();
-    });
+    setLoading(true);
+    axios
+      .delete(`${BACKEND_URL}/users/${id}`)
+      .then(() => {
+        SuccessNotification("Kullanıcı başarıyla kaldırıldı");
+        setUsers([]);
+        getUsers();
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
   const getUsers = () => {
     axios

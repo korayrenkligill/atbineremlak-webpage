@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  <url>
+    <loc>https://atbineremlak.com</loc>
+     <lastmod>2023-09-07</lastmod> <!-- Sayfanın son güncelleme tarihi -->
+    <changefreq>monthly</changefreq> <!-- Sayfanın ne sıklıkla değiştiği -->
+    <priority>1</priority> <!-- Sayfanın öncelik seviyesi (0 ile 1 arasında) -->
+  </url>
+  <url>
+    <loc>atbineremlak.com/ana-sayfa</loc>
+     <lastmod>2023-09-07</lastmod> <!-- Sayfanın son güncelleme tarihi -->
+    <changefreq>monthly</changefreq> <!-- Sayfanın ne sıklıkla değiştiği -->
+    <priority>0.4</priority> <!-- Sayfanın öncelik seviyesi (0 ile 1 arasında) -->
+  </url>
+  <url>
+    <loc>atbineremlak.com/otomobil</loc>
+     <lastmod>2023-09-07</lastmod> <!-- Sayfanın son güncelleme tarihi -->
+    <changefreq>monthly</changefreq> <!-- Sayfanın ne sıklıkla değiştiği -->
+    <priority>0.8</priority> <!-- Sayfanın öncelik seviyesi (0 ile 1 arasında) -->
+  </url>
+  <url>
+    <loc>atbineremlak.com/tadilat</loc>
+     <lastmod>2023-09-07</lastmod> <!-- Sayfanın son güncelleme tarihi -->
+    <changefreq>monthly</changefreq> <!-- Sayfanın ne sıklıkla değiştiği -->
+    <priority>0.6</priority> <!-- Sayfanın öncelik seviyesi (0 ile 1 arasında) -->
+  </url>
+  <url>
+    <loc>atbineremlak.com/contact</loc>
+     <lastmod>2023-09-07</lastmod> <!-- Sayfanın son güncelleme tarihi -->
+    <changefreq>monthly</changefreq> <!-- Sayfanın ne sıklıkla değiştiği -->
+    <priority>0.6</priority> <!-- Sayfanın öncelik seviyesi (0 ile 1 arasında) -->
+  </url>
+  <url>
+    <loc>atbineremlak.com/ilan-ver</loc>
+     <lastmod>2023-09-07</lastmod> <!-- Sayfanın son güncelleme tarihi -->
+    <changefreq>monthly</changefreq> <!-- Sayfanın ne sıklıkla değiştiği -->
+    <priority>0.8</priority> <!-- Sayfanın öncelik seviyesi (0 ile 1 arasında) -->
+  </url>
+</urlset>

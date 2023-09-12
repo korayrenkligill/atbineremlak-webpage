@@ -8,7 +8,7 @@ import PuffLoader from "react-spinners/PuffLoader";
 import { BACKEND_URL } from "../../../../elements/config";
 import { useNavigate } from "react-router-dom";
 import { SuccessNotification } from "../../../../elements/toastify";
-function RealEstateRequests() {
+function RealEstateRequests({ user }) {
   const navigation = useNavigate();
 
   const [loading, setLoading] = useState(true);
@@ -16,12 +16,15 @@ function RealEstateRequests() {
 
   const handleAccept = (event, id) => {
     event.stopPropagation();
-    let realEstate = realEstates.find((u) => u.id == id);
+    let realEstate = realEstates.find((u) => u.id === id);
     realEstate.request = false;
-    axios.put(`${BACKEND_URL}/real-estates/${id}`, realEstate).then(() => {
-      SuccessNotification("İlan başarıyla onaylandı");
-      navigation("/admin/konutlar/");
-    });
+    realEstate.user = user;
+    axios
+      .put(`${BACKEND_URL}/real-estates/request-accept/${id}`, realEstate)
+      .then(() => {
+        SuccessNotification("İlan başarıyla onaylandı");
+        navigation("/admin/konutlar/");
+      });
   };
   const handleReject = (event, id) => {
     event.stopPropagation();

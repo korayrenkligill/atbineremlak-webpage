@@ -1,7 +1,10 @@
+main.main-page .popular-listings {
+  padding: var(--page-padding);
+}
 main.main-page .popular-listings .real-estate-listings {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 50px;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 30px;
 }
 main.main-page .popular-listings .real-estate-listings .list-item {
   display: flex;
@@ -9,6 +12,7 @@ main.main-page .popular-listings .real-estate-listings .list-item {
   transition: transform 0.4s;
   padding: 10px;
   border-radius: 20px;
+  background-color: var(--color-primary-background);
   cursor: pointer;
 }
 main.main-page .popular-listings .real-estate-listings .list-item .image-background {

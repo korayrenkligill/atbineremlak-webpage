@@ -3,7 +3,9 @@ import { BiImageAdd } from "react-icons/bi";
 import { BsFillTrash3Fill } from "react-icons/bs";
 import ReactQuill from "react-quill";
 import YouTube from "react-youtube";
+import { SlArrowDown } from "react-icons/sl";
 import axios from "axios";
+import PuffLoader from "react-spinners/PuffLoader";
 import {
   ErrorNotification,
   SuccessNotification,
@@ -14,8 +16,14 @@ import "./car-edit.css";
 import {
   BACKEND_URL,
   cloudName,
+  disDonanimListesi,
+  guvenlikListesi,
+  icDonanimListesi,
+  multimedyaListesi,
   uploadPreset,
 } from "../../../../elements/config";
+import PhoneInput from "react-phone-input-2";
+import { toast } from "react-toastify";
 
 const otomobilModelleri = [
   "Audi",
@@ -42,16 +50,6 @@ const otomobilModelleri = [
   "Volkswagen",
   "Volvo",
 ];
-
-const getVideoIdFromUrl = (url) => {
-  const videoIdRegex = /[?&]v=([^?&]+)/;
-  const match = url.match(videoIdRegex);
-  if (match && match[1]) {
-    return match[1];
-  } else {
-    return null; // Geçersiz URL
-  }
-};
 
 const getNowDate = () => {
   const date = new Date();
@@ -117,11 +115,11 @@ const getNowDate = () => {
 
 function CarEdit({ user }) {
   const navigation = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   const [selectedImages, setSelectedImages] = useState([]);
   const [selectedImagesPreview, setSelectedImagesPreview] = useState([]);
-  const [videoLink, setVideoLink] = useState("");
-  const [videoId, setVideoId] = useState("");
+
   const id = useParams().id;
 
   const [oldCar, setOldCar] = useState({});
@@ -145,24 +143,84 @@ function CarEdit({ user }) {
   const [renk, setRenk] = useState("");
   const [agirHasarli, setAgirHasarli] = useState("Hayır");
   const [takas, setTakas] = useState("Hayır");
+  const [activity, setActivity] = useState("Aktif");
   const [advertiserName, setAdvertiserName] = useState("");
   const [advertiserSurname, setAdvertiserSurname] = useState("");
   const [advertiserPhone, setAdvertiserPhone] = useState("");
+  const [advertiserNote, setAdvertiserNote] = useState("");
+  const [guvenlik, setGuvenlik] = useState([]);
+  const [icDonanim, setIcDonanim] = useState([]);
+  const [disDonanim, setDisDonanim] = useState([]);
+  const [multimedya, setMultimedya] = useState([]);
+
+  const [guvenlikIsOpen, setGuvenlikIsOpen] = useState(true);
+  const [icDonanimIsOpen, setIcDonanimIsOpen] = useState(false);
+  const [disDonanimIsOpen, setDisDonanimIsOpen] = useState(false);
+  const [multimedyaIsOpen, setMultimedyaIsOpen] = useState(false);
 
   const [imageOrVideo, setImageOrVideo] = useState("image");
+
+  const imagesPerPage = 3;
+  const [currentPage, setCurrentPage] = useState(1);
+
+  const [currentImages, setCurrentImages] = useState([]);
+  const [pageNumbers, setPageNumbers] = useState([1]);
+
+  const showPeginate = (list, page = 1) => {
+    const indexOfLastImage = page * imagesPerPage;
+    const indexOfFirstImage = indexOfLastImage - imagesPerPage;
+    const currentImagesTemp = list.slice(indexOfFirstImage, indexOfLastImage);
+    setCurrentImages(currentImagesTemp);
+    const pageNumbersTemp = [];
+    // console.log(
+    //   list.length,
+    //   imagesPerPage,
+    //   list.length / imagesPerPage,
+    //   Math.ceil(list.length / imagesPerPage)
+    // );
+    for (let i = 1; i <= Math.ceil(list.length / imagesPerPage); i++) {
+      pageNumbersTemp.push(i);
+      if (i === Math.ceil(list.length / imagesPerPage)) {
+        console.log(pageNumbersTemp);
+        setPageNumbers(pageNumbersTemp);
+      }
+    }
+    setCurrentPage(page);
+  };
+  const paginate = (pageNumber) => {
+    var listTemp = selectedImagesPreview;
+    showPeginate(listTemp, pageNumber);
+    setCurrentPage(pageNumber);
+  };
 
   const handleDrop = (e) => {
     e.preventDefault();
     const file = e.dataTransfer.files;
     if (file.length + selectedImages.length < 26) {
       setSelectedImages((oldArray) => [...oldArray, ...file]);
+      var list2Temp = [];
+      var selectedImagesPreviewTemp = selectedImagesPreview;
       for (let i = 0; i < file.length; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(file[i]);
 
         reader.onload = () => {
           setSelectedImagesPreview((oldArray) => [...oldArray, reader.result]);
+          list2Temp.push(reader.result);
+          if (i === file.length - 1) {
+            //Döngü sonunda
+            var listTemp = selectedImagesPreviewTemp.concat(list2Temp);
+            showPeginate(listTemp);
+          }
         };
+        toast.success("Resimler başarıyla yüklendi", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } else {
       ErrorNotification("En fazla 25 resim yükleyebilirsin!");
@@ -177,12 +235,28 @@ function CarEdit({ user }) {
     const file = e.target.files;
     if (file.length + selectedImages.length < 26) {
       setSelectedImages((oldArray) => [...oldArray, ...file]);
+      var list2Temp = [];
+      var selectedImagesPreviewTemp = selectedImagesPreview;
       for (let i = 0; i < file.length; i++) {
         const reader = new FileReader();
         reader.readAsDataURL(file[i]);
         reader.onload = () => {
           setSelectedImagesPreview((oldArray) => [...oldArray, reader.result]);
+          list2Temp.push(reader.result);
+          if (i === file.length - 1) {
+            //Döngü sonunda
+            var listTemp = selectedImagesPreviewTemp.concat(list2Temp);
+            showPeginate(listTemp);
+          }
         };
+        toast.success("Resimler başarıyla yüklendi", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       }
     } else {
       ErrorNotification("En fazla 25 resim yükleyebilirsin!");
@@ -199,7 +273,16 @@ function CarEdit({ user }) {
       const reader = new FileReader();
       reader.onload = () => {
         imagesPreviewArray[key] = reader.result;
-        setSelectedImagesPreview(imagesArray);
+        setSelectedImagesPreview(imagesPreviewArray);
+        showPeginate(imagesPreviewArray);
+        toast.success("Resim başarıyla değiştirildi", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+        });
       };
       reader.readAsDataURL(file);
     }
@@ -216,140 +299,114 @@ function CarEdit({ user }) {
       }
     setSelectedImagesPreview(newArrayPreview);
     setSelectedImages(newArray);
+    showPeginate(newArrayPreview);
+    toast.success("Resim başarıyla kaldırıldı", {
+      position: "top-right",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+    });
   };
 
   const handleChange = (value) => {
     setContent(value);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     let error = false;
-    let imageUrls = [];
+    let newNumber = "";
+    setLoading(true);
 
     if (selectedImages.length < 1) {
       ErrorNotification("En az 1 resim seçmelisin");
       error = true;
+      setLoading(false);
     }
     if (baslik.length < 5) {
       ErrorNotification("Daha uzun bir ilan başlığı girmelisin");
       error = true;
+      setLoading(false);
     }
     if (fiyat === 0) {
       ErrorNotification("0 Fiyat etiketi girilemez");
       error = true;
+      setLoading(false);
     }
     if (yil === 0) {
       ErrorNotification("Araba yılı 0 olarak girilemez");
       error = true;
+      setLoading(false);
     }
-    if (advertiserName.length <= 0) {
-      ErrorNotification("İlan sahibi adı boş bırakılamaz");
+    if (advertiserPhone.length !== 12 && advertiserPhone.length !== 0) {
+      ErrorNotification("Doğru bir numara girişi yapılmadı");
       error = true;
+      setLoading(false);
+    } else {
+      newNumber = "+" + advertiserPhone;
     }
-    if (advertiserSurname.length <= 0) {
-      ErrorNotification("İlan sahibi soyadı boş bırakılamaz");
-      error = true;
-    }
-    if (advertiserPhone.length !== 10) {
-      ErrorNotification("İlan sahibi numarası boş veya hatalı");
-      error = true;
-    }
-    if (!error && selectedImages !== oldCar.images) {
-      for (let i = 0; i < selectedImages.length; i++) {
-        const formData = new FormData();
-        formData.append("file", selectedImages[i]);
-        formData.append("upload_preset", uploadPreset); // Cloudinary yükleme ön tanımlaması
-        formData.append("folder", "otomobil");
-        axios
-          .post(
-            `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-            formData
-          )
-          .then((response) => {
-            imageUrls.push(response.data.secure_url);
+    if (!error) {
+      const formData = new FormData();
+      formData.append("id", oldCar.id);
+      formData.append("baslik", baslik);
+      formData.append("aciklama", content);
+      formData.append("fiyat", fiyat.toString());
+      formData.append("pazarlik", pazarlik);
+      formData.append("marka", marka);
+      formData.append("seri", seri);
+      formData.append("model", model);
+      formData.append("yil", yil.toString());
+      formData.append("yakit", yakit);
+      formData.append("vites", vites);
+      formData.append("aracDurumu", aracDurumu);
+      formData.append("km", km.toString());
+      formData.append("kasa", kasa);
+      formData.append("motorGucu", motorGucu.toString());
+      formData.append("mmotorHacmi", motorHacmi);
+      formData.append("cekis", cekis);
+      formData.append("renk", renk);
+      formData.append("agirHasarli", agirHasarli);
+      formData.append("takas", takas);
+      formData.append("guvenlik", JSON.stringify(guvenlik));
+      formData.append("icDonanim", JSON.stringify(icDonanim));
+      formData.append("disDonanim", JSON.stringify(disDonanim));
+      formData.append("multimedya", JSON.stringify(multimedya));
+      formData.append("date", getNowDate());
+      formData.append("activity", activity);
+      formData.append("user", JSON.stringify(user));
+      formData.append("advertiserName", advertiserName);
+      formData.append("advertiserSurname", advertiserSurname);
+      formData.append("advertiserPhone", newNumber);
+      formData.append("advertiserNote", advertiserNote);
+      formData.append("request", false.toString());
+      formData.append("imageArray", JSON.stringify(selectedImages));
+
+      selectedImages.forEach((image) => {
+        formData.append(`images`, image);
+      });
+      try {
+        await axios
+          .put(`${BACKEND_URL}/cars/${id}`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
           })
           .then(() => {
-            if (i === selectedImages.length - 1) {
-              const newCar = {
-                id: oldCar.id,
-                baslik: baslik,
-                aciklama:
-                  content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
-                fiyat: fiyat,
-                pazarlik: pazarlik,
-                marka: marka,
-                seri: seri,
-                model: model,
-                yil: yil,
-                yakit: yakit,
-                vites: vites,
-                aracDurumu: aracDurumu,
-                km: km,
-                kasa: kasa,
-                motorGucu: motorGucu,
-                motorHacmi: motorHacmi,
-                cekis: cekis,
-                renk: renk,
-                agirHasarli: agirHasarli,
-                takas: takas,
-                date: getNowDate(),
-                user: user,
-                advertiserName: advertiserName,
-                advertiserSurname: advertiserSurname,
-                advertiserPhone: `+90${advertiserPhone}`,
-                images: imageUrls,
-                youtubeId: videoId,
-                request: false,
-              };
-              axios
-                .post(`${BACKEND_URL}/cars`, newCar)
-                .then((response) => console.log(response))
-                .then(() => {
-                  SuccessNotification("İlan başarıyla eklendi");
-                  navigation("/admin/otomobiller/");
-                });
-            }
+            SuccessNotification("İlan başarıyla kaydedildi");
+            navigation("/admin/otomobiller/");
+          })
+          .catch(() => {
+            ErrorNotification(
+              "İlan kaydedilirken hata ile karşılaşıldı tekrar deneyiniz"
+            );
+            navigation("/admin/otomobiller/");
           });
+        console.log("Resimler yüklendi!");
+      } catch (error) {
+        console.error("Resimler yüklenirken bir hata oluştu:", error);
       }
-    } else if (!error && selectedImages === oldCar.images) {
-      const newCar = {
-        id: oldCar.id,
-        baslik: baslik,
-        aciklama: content.length === 0 ? "Bir açıklama belirtilmedi!" : content,
-        fiyat: fiyat,
-        pazarlik: pazarlik,
-        marka: marka,
-        seri: seri,
-        model: model,
-        yil: yil,
-        yakit: yakit,
-        vites: vites,
-        aracDurumu: aracDurumu,
-        km: km,
-        kasa: kasa,
-        motorGucu: motorGucu,
-        motorHacmi: motorHacmi,
-        cekis: cekis,
-        renk: renk,
-        agirHasarli: agirHasarli,
-        takas: takas,
-        date: getNowDate(),
-        user: user,
-        advertiserName: advertiserName,
-        advertiserSurname: advertiserSurname,
-        advertiserPhone: `+90${advertiserPhone}`,
-        images: selectedImages,
-        youtubeId: videoId,
-        request: false,
-      };
-      axios
-        .put(`${BACKEND_URL}/cars/${id}`, newCar)
-        .then((response) => console.log(response))
-        .then(() => {
-          SuccessNotification("İlan başarıyla güncellendi");
-          navigation("/admin/otomobiller/");
-        });
     }
   };
   useEffect(() => {
@@ -357,7 +414,6 @@ function CarEdit({ user }) {
       setOldCar(response.data);
       setSelectedImages(response.data.images);
       setSelectedImagesPreview(response.data.images);
-      setVideoId(response.data.youtubeId);
       setBaslik(response.data.baslik);
       setContent(response.data.aciklama);
       setFiyat(response.data.fiyat);
@@ -377,11 +433,30 @@ function CarEdit({ user }) {
       setRenk(response.data.renk);
       setAgirHasarli(response.data.agirHasarli);
       setTakas(response.data.takas);
+      setActivity(response.data.activity);
       setAdvertiserName(response.data.advertiserName);
       setAdvertiserSurname(response.data.advertiserSurname);
-      setAdvertiserPhone(response.data.advertiserPhone.slice(3));
+      setAdvertiserPhone(response.data.advertiserPhone.slice(1));
+      setAdvertiserNote(response.data.advertiserNote);
+      setGuvenlik(response.data.guvenlik);
+      setIcDonanim(response.data.icDonanim);
+      setDisDonanim(response.data.disDonanim);
+      setMultimedya(response.data.multimedya);
+      showPeginate(response.data.images, 1);
+      setLoading(false);
     });
   }, []);
+  if (loading)
+    return (
+      <div className="loading-screen">
+        <PuffLoader color="#008cff" />
+        <h2>İlan kaydediliyor</h2>
+        <p>
+          "bu işlem seçilen fotoğraf sayısına bağlı olarak biraz zaman alabilir
+          sabrınız için teşekkürler"
+        </p>
+      </div>
+    );
   return (
     <div className="car-add">
       <h1 className="admin-title">Otomobil İlanı Düzenle</h1>
@@ -396,46 +471,43 @@ function CarEdit({ user }) {
           >
             Resimler
           </button>
-          <button
-            type="button"
-            className={imageOrVideo === "video" ? "active" : ""}
-            onClick={() => {
-              setImageOrVideo("video");
-            }}
-          >
-            Video
-          </button>
         </div>
-        {imageOrVideo === "image" ? (
-          <div className="images-list">
-            {selectedImagesPreview.map((item, key) => {
-              return (
-                <label htmlFor={`image-selector-single-${key}`} key={key}>
-                  <div className="frame">
-                    <img src={item} alt={`image_${key}`} />
-                    <button
-                      type="button"
-                      className="remove-button"
-                      onClick={() => {
-                        handleClearFileInputSingle(key);
-                      }}
-                    >
-                      <BsFillTrash3Fill className="icon" />
-                    </button>
-                  </div>
-                  <input
-                    id={`image-selector-single-${key}`}
-                    type="file"
-                    accept="image/*"
-                    multiple={true}
-                    onChange={(e) => {
-                      handleFileInputChangeSingle(e, key);
+
+        <div className="images-list">
+          {currentImages.map((item, key) => {
+            return (
+              <label htmlFor={`image-selector-single-${key}`} key={key}>
+                <div className="frame">
+                  <img src={item} alt={`image_${key}`} loading="lazy" />
+                  <button
+                    type="button"
+                    className="remove-button"
+                    onClick={() => {
+                      handleClearFileInputSingle(
+                        imagesPerPage * (currentPage - 1) + key
+                      );
                     }}
-                    style={{ display: "none" }}
-                  />
-                </label>
-              );
-            })}
+                  >
+                    <BsFillTrash3Fill className="icon" />
+                  </button>
+                </div>
+                <input
+                  id={`image-selector-single-${key}`}
+                  type="file"
+                  accept="image/*"
+                  multiple={true}
+                  onChange={(e) => {
+                    handleFileInputChangeSingle(
+                      e,
+                      imagesPerPage * (currentPage - 1) + key
+                    );
+                  }}
+                  style={{ display: "none" }}
+                />
+              </label>
+            );
+          })}
+          {pageNumbers.length === currentPage && (
             <label
               htmlFor="image-selector"
               className="image-uploader drop-area"
@@ -455,49 +527,38 @@ function CarEdit({ user }) {
                 style={{ display: "none" }}
               />
             </label>
-          </div>
-        ) : (
-          <div className="video-container">
-            {videoId.length > 0 ? (
-              <YouTube className="video-player" videoId={videoId} />
-            ) : (
-              <div>Video adresi giriniz</div>
-            )}
-            <div className="input-container">
-              <input
-                type="text"
-                value={videoLink}
-                onChange={(e) => {
-                  setVideoLink(e.target.value);
-                }}
-              />
+          )}
+        </div>
+        <div className="paginateButtons">
+          {pageNumbers.map((number) => {
+            return (
               <button
                 type="button"
+                key={number}
                 onClick={() => {
-                  setVideoId(getVideoIdFromUrl(videoLink));
+                  paginate(number);
                 }}
+                className={`paginateButton ${
+                  number === currentPage && "active"
+                }`}
               >
-                +
+                {number}
               </button>
-            </div>
-          </div>
-        )}
+            );
+          })}
+        </div>
+        <button
+          type="button"
+          className="clear-all-images-button"
+          onClick={() => {
+            setSelectedImages([]);
+            setSelectedImagesPreview([]);
+            showPeginate([], 1);
+          }}
+        >
+          <BsFillTrash3Fill className="icon" /> Tüm resimleri kaldır
+        </button>
 
-        {imageOrVideo === "image" ? (
-          <button
-            type="button"
-            className="clear-all-images-button"
-            onClick={() => {
-              setSelectedImages([]);
-            }}
-          >
-            <BsFillTrash3Fill className="icon" /> Tüm resimleri kaldır
-          </button>
-        ) : (
-          <button type="button" className="clear-all-images-button">
-            <BsFillTrash3Fill className="icon" /> Videoyu kaldır
-          </button>
-        )}
         <div className="title form-element">
           <label htmlFor="car-add-form-title">İlan başlığı</label>
           <input
@@ -756,6 +817,7 @@ function CarEdit({ user }) {
           <span>
             <label htmlFor="real-estate-add-form-advertiser-name">
               İlan Sahibinin Adı
+              <span className="optional">(Opsiyonel)</span>
             </label>
             <input
               id="real-estate-add-form-advertiser-name"
@@ -770,6 +832,7 @@ function CarEdit({ user }) {
           <span>
             <label htmlFor="real-estate-add-form-advertiser-surname">
               İlan Sahibinin Soyadı
+              <span className="optional">(Opsiyonel)</span>
             </label>
             <input
               id="real-estate-add-form-advertiser-surname"
@@ -785,17 +848,179 @@ function CarEdit({ user }) {
         <div className="side-adi form-element">
           <label htmlFor="real-estate-add-form-advertiser-phone">
             İlan sahibinin numarası
-            <span className="optional">( 5554443322 )</span>
+            <span className="optional">(Opsiyonel)</span>
           </label>
-          <input
-            id="real-estate-add-form-advertiser-phone"
-            type="text"
-            placeholder="ilan sahibinin numarası.."
+          <PhoneInput
+            country={"tr"}
             value={advertiserPhone}
-            onChange={(e) => {
-              setAdvertiserPhone(e.target.value);
-            }}
+            onChange={(phone) => setAdvertiserPhone(phone)}
           />
+        </div>
+        <div className="form-element">
+          <label htmlFor="car-add-form-advertiser-note">
+            İlan Notu
+            <span className="optional">(Opsiyonel)</span>
+          </label>
+          <textarea
+            rows="10"
+            id="car-add-form-advertiser-note"
+            type="text"
+            placeholder="ilan notu.."
+            value={advertiserNote}
+            onChange={(e) => {
+              setAdvertiserNote(e.target.value);
+            }}
+          ></textarea>
+        </div>
+        <hr />
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setGuvenlikIsOpen(!guvenlikIsOpen);
+              setIcDonanimIsOpen(false);
+              setDisDonanimIsOpen(false);
+              setMultimedyaIsOpen(false);
+            }}
+          >
+            <span>
+              Güvenlik <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${guvenlikIsOpen ? "open" : "close"}`}>
+            {guvenlikListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    guvenlik.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (guvenlik.some((u) => u === item)) {
+                      setGuvenlik(guvenlik.filter((u) => u !== item));
+                    } else {
+                      setGuvenlik((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setIcDonanimIsOpen(!icDonanimIsOpen);
+              setGuvenlikIsOpen(false);
+              setDisDonanimIsOpen(false);
+              setMultimedyaIsOpen(false);
+            }}
+          >
+            <span>
+              İç Donanım <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${icDonanimIsOpen ? "open" : "close"}`}>
+            {icDonanimListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    icDonanim.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (icDonanim.some((u) => u === item)) {
+                      setIcDonanim(icDonanim.filter((u) => u !== item));
+                    } else {
+                      setIcDonanim((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setDisDonanimIsOpen(!disDonanimIsOpen);
+              setIcDonanimIsOpen(false);
+              setGuvenlikIsOpen(false);
+              setMultimedyaIsOpen(false);
+            }}
+          >
+            <span>
+              Dış Donanım <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${disDonanimIsOpen ? "open" : "close"}`}>
+            {disDonanimListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    disDonanim.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (disDonanim.some((u) => u === item)) {
+                      setDisDonanim(disDonanim.filter((u) => u !== item));
+                    } else {
+                      setDisDonanim((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
+        </div>
+        <div className={`form-element-dropdown`}>
+          <button
+            type="button"
+            onClick={() => {
+              setMultimedyaIsOpen(!multimedyaIsOpen);
+              setGuvenlikIsOpen(false);
+              setIcDonanimIsOpen(false);
+              setDisDonanimIsOpen(false);
+            }}
+          >
+            <span>
+              Multimedya Özellikleri{" "}
+              <span className="optional">(Opsiyonel)</span>
+            </span>
+            <SlArrowDown className="icon" />
+          </button>
+          <div className={`dropdown ${multimedyaIsOpen ? "open" : "close"}`}>
+            {multimedyaListesi.map((item, key) => {
+              return (
+                <p
+                  key={key}
+                  className={`dropdown-item ${
+                    multimedya.some((u) => u === item) && "selected"
+                  }`}
+                  onClick={() => {
+                    if (multimedya.some((u) => u === item)) {
+                      setMultimedya(multimedya.filter((u) => u !== item));
+                    } else {
+                      setMultimedya((oldArray) => [...oldArray, item]);
+                    }
+                  }}
+                >
+                  {item}
+                </p>
+              );
+            })}
+          </div>
         </div>
         <button type="submit" className="submit-button">
           Kaydet

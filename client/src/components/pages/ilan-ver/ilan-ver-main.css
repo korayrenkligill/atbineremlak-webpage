@@ -28,6 +28,11 @@
 .ilan-ver .stage-container .stage-inner-container input {
   background-color: var(--color-secondary-background);
 }
+.ilan-ver .stage-container .stage-inner-container p.element-description {
+  font-size: 0.8rem;
+  color: var(--color-quaternary-text);
+  margin-left: 5px;
+}
 .ilan-ver .stage-container .stage-inner-container .form-element {
   display: flex;
   flex-direction: column;
@@ -35,6 +40,9 @@
 .ilan-ver .stage-container .stage-inner-container .form-element span.optional {
   font-size: 0.7rem;
   color: var(--color-tertiary-text);
+}
+.ilan-ver .stage-container .stage-inner-container .form-element input {
+  width: 100%;
 }
 .ilan-ver .stage-container .stage-inner-container .form-element-double {
   display: flex;
@@ -45,6 +53,44 @@
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+.ilan-ver .stage-container .stage-inner-container .form-element-dropdown {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-quaternary-text);
+  border-radius: 10px;
+}
+.ilan-ver .stage-container .stage-inner-container .form-element-dropdown button {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+.ilan-ver .stage-container .stage-inner-container .form-element-dropdown button span.optional {
+  font-size: 0.8rem;
+  color: var(--color-quaternary-text);
+}
+.ilan-ver .stage-container .stage-inner-container .form-element-dropdown .dropdown.open {
+  padding: 0px 10px 10px 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  overflow: hidden;
+}
+.ilan-ver .stage-container .stage-inner-container .form-element-dropdown .dropdown.open .dropdown-item {
+  background-color: var(--color-secondary-background);
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.ilan-ver .stage-container .stage-inner-container .form-element-dropdown .dropdown.open .dropdown-item.selected {
+  background-color: var(--color-tertiary-blue);
+  color: var(--color-primary-whitetext);
+}
+.ilan-ver .stage-container .stage-inner-container .form-element-dropdown .dropdown.close {
+  display: none;
 }
 .ilan-ver .stage-container .stage-inner-container .stage-1 {
   display: flex;
@@ -92,6 +138,12 @@
   flex-direction: column;
   gap: 1rem;
 }
+.ilan-ver .stage-container .stage-inner-container .stage-2 .personal-information-container label {
+  color: var(--color-secondary-text);
+}
+.ilan-ver .stage-container .stage-inner-container .stage-2 .personal-information-container input {
+  color: var(--color-primary-text);
+}
 .ilan-ver .stage-container .stage-inner-container .stage-3 .ilan-ekle-images {
   display: flex;
   flex-direction: column;
@@ -102,7 +154,7 @@
 }
 .ilan-ver .stage-container .stage-inner-container .stage-3 .ilan-ekle-images .images-list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 10px;
 }
 .ilan-ver .stage-container .stage-inner-container .stage-3 .ilan-ekle-images .images-list label {
@@ -134,7 +186,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-fifth-blue);
+  background-color: var(--color-secondary-background);
   transition: background-color 0.2s;
 }
 .ilan-ver .stage-container .stage-inner-container .stage-3 .ilan-ekle-images .images-list label.drop-area .placeholder {
@@ -165,6 +217,137 @@
   flex-direction: column;
   gap: 1rem;
 }
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element {
+  display: flex;
+  flex-direction: column;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element label,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element label {
+  color: var(--color-secondary-text);
+  padding-bottom: 8px;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element .ql-picker,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element .ql-picker,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element .ql-editor.ql-blank::before,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element .ql-editor.ql-blank::before,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element .ql-toolbar,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element .ql-toolbar {
+  color: var(--color-primary-text) !important;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element input,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element input,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element select,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element select,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element textarea,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element textarea,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element .quill,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element .quill {
+  width: 100%;
+  color: var(--color-primary-text);
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element span.optional,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element span.optional {
+  font-size: 0.7rem;
+  color: var(--color-tertiary-text);
+  margin-left: 5px;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element-double,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element-double {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element-double label,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element-double label {
+  color: var(--color-secondary-text);
+  padding-bottom: 8px;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element-double input,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element-double input,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element-double select,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element-double select,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element-double textarea,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element-double textarea,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element-double .quill,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element-double .quill {
+  width: 100%;
+  color: var(--color-primary-text);
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element-double span:not(.optional),
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element-double span:not(.optional) {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-4 .konut-ekle-ilan-bilgileri .form-element-double span:not(.optional) span.optional,
+.ilan-ver .stage-container .stage-inner-container .stage-4 .otomobil-ekle-ilan-bilgileri .form-element-double span:not(.optional) span.optional {
+  font-size: 0.7rem;
+  color: var(--color-tertiary-text);
+  margin-left: 5px;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 {
+  background-color: var(--color-primary-background);
+  border-radius: 10px;
+  padding: 20px;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5 .form-element-dropdown,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 .form-element-dropdown {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--color-quaternary-text);
+  border-radius: 10px;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5 .form-element-dropdown button,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 .form-element-dropdown button {
+  padding: 15px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 1rem;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5 .form-element-dropdown button span,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 .form-element-dropdown button span {
+  color: var(--color-secondary-text);
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5 .form-element-dropdown button span.optional,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 .form-element-dropdown button span.optional {
+  font-size: 0.7rem;
+  color: var(--color-quaternary-text);
+  margin-left: 5px;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5 .form-element-dropdown .dropdown.open,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 .form-element-dropdown .dropdown.open {
+  padding: 0px 10px 10px 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+  overflow: hidden;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5 .form-element-dropdown .dropdown.open .dropdown-item,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 .form-element-dropdown .dropdown.open .dropdown-item {
+  background-color: var(--color-secondary-background);
+  color: var(--color-primary-text);
+  padding: 8px;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5 .form-element-dropdown .dropdown.open .dropdown-item.selected,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 .form-element-dropdown .dropdown.open .dropdown-item.selected {
+  background-color: var(--color-tertiary-blue);
+  color: var(--color-primary-whitetext);
+}
+.ilan-ver .stage-container .stage-inner-container .stage-5 .konut-stage-5 .form-element-dropdown .dropdown.close,
+.ilan-ver .stage-container .stage-inner-container .stage-5 .otomobil-stage-5 .form-element-dropdown .dropdown.close {
+  display: none;
+}
 .ilan-ver .stage-container .stage-inner-container button.next-button {
   padding: 10px;
   background-color: var(--color-primary-blue);
@@ -174,7 +357,7 @@
 }
 .ilan-ver .stage-container .stage-inner-container button.next-button:disabled {
   cursor: not-allowed;
-  background-color: var(--color-secondary-whitetext);
+  background-color: var(--color-tertiary-whitetext);
 }
 .ilan-ver .stage-container .stage-inner-container button.back-button {
   font-size: 1rem;

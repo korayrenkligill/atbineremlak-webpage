@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { IoMenu } from "react-icons/io5";
+import { BiSearchAlt } from "react-icons/bi";
+import { FaTrash } from "react-icons/fa";
 import "./emlak-sidebar.css";
+import { GiClick } from "react-icons/gi";
 
 const manisaIlceleri = [
   {
@@ -184,7 +186,7 @@ function EmlakSidebar(props) {
           setMobileMenu(!mobileMenu);
         }}
       >
-        Filtreleme Menüsü <IoMenu className="icon" />
+        Filtreleme Menüsü <GiClick className="icon" />
       </h2>
       <div
         className={`mobile-menu ${
@@ -197,11 +199,8 @@ function EmlakSidebar(props) {
             id="emlak-sidebar-ilce"
             value={props.ilce}
             onChange={(e) => {
-              if (e.target.value !== "") props.setIlce(e.target.value);
-              else {
-                props.setIlce(e.target.value);
-                props.setMahalle(e.target.value);
-              }
+              props.setIlce(e.target.value);
+              props.setMahalle("");
             }}
           >
             {manisaIlceleri.map((item, key) => {
@@ -286,7 +285,7 @@ function EmlakSidebar(props) {
             onChange={(e) => props.setRoomCount(e.target.value)}
           >
             <option value="">Seçiniz..</option>
-            <option value="Stüdyo (1+0)">Stüdyo (1 + 0)</option>
+            <option value="Stüdyo (1 + 0)">Stüdyo (1 + 0)</option>
             <option value="1 + 1">1 + 1</option>
             <option value="1.5 + 1">1.5 + 1</option>
             <option value="2 + 0">2 + 0</option>
@@ -388,6 +387,16 @@ function EmlakSidebar(props) {
             <option value="Kiracılı">Kiracılı</option>
             <option value="Mülk sahibi">Mülk sahibi</option>
           </select>
+        </div>
+        <div className="buttons">
+          <button className="submit" onClick={props.handleFilterChanged}>
+            ARA
+            <BiSearchAlt className="icon" />
+          </button>
+          <button className="clear" onClick={props.handleClearFilter}>
+            filtreyi temizle
+            <FaTrash className="icon" />
+          </button>
         </div>
       </div>
     </div>

@@ -1,3 +1,6 @@
+main.main-page .contact {
+  padding: var(--page-padding);
+}
 main.main-page .contact .contact-container {
   display: flex;
   gap: 2rem;
@@ -22,7 +25,8 @@ main.main-page .contact .contact-container .contact-form div textarea {
   padding: 10px;
   border: none;
   border-radius: 10px;
-  background-color: var(--color-fifth-text);
+  background-color: var(--color-fifth-text) !important;
+  color: var(--color-secondary-text);
   resize: vertical;
 }
 main.main-page .contact .contact-container .contact-form div input:focus,
@@ -48,6 +52,7 @@ main.main-page .contact .contact-container iframe {
   flex: 1;
   border: none;
   border-radius: 30px;
+  width: 100%;
 }
 main.main-page .contact .numbers {
   display: flex;
@@ -83,11 +88,13 @@ main.main-page .contact .numbers .person .profile-name .profile {
 main.main-page .contact .numbers .person .profile-name p {
   font-weight: bold;
   font-size: 1rem;
+  color: var(--color-primary-text);
 }
 main.main-page .contact .numbers .person .profile-name span {
   display: inline-block;
   transform: translateY(-5px);
   font-size: 0.8rem;
+  color: var(--color-secondary-text);
 }
 main.main-page .contact .numbers .person .contact-informations {
   display: flex;
@@ -103,6 +110,7 @@ main.main-page .contact .numbers .person .contact-informations a {
   display: flex;
   align-items: center;
   gap: 4px;
+  color: var(--color-primary-text);
 }
 main.main-page .contact .numbers .person .contact-informations a img.image-icon {
   width: 15px;

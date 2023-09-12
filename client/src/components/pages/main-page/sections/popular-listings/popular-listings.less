@@ -1,15 +1,18 @@
 main.main-page {
   .popular-listings {
+    padding: var(--page-padding);
+
     .real-estate-listings {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 50px;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 30px;
       .list-item {
         display: flex;
         flex-direction: column;
         transition: transform 0.4s;
         padding: 10px;
         border-radius: 20px;
+        background-color: var(--color-primary-background);
         cursor: pointer;
         .image-background {
           height: 200px;

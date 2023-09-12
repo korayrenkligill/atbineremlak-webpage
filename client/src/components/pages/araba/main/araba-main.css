@@ -1,9 +1,40 @@
-.emlak-main {
+.araba-main .filtreler {
+  padding: 10px;
+  background-color: var(--color-primary-background);
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: var(--color-tertiary-text);
+  text-transform: lowercase;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+.araba-main .filtreler span {
+  font-size: 1rem;
+  padding: 0px 10px;
+  color: var(--color-quaternary-text);
+  border-right: 1px solid var(--color-quaternary-text);
+}
+.araba-main .filtreler p {
+  padding: 0px 10px;
+}
+.araba-main .filtreler p:not(:last-child) {
+  padding: 0px 10px;
+  border-right: 1px solid var(--color-quaternary-text);
+}
+.araba-main .null-list {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-tertiary-text);
+}
+.araba-main .ilanlar {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
-.emlak-main .emlak-item {
+.araba-main .ilanlar .araba-item {
   background-color: var(--color-primary-background);
   box-shadow: var(--boxshadow);
   border-radius: 10px;
@@ -11,7 +42,7 @@
   display: flex;
   flex-direction: column;
 }
-.emlak-main .emlak-item .frame {
+.araba-main .ilanlar .araba-item .frame {
   aspect-ratio: 16 / 9;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,7 +50,7 @@
   background-color: var(--color-secondary-background);
   position: relative;
 }
-.emlak-main .emlak-item .frame .image-count {
+.araba-main .ilanlar .araba-item .frame .image-count {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,31 +63,94 @@
   background-color: rgba(255, 255, 255, 0.705);
   color: #242424;
 }
-.emlak-main .emlak-item .texts {
-  margin: 5px 20px 10px 20px;
+.araba-main .ilanlar .araba-item .frame .sold {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.emlak-main .emlak-item .texts h1 {
+.araba-main .ilanlar .araba-item .frame .sold p {
+  font-size: 2rem;
+  font-weight: bolder;
+  letter-spacing: 2px;
+  color: var(--color-primary-whitetext);
+}
+.araba-main .ilanlar .araba-item .frame .hide {
+  display: none !important;
+}
+.araba-main .ilanlar .araba-item .texts {
+  margin: 5px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+}
+.araba-main .ilanlar .araba-item .texts h1 {
   font-size: 1rem;
+  color: var(--color-primary-text);
 }
-.emlak-main .emlak-item .texts p {
+.araba-main .ilanlar .araba-item .texts p {
   font-size: 0.9rem;
   color: var(--color-secondary-text);
 }
-.emlak-main .emlak-item .texts p span {
+.araba-main .ilanlar .araba-item .texts p span {
   color: var(--color-tertiary-text);
 }
-.emlak-main .emlak-item p.price {
+.araba-main .ilanlar .araba-item .texts p .icon {
+  transform: translateY(2px);
+  margin-right: 4px;
+}
+.araba-main .ilanlar .araba-item .texts p.marka-seri {
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-transform: lowercase;
+  white-space: nowrap;
+  color: var(--color-tertiary-text);
+}
+.araba-main .ilanlar .araba-item div.features {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+  margin-top: auto;
+  cursor: default;
+}
+.araba-main .ilanlar .araba-item div.features p {
+  padding: 0px 10px;
+  font-size: 0.9rem;
+  color: var(--color-secondary-text);
+}
+.araba-main .ilanlar .araba-item div.features p span {
+  color: var(--color-tertiary-text);
+}
+.araba-main .ilanlar .araba-item div.features p .icon {
+  transform: translateY(2px);
+  margin-right: 4px;
+}
+.araba-main .ilanlar .araba-item div.features p:not(:last-child) {
+  border-right: 1px solid var(--color-quaternary-text);
+}
+.araba-main .ilanlar .araba-item p.price {
   display: block;
   text-align: center;
   padding: 10px;
-  margin-top: auto;
   background-color: var(--color-primary-blue);
   color: var(--color-primary-whitetext);
   font-size: 1.1rem;
   font-weight: bold;
+  transition: background-color 0.4s, color 0.4s;
+  cursor: pointer;
+}
+.araba-main .ilanlar .araba-item p.price:hover {
+  background-color: var(--color-primary-background);
+  color: var(--color-primary-blue);
 }
 @media screen and (max-width: 768px) {
-  .emlak-main {
+  .araba-main {
     padding: 0px 5%;
   }
 }

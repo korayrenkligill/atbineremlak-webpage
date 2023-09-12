@@ -1,0 +1,59 @@
+.theme-colors {
+  .theme-choser {
+    margin-bottom: 20px;
+    .theme-choser-select {
+      color: var(--color-primary-text);
+      width: 100%;
+    }
+  }
+  .colors {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    .color-header {
+      font-size: 1.2rem;
+      color: var(--color-secondary-text);
+      border-bottom: 2px solid var(--color-fifth-text);
+      padding: 0px 10px;
+    }
+    .color-header:not(:first-child) {
+      margin-top: 10px;
+    }
+    .color {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 10px;
+      .color-preview {
+        width: 25px;
+        height: 25px;
+        border-radius: 5px;
+      }
+      .color-input {
+        color: var(--color-primary-text);
+        max-width: 80px !important;
+      }
+      .color-title {
+        color: var(--color-tertiary-text);
+        font-size: 0.8rem;
+      }
+    }
+  }
+  .save-theme-button {
+    background-color: var(--color-primary-blue);
+    padding: 10px 20px;
+    border-radius: 10px;
+    margin-top: 10px;
+    font-size: 1rem;
+    color: var(--color-primary-whitetext);
+    transition: color 0.4s, background-color 0.4s;
+    .icon {
+      transform: translateY(2px);
+    }
+  }
+  .save-theme-button:hover {
+    background-color: var(--color-primary-background);
+    color: var(--color-primary-text);
+  }
+}

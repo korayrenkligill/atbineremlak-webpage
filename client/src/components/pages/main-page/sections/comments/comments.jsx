@@ -18,6 +18,7 @@ function Comments() {
     autoplaySpeed: 5000,
     pauseOnHover: true,
     cssEase: "linear",
+    arrows: false,
   };
   useEffect(() => {
     function handleWindowResize() {
@@ -46,24 +47,7 @@ function Comments() {
                   alt=""
                 />
                 <div className="texts">
-                  <h2>Raymond Hopkins</h2>
-                  <p>
-                    Sizinle çalışmak gerçekten keyifliydi ve bana her adımda
-                    destek olduğunuzu hissettim.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div>
-            <div className="comment-container">
-              <div className="comment">
-                <img
-                  src="https://randomuser.me/api/portraits/women/82.jpg"
-                  alt=""
-                />
-                <div className="texts">
-                  <h2>Dawn Herrera</h2>
+                  <h2>Halil Zeybek</h2>
                   <p>
                     Sizinle çalışmak gerçekten keyifliydi ve bana her adımda
                     destek olduğunuzu hissettim.
@@ -80,7 +64,7 @@ function Comments() {
                   alt=""
                 />
                 <div className="texts">
-                  <h2>Willie Gardner</h2>
+                  <h2>Mustafa Efe Yıldız</h2>
                   <p>
                     Sizinle çalışmak gerçekten keyifliydi ve bana her adımda
                     destek olduğunuzu hissettim.
@@ -93,11 +77,28 @@ function Comments() {
             <div className="comment-container">
               <div className="comment">
                 <img
-                  src="https://randomuser.me/api/portraits/women/12.jpg"
+                  src="https://randomuser.me/api/portraits/men/86.jpg"
                   alt=""
                 />
                 <div className="texts">
-                  <h2>Naomi Harrison</h2>
+                  <h2>Koray Renkligil</h2>
+                  <p>
+                    Sizinle çalışmak gerçekten keyifliydi ve bana her adımda
+                    destek olduğunuzu hissettim.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div>
+            <div className="comment-container">
+              <div className="comment">
+                <img
+                  src="https://randomuser.me/api/portraits/men/12.jpg"
+                  alt=""
+                />
+                <div className="texts">
+                  <h2>Muhammet Berk Gülpınar</h2>
                   <p>
                     Sizinle çalışmak gerçekten keyifliydi ve bana her adımda
                     destek olduğunuzu hissettim.

@@ -9,11 +9,8 @@ import {
 import { v4 as uuidv4 } from "uuid";
 import "./user-add.css";
 import { useNavigate } from "react-router-dom";
-import {
-  BACKEND_URL,
-  cloudName,
-  uploadPreset,
-} from "../../../../elements/config";
+import { BACKEND_URL } from "../../../../elements/config";
+import PhoneInput from "react-phone-input-2";
 
 function UserAdd() {
   const navigation = useNavigate();
@@ -57,7 +54,7 @@ function UserAdd() {
     };
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     let newNumber = "";
     let imageUrl = "";
@@ -86,13 +83,11 @@ function UserAdd() {
       ErrorNotification("Girilen şifreler eşleşmiyor");
       error = true;
     }
-    if (number.length !== 10) {
-      ErrorNotification(
-        "Doğru bir numara girişi yapılmadı örnek numara: (5112223344)"
-      );
+    if (number.length !== 12) {
+      ErrorNotification("Doğru bir numara girişi yapılmadı");
       error = true;
     } else {
-      newNumber = "+90" + number;
+      newNumber = "+" + number;
     }
     if (age < 18) {
       ErrorNotification(
@@ -106,36 +101,36 @@ function UserAdd() {
     }
     if (!error) {
       const formData = new FormData();
-      formData.append("file", selectedImage);
-      formData.append("upload_preset", uploadPreset); // Cloudinary yükleme ön tanımlaması
-      formData.append("folder", "profiles");
-      axios
-        .post(
-          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-          formData
-        )
-        .then((response) => {
-          imageUrl = response.data.secure_url;
-          console.log(response.data.secure_url);
-        })
-        .then(() => {
-          const newUser = {
-            id: uuidv4(),
-            name: name,
-            surname: surname,
-            password: password,
-            email: email,
-            phone: newNumber,
-            gender: gender,
-            age: age,
-            profile: imageUrl,
-          };
-          axios.post(`${BACKEND_URL}/users`, newUser).then(() => {
-            console.log(newUser);
-            navigation("/admin/kullanıcılar/");
+      formData.append("id", uuidv4());
+      formData.append("name", name);
+      formData.append("surname", surname);
+      formData.append("password", password);
+      formData.append("email", email);
+      formData.append("phone", newNumber);
+      formData.append("gender", gender);
+      formData.append("age", age.toString());
+      formData.append(`images`, selectedImage);
+      try {
+        await axios
+          .post(`${BACKEND_URL}/users`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(() => {
             SuccessNotification("Kullanıcı başarıyla eklendi");
+            navigation("/admin/kullanıcılar/");
+          })
+          .catch(() => {
+            ErrorNotification(
+              "Kullanıcı eklenirken hata ile karşılaşıldı tekrar deneyiniz"
+            );
+            navigation("/admin/kullanıcılar/");
           });
-        });
+        console.log("Resimler yüklendi!");
+      } catch (error) {
+        console.error("Resimler yüklenirken bir hata oluştu:", error);
+      }
     }
   };
   useEffect(() => {
@@ -219,15 +214,11 @@ function UserAdd() {
           </span>
         </div>
         <div className="title form-element">
-          <label htmlFor="user-add-form-number">
-            Telefon Numarası <span className="optional">(5554443322)</span>
-          </label>
-          <input
-            type="text"
-            placeholder="numara.."
-            id="user-add-form-number"
+          <label htmlFor="user-add-form-number">Telefon Numarası</label>
+          <PhoneInput
+            country={"tr"}
             value={number}
-            onChange={(e) => setNumber(e.target.value)}
+            onChange={(phone) => setNumber(phone)}
           />
         </div>
         <div className="title form-element">

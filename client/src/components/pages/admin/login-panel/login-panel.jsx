@@ -61,7 +61,6 @@ function LoginPanel({ user, setUser }) {
           <button className="submit-button" type="submit">
             Giriş yap
           </button>
-          <p className="error-text">Error!</p>
         </form>
       </div>
     );

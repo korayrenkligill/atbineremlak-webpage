@@ -1,3 +1,6 @@
+main.main-page .comments {
+  padding: var(--page-padding);
+}
 main.main-page .comments .comments-slider {
   position: relative;
   overflow: hidden;
@@ -10,6 +13,12 @@ main.main-page .comments .comments-slider .comment-container {
   position: relative;
   padding: 2rem;
   z-index: 1;
+}
+main.main-page .comments .comments-slider .comment-container .texts h2 {
+  color: var(--color-primary-text);
+}
+main.main-page .comments .comments-slider .comment-container .texts p {
+  color: var(--color-secondary-text);
 }
 main.main-page .comments .comments-slider .comment-container .comment {
   display: flex;

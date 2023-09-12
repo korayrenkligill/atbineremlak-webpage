@@ -18,12 +18,13 @@ function CarList() {
     setAreYouSureIsOpen(false);
   };
   const acceptFunction = (id) => {
+    setLoading(true);
     axios
       .delete(`${BACKEND_URL}/cars/${id}`)
-      .then(() => {
-        setLoading(true);
-      })
       .then(() => setAreYouSureIsOpen(false))
+      .then(() => {
+        setCars([]);
+      })
       .then(getCars);
   };
 
@@ -46,7 +47,12 @@ function CarList() {
   if (loading)
     return (
       <div className="loading-screen">
-        <PuffLoader color="#008cff" />;
+        <PuffLoader color="#008cff" />
+        <h2>İlanlar Listeleniyor</h2>
+        <p>
+          "bu işlem ilan sayısına bağlı olarak biraz zaman alabilir sabrınız
+          için teşekkürler"
+        </p>
       </div>
     );
   else

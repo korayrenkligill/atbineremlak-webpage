@@ -25,12 +25,20 @@
       input {
         background-color: var(--color-secondary-background);
       }
+      p.element-description {
+        font-size: 0.8rem;
+        color: var(--color-quaternary-text);
+        margin-left: 5px;
+      }
       .form-element {
         display: flex;
         flex-direction: column;
         span.optional {
           font-size: 0.7rem;
           color: var(--color-tertiary-text);
+        }
+        input {
+          width: 100%;
         }
       }
       .form-element-double {
@@ -41,6 +49,44 @@
           flex: 1;
           display: flex;
           flex-direction: column;
+        }
+      }
+      .form-element-dropdown {
+        display: flex;
+        flex-direction: column;
+        border: 1px solid var(--color-quaternary-text);
+        border-radius: 10px;
+        button {
+          padding: 15px 20px;
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          font-size: 1rem;
+          span.optional {
+            font-size: 0.8rem;
+            color: var(--color-quaternary-text);
+          }
+        }
+        .dropdown.open {
+          padding: 0px 10px 10px 10px;
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+          gap: 1rem;
+          overflow: hidden;
+          .dropdown-item {
+            background-color: var(--color-secondary-background);
+            padding: 8px;
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+          }
+          .dropdown-item.selected {
+            background-color: var(--color-tertiary-blue);
+            color: var(--color-primary-whitetext);
+          }
+        }
+        .dropdown.close {
+          display: none;
         }
       }
       .stage-1 {
@@ -91,6 +137,12 @@
           display: flex;
           flex-direction: column;
           gap: 1rem;
+          label {
+            color: var(--color-secondary-text);
+          }
+          input {
+            color: var(--color-primary-text);
+          }
         }
       }
       .stage-3 {
@@ -103,7 +155,7 @@
           border-radius: 10px;
           .images-list {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
             gap: 10px;
             label {
               min-width: 200px;
@@ -134,7 +186,7 @@
               display: flex;
               align-items: center;
               justify-content: center;
-              background-color: var(--color-fifth-blue);
+              background-color: var(--color-secondary-background);
               transition: background-color 0.2s;
               .placeholder {
                 display: flex;
@@ -166,6 +218,111 @@
           display: flex;
           flex-direction: column;
           gap: 1rem;
+          .form-element {
+            display: flex;
+            flex-direction: column;
+            label {
+              color: var(--color-secondary-text);
+              padding-bottom: 8px;
+            }
+            .ql-picker,
+            .ql-editor.ql-blank::before,
+            .ql-toolbar {
+              color: var(--color-primary-text) !important;
+            }
+            input,
+            select,
+            textarea,
+            .quill {
+              width: 100%;
+              color: var(--color-primary-text);
+            }
+            span.optional {
+              font-size: 0.7rem;
+              color: var(--color-tertiary-text);
+              margin-left: 5px;
+            }
+          }
+          .form-element-double {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            label {
+              color: var(--color-secondary-text);
+              padding-bottom: 8px;
+            }
+            input,
+            select,
+            textarea,
+            .quill {
+              width: 100%;
+              color: var(--color-primary-text);
+            }
+            span:not(.optional) {
+              flex: 1;
+              display: flex;
+              flex-direction: column;
+              span.optional {
+                font-size: 0.7rem;
+                color: var(--color-tertiary-text);
+                margin-left: 5px;
+              }
+            }
+          }
+        }
+      }
+      .stage-5 {
+        background-color: var(--color-primary-background);
+        border-radius: 10px;
+        padding: 20px;
+        .konut-stage-5,
+        .otomobil-stage-5 {
+          display: flex;
+          flex-direction: column;
+          gap: 2rem;
+          .form-element-dropdown {
+            display: flex;
+            flex-direction: column;
+            border: 1px solid var(--color-quaternary-text);
+            border-radius: 10px;
+            button {
+              padding: 15px 20px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              font-size: 1rem;
+              span {
+                color: var(--color-secondary-text);
+              }
+              span.optional {
+                font-size: 0.7rem;
+                color: var(--color-quaternary-text);
+                margin-left: 5px;
+              }
+            }
+            .dropdown.open {
+              padding: 0px 10px 10px 10px;
+              display: grid;
+              grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+              gap: 1rem;
+              overflow: hidden;
+              .dropdown-item {
+                background-color: var(--color-secondary-background);
+                color: var(--color-primary-text);
+                padding: 8px;
+                border-radius: 10px;
+                text-align: center;
+                cursor: pointer;
+              }
+              .dropdown-item.selected {
+                background-color: var(--color-tertiary-blue);
+                color: var(--color-primary-whitetext);
+              }
+            }
+            .dropdown.close {
+              display: none;
+            }
+          }
         }
       }
       button.next-button {
@@ -177,7 +334,7 @@
       }
       button.next-button:disabled {
         cursor: not-allowed;
-        background-color: var(--color-secondary-whitetext);
+        background-color: var(--color-tertiary-whitetext);
       }
       button.back-button {
         font-size: 1rem;
@@ -201,8 +358,6 @@
           min-width: 90vw;
         }
         .stage-1 {
-          button {
-          }
         }
       }
     }

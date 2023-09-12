@@ -1,5 +1,7 @@
 main.main-page {
   .comments {
+    padding: var(--page-padding);
+
     .comments-slider {
       position: relative;
       overflow: hidden;
@@ -11,6 +13,14 @@ main.main-page {
         position: relative;
         padding: 2rem;
         z-index: 1;
+        .texts {
+          h2 {
+            color: var(--color-primary-text);
+          }
+          p {
+            color: var(--color-secondary-text);
+          }
+        }
         .comment {
           display: flex;
           align-items: center;

@@ -1,0 +1,482 @@
+.araba-detail-page {
+  margin: var(--page-padding);
+  margin-top: 30px;
+  border-radius: 10px 10px 0px 0px;
+  box-shadow: var(--boxshadow);
+  background-color: var(--color-primary-background);
+}
+.araba-detail-page .header {
+  padding: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+.araba-detail-page .header .date {
+  color: var(--color-tertiary-text);
+  width: 100%;
+}
+.araba-detail-page .header .title {
+  flex: 1;
+  font-size: 1.3rem;
+  margin-right: 20px;
+  color: var(--color-primary-text);
+}
+.araba-detail-page .header .price {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: var(--color-primary-text);
+}
+.araba-detail-page .columns {
+  display: grid;
+  grid-template-columns: 70% 30%;
+  align-items: start;
+  overflow: hidden;
+  margin-top: 10px;
+}
+.araba-detail-page .columns .left {
+  border-right: 2px solid var(--color-fifth-text);
+}
+.araba-detail-page .columns .left .item {
+  padding: 10px;
+}
+.araba-detail-page .columns .left .item .header {
+  padding: 0px;
+  margin: 0px;
+  font-size: 1.2rem;
+  color: var(--color-primary-text);
+}
+.araba-detail-page .columns .left .item .inner-item {
+  padding: 10px;
+  margin: 10px 0px;
+}
+.araba-detail-page .columns .left .item .inner-item .inner-header {
+  padding: 0px;
+  margin: 0px;
+  font-size: 1.1rem;
+  color: var(--color-primary-text);
+}
+.araba-detail-page .columns .left .images {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+  overflow: hidden;
+}
+.araba-detail-page .columns .left .images .slider {
+  max-width: 70vw;
+  width: 80%;
+  overflow: hidden;
+}
+.araba-detail-page .columns .left .images .slider .image-item {
+  padding: 10px;
+}
+.araba-detail-page .columns .left .images .slider .image-item .frame {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-color: var(--color-secondary-background);
+  border-radius: 10px;
+  aspect-ratio: 16 / 9;
+  position: relative;
+}
+.araba-detail-page .columns .left .images .slider .image-item .frame button {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 1.7rem;
+  color: var(--color-primary-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3px;
+  border-radius: 10px;
+}
+.araba-detail-page .columns .left .images .image-buttons {
+  display: flex;
+  flex-direction: column;
+  width: 60%;
+}
+.araba-detail-page .columns .left .images .image-buttons .buttons {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: white !important;
+}
+.araba-detail-page .columns .left .images .image-buttons .buttons button {
+  width: 100%;
+  max-width: 160px;
+  aspect-ratio: 16/9;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-radius: 10px;
+  filter: grayscale(80%) blur(1px);
+}
+.araba-detail-page .columns .left .images .image-buttons .buttons button.active {
+  filter: grayscale(0%);
+}
+.araba-detail-page .columns .left .images .image-buttons .buttons button.prev {
+  margin-right: auto;
+  max-width: 40px;
+  filter: grayscale(0%) blur(0px);
+}
+.araba-detail-page .columns .left .images .image-buttons .buttons button.after {
+  margin-left: auto;
+  max-width: 40px;
+  filter: grayscale(0%) blur(0px);
+}
+.araba-detail-page .columns .left .images .image-buttons .coefficent-list {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  margin-top: 5px;
+}
+.araba-detail-page .columns .left .images .image-buttons .coefficent-list button {
+  width: 30px;
+  height: 30px;
+  background-color: var(--color-secondary-background);
+  border-radius: 5px;
+  color: var(--color-primary-text);
+}
+.araba-detail-page .columns .left .images .image-buttons .coefficent-list button.active {
+  background-color: var(--color-primary-blue);
+  color: var(--color-primary-whitetext);
+}
+.araba-detail-page .columns .left .description .description-text {
+  padding: 10px;
+  font-size: 1rem;
+  color: var(--color-secondary-text);
+}
+.araba-detail-page .columns .left .galery {
+  max-width: 70vw;
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+}
+.araba-detail-page .columns .left .galery .full-photo-button {
+  position: absolute;
+  right: 5%;
+  bottom: 120px;
+  font-size: 1.8rem;
+  color: var(--color-primary-whitetext);
+}
+.araba-detail-page .columns .left .galery .image-gallery-icon svg {
+  transform: scale(0.5);
+}
+.araba-detail-page .columns .left .galery .image-gallery-thumbnail {
+  height: 70px !important;
+}
+.araba-detail-page .columns .left .galery .image-gallery-thumbnail .image-gallery-thumbnail-inner {
+  width: 100% !important;
+  height: 100% !important;
+}
+.araba-detail-page .columns .left .galery .image-gallery-thumbnail .image-gallery-thumbnail-inner .image-gallery-thumbnail-image {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover !important;
+  object-position: center !important;
+}
+.araba-detail-page .columns .left .galery .image-gallery-slide {
+  max-height: 600px;
+}
+.araba-detail-page .columns .left .galery .image-gallery-slide .image-gallery-image {
+  max-height: 600px;
+  height: 100% !important;
+  object-fit: contain !important;
+  object-position: center !important;
+}
+.araba-detail-page .columns .left .features .inner-item-elements {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 10px;
+}
+.araba-detail-page .columns .left .features .inner-item-elements .inner-item-element {
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-background);
+  color: var(--color-primary-text);
+}
+.araba-detail-page .columns .left .details {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 15px;
+}
+.araba-detail-page .columns .right div.owner {
+  margin: 30px 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-background);
+}
+.araba-detail-page .columns .right div.owner h2 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: var(--color-tertiary-text);
+}
+.araba-detail-page .columns .right div.owner div.owner-informations {
+  padding: 0px 15px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 15px;
+}
+.araba-detail-page .columns .right div.owner div.owner-informations p {
+  font-size: 1rem;
+  color: var(--color-secondary-text);
+}
+.araba-detail-page .columns .right div.owner div.owner-informations p:first-child {
+  font-weight: bold;
+  color: var(--color-primary-text);
+}
+.araba-detail-page .columns .right div.owner div.owner-informations div.owner-informations-frame {
+  width: 70px;
+  height: 70px;
+  border-radius: 100%;
+  overflow: hidden;
+}
+.araba-detail-page .columns .right div.owner div.owner-informations div.owner-informations-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.araba-detail-page .columns .right div.owner div.communication-buttons {
+  margin-top: 15px;
+  margin-bottom: 5px;
+  padding: 0px 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.araba-detail-page .columns .right div.owner div.communication-buttons a {
+  flex: 1;
+  text-align: center;
+  padding: 7px;
+  border-radius: 10px;
+  font-size: 1rem;
+  color: var(--color-primary-text);
+}
+.araba-detail-page .columns .right div.owner div.communication-buttons a .icon {
+  margin-left: 2px;
+  transform: translateY(2px);
+  font-size: 0.9rem;
+}
+.araba-detail-page .columns .right div.owner div.communication-buttons a:nth-child(1) {
+  background-color: var(--color-secondary-green);
+}
+.araba-detail-page .columns .right div.owner div.communication-buttons a:nth-child(2) {
+  background-color: var(--color-tertiary-blue);
+}
+.araba-detail-page .columns .right div.owner div.communication-buttons a:nth-child(3) {
+  background-color: var(--color-secondary-red);
+}
+.araba-detail-page .columns .right div.advertiser {
+  margin: 30px 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-background);
+}
+.araba-detail-page .columns .right div.advertiser p {
+  color: var(--color-primary-text);
+  font-weight: bold;
+}
+.araba-detail-page .columns .right div.advertiser p span {
+  font-weight: normal;
+  color: var(--color-secondary-text);
+}
+.araba-detail-page .columns .right div.advertiser p:not(:first-child) {
+  margin-top: 5px;
+}
+.araba-detail-page .columns .right div.contact-info {
+  margin: 30px 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-background);
+}
+.araba-detail-page .columns .right div.contact-info h2 {
+  font-size: 1.2rem;
+  margin-bottom: 15px;
+  font-weight: bold;
+  color: var(--color-tertiary-text);
+}
+.araba-detail-page .columns .right div.contact-info form.contact-form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+.araba-detail-page .columns .right div.contact-info form.contact-form input {
+  width: 100%;
+  background-color: var(--color-primary-background) !important;
+  border: 1px solid var(--color-tertiary-background) !important;
+  margin-bottom: 10px;
+  margin-top: 5px;
+}
+.araba-detail-page .columns .right div.contact-info form.contact-form label {
+  color: var(--color-tertiary-text);
+}
+.araba-detail-page .columns .right div.contact-info form.contact-form button {
+  margin-top: 10px;
+  padding: 10px;
+  font-size: 1rem;
+  background-color: var(--color-primary-blue);
+  border-radius: 10px;
+  color: var(--color-primary-whitetext);
+}
+.araba-detail-page .columns .right div.admin-buttons {
+  margin: 30px 20px;
+  padding: 10px;
+  border-radius: 10px;
+  background-color: var(--color-secondary-background);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  text-align: center;
+  overflow: hidden;
+}
+.araba-detail-page .columns .right div.admin-buttons h2 {
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: var(--color-tertiary-text);
+}
+.araba-detail-page .columns .right div.admin-buttons div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+.araba-detail-page .columns .right div.admin-buttons div button {
+  flex: 1;
+  padding: 10px;
+  font-weight: bolder;
+  background-color: var(--color-primary-background);
+  border: 1px solid var(--color-tertiary-background);
+  border-radius: 10px;
+  color: var(--color-secondary-text);
+  font-size: 0.8rem;
+  transition: border 0.5s, background-color 0.5s;
+}
+.araba-detail-page .columns .right div.admin-buttons div button .icon {
+  transform: translateY(1px) scale(1.2);
+  margin-right: 5px;
+}
+.araba-detail-page .columns .right div.admin-buttons div button:nth-child(1):hover {
+  background-color: var(--color-tertiary-blue);
+  border: 1px solid var(--color-secondary-blue);
+}
+.araba-detail-page .columns .right div.admin-buttons div button:nth-child(2):hover {
+  background-color: var(--color-secondary-red);
+  border: 1px solid var(--color-primary-red);
+}
+.araba-detail-page .columns .right div.admin-buttons select {
+  background-color: var(--color-primary-background) !important;
+  border: 1px solid var(--color-tertiary-background) !important;
+}
+.araba-detail-page .columns .right div.admin-buttons button {
+  background-color: var(--color-primary-blue);
+  color: var(--color-primary-whitetext);
+  padding: 10px;
+  border-radius: 10px;
+}
+.araba-detail-page .columns .right div.admin-buttons.hide {
+  display: none;
+}
+.araba-detail-page .mobile-contact {
+  display: none;
+}
+@media screen and (max-width: 1440px) {
+  .emlak-detail-page .columns .left .images .slider {
+    max-width: 70vw;
+    width: 80%;
+  }
+  .emlak-detail-page .columns .left .images .image-buttons {
+    width: 70%;
+  }
+}
+@media screen and (max-width: 1300px) {
+  .emlak-detail-page .columns .right div.owner div.communication-buttons a span {
+    display: none;
+  }
+}
+@media screen and (max-width: 1200px) {
+  .emlak-detail-page {
+    margin-top: 0px;
+    border-radius: 0px;
+  }
+  .emlak-detail-page .columns .left .images .slider {
+    max-width: 80vw;
+    width: 80%;
+  }
+  .emlak-detail-page .columns .left .images .image-buttons {
+    width: 100%;
+  }
+}
+@media screen and (max-width: 768px) {
+  .emlak-detail-page {
+    margin-top: 0px;
+  }
+  .emlak-detail-page .columns {
+    grid-template-columns: 100%;
+  }
+  .emlak-detail-page .columns .left .galery {
+    max-width: 98vw;
+  }
+  .emlak-detail-page .columns .left .images .slider {
+    max-width: 90vw;
+    width: 90%;
+  }
+  .emlak-detail-page .columns .left .images .slider .image-item {
+    padding: 0px;
+  }
+  .emlak-detail-page .columns .left .images .slider .image-item .frame {
+    border-radius: 0px;
+  }
+  .emlak-detail-page .columns .left .images .image-buttons {
+    display: none;
+  }
+  .emlak-detail-page .mobile-contact {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    left: 0px;
+    bottom: 40px;
+    font-size: 1.7rem;
+    padding: 10px 15px 10px 10px;
+    border-radius: 0px 10px 10px 0px;
+    background-color: var(--color-primary-blue);
+    color: var(--color-primary-whitetext);
+  }
+  .emlak-detail-page .mobile-contact .show {
+    display: flex;
+  }
+  .emlak-detail-page .mobile-contact .hide {
+    display: none;
+  }
+  .emlak-detail-page .mobile-contact .contact-buttons {
+    gap: 10px;
+    margin-left: 25px;
+    font-size: 1.2rem;
+  }
+}
+@media screen and (max-width: 550px) {
+  .emlak-detail-page .header .title {
+    font-size: 1rem;
+  }
+  .emlak-detail-page .full-photo-button {
+    display: none !important;
+  }
+}
+@media screen and (max-width: 425px) {
+  .emlak-detail-page .header .date {
+    width: auto;
+  }
+  .emlak-detail-page .header .title {
+    display: none;
+  }
+}

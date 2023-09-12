@@ -17,6 +17,7 @@ import {
   cloudName,
   uploadPreset,
 } from "../../../../elements/config";
+import PhoneInput from "react-phone-input-2";
 
 const extractPublicIdFromImageUrl = (imageUrl) => {
   // Cloudinary URL'sinden public_id'yi çıkarma
@@ -73,11 +74,14 @@ function UserEdit() {
     };
   };
 
-  const handleFormSubmit = (event) => {
+  const handleFormSubmit = async (event) => {
     event.preventDefault();
     let newNumber = "";
-    let imageUrl = "";
     let error = false;
+    if (selectedImage === null) {
+      ErrorNotification("Bir resim seçmelisin");
+      error = true;
+    }
     if (name.length <= 2) {
       ErrorNotification("Daha uzun bir isim girmelisin");
       error = true;
@@ -98,13 +102,11 @@ function UserEdit() {
       ErrorNotification("Girilen şifreler eşleşmiyor");
       error = true;
     }
-    if (number.length !== 10) {
-      ErrorNotification(
-        "Doğru bir numara girişi yapılmadı örnek numara: (5112223344)"
-      );
+    if (number.length !== 12) {
+      ErrorNotification("Doğru bir numara girişi yapılmadı");
       error = true;
     } else {
-      newNumber = "+90" + number;
+      newNumber = "+" + number;
     }
     if (age < 18) {
       ErrorNotification(
@@ -116,53 +118,38 @@ function UserEdit() {
       ErrorNotification("Bu e-postaya sahip bir kullanıcı bulunmakta");
       error = true;
     }
-    if (selectedImage !== user.profile && !error) {
+    if (!error) {
       const formData = new FormData();
-      formData.append("file", selectedImage);
-      formData.append("upload_preset", uploadPreset); // Cloudinary yükleme ön tanımlaması
-      formData.append("folder", "profiles");
-      axios
-        .post(
-          `https://api.cloudinary.com/v1_1/${cloudName}/image/upload`,
-          formData
-        )
-        .then((response) => {
-          imageUrl = response.data.secure_url;
-          console.log(response.data.secure_url);
-        })
-        .then(() => {
-          const newUser = {
-            id: user.id,
-            name: name,
-            surname: surname,
-            password: password,
-            email: email,
-            phone: newNumber,
-            gender: gender,
-            age: age,
-            profile: imageUrl,
-          };
-          axios
-            .put(`${BACKEND_URL}/users/${user.id}`, newUser)
-            .then(() => SuccessNotification("Kullanıcı başarıyla güncellendi"))
-            .then(() => navigation("/admin/kullanıcılar/"));
-        });
-    } else if (selectedImage === user.profile && !error) {
-      const newUser = {
-        id: user.id,
-        name: name,
-        surname: surname,
-        password: password,
-        email: email,
-        phone: newNumber,
-        gender: gender,
-        age: age,
-        profile: selectedImage,
-      };
-      axios
-        .put(`${BACKEND_URL}/users/${user.id}`, newUser)
-        .then(() => SuccessNotification("Kullanıcı başarıyla güncellendi"))
-        .then(() => navigation("/admin/kullanıcılar/"));
+      formData.append("id", user.id);
+      formData.append("name", name);
+      formData.append("surname", surname);
+      formData.append("password", password);
+      formData.append("email", email);
+      formData.append("phone", newNumber);
+      formData.append("gender", gender);
+      formData.append("age", age.toString());
+      formData.append(`images`, selectedImage);
+      try {
+        await axios
+          .put(`${BACKEND_URL}/users/${user.id}`, formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          })
+          .then(() => {
+            SuccessNotification("Kullanıcı başarıyla eklendi");
+            navigation("/admin/kullanıcılar/");
+          })
+          .catch(() => {
+            ErrorNotification(
+              "Kullanıcı eklenirken hata ile karşılaşıldı tekrar deneyiniz"
+            );
+            navigation("/admin/kullanıcılar/");
+          });
+        console.log("Resimler yüklendi!");
+      } catch (error) {
+        console.error("Resimler yüklenirken bir hata oluştu:", error);
+      }
     }
   };
   useEffect(() => {
@@ -180,7 +167,7 @@ function UserEdit() {
           setEmail(innerUser.email);
           setPassword(innerUser.password);
           setPassword2(innerUser.password);
-          setNumber(innerUser.phone.slice(3));
+          setNumber(innerUser.phone.slice(1));
           setGender(innerUser.gender);
           setAge(innerUser.age);
         } else {
@@ -274,15 +261,11 @@ function UserEdit() {
             </span>
           </div>
           <div className="title form-element">
-            <label htmlFor="user-add-form-number">
-              Telefon Numarası <span className="optional">(5554443322)</span>
-            </label>
-            <input
-              type="text"
-              placeholder="numara.."
-              id="user-add-form-number"
+            <label htmlFor="user-add-form-number">Telefon Numarası</label>
+            <PhoneInput
+              country={"tr"}
               value={number}
-              onChange={(e) => setNumber(e.target.value)}
+              onChange={(phone) => setNumber(phone)}
             />
           </div>
           <div className="title form-element">

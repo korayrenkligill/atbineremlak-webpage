@@ -1,9 +1,45 @@
 .emlak-main {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.emlak-main .filtreler {
+  padding: 10px;
+  background-color: var(--color-primary-background);
+  border-radius: 5px;
+  font-size: 0.9rem;
+  color: var(--color-tertiary-text);
+  text-transform: lowercase;
+  display: flex;
+  flex-wrap: wrap;
+  row-gap: 10px;
+}
+.emlak-main .filtreler span {
+  font-size: 1rem;
+  padding: 0px 10px;
+  color: var(--color-quaternary-text);
+  border-right: 1px solid var(--color-quaternary-text);
+}
+.emlak-main .filtreler p {
+  padding: 0px 10px;
+}
+.emlak-main .filtreler p:not(:last-child) {
+  padding: 0px 10px;
+  border-right: 1px solid var(--color-quaternary-text);
+}
+.emlak-main .null-list {
+  margin-top: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-tertiary-text);
+}
+.emlak-main .ilanlar {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 20px;
 }
-.emlak-main .emlak-item {
+.emlak-main .ilanlar .emlak-item {
   background-color: var(--color-primary-background);
   box-shadow: var(--boxshadow);
   border-radius: 10px;
@@ -11,7 +47,7 @@
   display: flex;
   flex-direction: column;
 }
-.emlak-main .emlak-item .frame {
+.emlak-main .ilanlar .emlak-item .frame {
   aspect-ratio: 16 / 9;
   background-position: center;
   background-repeat: no-repeat;
@@ -19,7 +55,7 @@
   background-color: var(--color-secondary-background);
   position: relative;
 }
-.emlak-main .emlak-item .frame .image-count {
+.emlak-main .ilanlar .emlak-item .frame .image-count {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -32,20 +68,77 @@
   background-color: rgba(255, 255, 255, 0.705);
   color: #242424;
 }
-.emlak-main .emlak-item .texts {
-  margin: 5px 20px 10px 20px;
+.emlak-main .ilanlar .emlak-item .frame .sold {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.26);
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.emlak-main .emlak-item .texts h1 {
+.emlak-main .ilanlar .emlak-item .frame .sold p {
+  font-size: 2rem;
+  font-weight: bolder;
+  letter-spacing: 2px;
+  color: var(--color-primary-whitetext);
+}
+.emlak-main .ilanlar .emlak-item .frame .hide {
+  display: none !important;
+}
+.emlak-main .ilanlar .emlak-item .texts {
+  margin: 5px 20px 0px 20px;
+  display: flex;
+  flex-direction: column;
+  cursor: default;
+}
+.emlak-main .ilanlar .emlak-item .texts h1 {
   font-size: 1rem;
+  color: var(--color-primary-text);
 }
-.emlak-main .emlak-item .texts p {
+.emlak-main .ilanlar .emlak-item .texts p {
   font-size: 0.9rem;
   color: var(--color-secondary-text);
 }
-.emlak-main .emlak-item .texts p span {
+.emlak-main .ilanlar .emlak-item .texts p span {
   color: var(--color-tertiary-text);
 }
-.emlak-main .emlak-item p.price {
+.emlak-main .ilanlar .emlak-item .texts p .icon {
+  transform: translateY(2px);
+  margin-right: 4px;
+}
+.emlak-main .ilanlar .emlak-item .texts p.ilce-mahalle {
+  font-size: 0.8rem;
+  overflow: hidden;
+  text-transform: lowercase;
+  white-space: nowrap;
+  color: var(--color-tertiary-text);
+}
+.emlak-main .ilanlar .emlak-item div.features {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  padding: 10px 20px;
+  cursor: default;
+}
+.emlak-main .ilanlar .emlak-item div.features p {
+  padding: 0px 10px;
+  font-size: 0.9rem;
+  color: var(--color-secondary-text);
+}
+.emlak-main .ilanlar .emlak-item div.features p span {
+  color: var(--color-tertiary-text);
+}
+.emlak-main .ilanlar .emlak-item div.features p .icon {
+  transform: translateY(2px);
+  margin-right: 4px;
+}
+.emlak-main .ilanlar .emlak-item div.features p:not(:last-child) {
+  border-right: 1px solid var(--color-quaternary-text);
+}
+.emlak-main .ilanlar .emlak-item p.price {
   display: block;
   text-align: center;
   padding: 10px;
@@ -54,6 +147,12 @@
   color: var(--color-primary-whitetext);
   font-size: 1.1rem;
   font-weight: bold;
+  transition: background-color 0.4s, color 0.4s;
+  cursor: pointer;
+}
+.emlak-main .ilanlar .emlak-item p.price:hover {
+  background-color: var(--color-primary-background);
+  color: var(--color-primary-blue);
 }
 @media screen and (max-width: 768px) {
   .emlak-main {

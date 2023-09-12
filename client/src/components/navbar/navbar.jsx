@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { IoCall, IoHome } from "react-icons/io5";
-import { IoIosMenu, IoIosClose } from "react-icons/io";
+import { IoIosMenu, IoIosClose, IoIosMoon } from "react-icons/io";
 import { BsFillCarFrontFill, BsFillGridFill } from "react-icons/bs";
-import { MdRealEstateAgent, MdAdminPanelSettings } from "react-icons/md";
-import { Link, NavLink } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
+import { HiSun } from "react-icons/hi";
+import {
+  MdRealEstateAgent,
+  MdAdminPanelSettings,
+  MdWork,
+} from "react-icons/md";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 
 import "./navbar.css";
 
@@ -11,7 +17,8 @@ function getWindowSize() {
   const { innerWidth, innerHeight } = window;
   return { innerWidth, innerHeight };
 }
-function Navbar({ user }) {
+function Navbar({ user, theme, changeTheme }) {
+  const navigation = useNavigate();
   const [windowSize, setWindowSize] = useState(getWindowSize());
 
   const [isOpen, setIsOpen] = useState(false);
@@ -33,16 +40,16 @@ function Navbar({ user }) {
   if (windowSize.innerWidth > 768)
     return (
       <nav className="navbar-pc">
-        <a href="#" className="navbar-logo">
+        <Link to="/ana-sayfa" className="navbar-logo">
           <div className="frame">
             <img src="/logo.png" alt="logo" />
           </div>
-        </a>
+        </Link>
         <div className="navbar-links">
-          <NavLink to="/">
+          <NavLink to="/ana-sayfa">
             <BsFillGridFill className="icon-transform" /> Ana Sayfa
           </NavLink>
-          <NavLink to="/emlak">
+          <NavLink to="/">
             <IoHome className="icon-transform" />
             Ev İlanları
           </NavLink>
@@ -50,15 +57,41 @@ function Navbar({ user }) {
             <BsFillCarFrontFill className="icon-transform" />
             Araç İlanları
           </NavLink>
+          <NavLink to="/tadilat">
+            <MdWork className="icon-transform" />
+            Tadilat
+          </NavLink>
           {user && (
-            <NavLink to="/admin">
+            <NavLink to="/admin/konutlar/">
               <MdAdminPanelSettings className="icon-transform" />
               Yönetim paneli
             </NavLink>
           )}
         </div>
         <div className="contact">
-          <Link className="navbar-contact">
+          <div
+            className="theme-change-switcher"
+            onClick={() => {
+              changeTheme(`${theme === "light" ? "dark" : "light"}`);
+            }}
+          >
+            <div
+              className="theme-change-switcher-inner"
+              style={
+                theme === "light"
+                  ? { left: "0%" }
+                  : { left: "100%", transform: "translateX(-100%)" }
+              }
+            />
+            <IoIosMoon className="moon theme-icon" />
+            <HiSun className="sun theme-icon" />
+          </div>
+          {!user && (
+            <Link to="/admin/konutlar/" className="navbar-contact">
+              Giriş yap
+            </Link>
+          )}
+          <Link className="navbar-contact" to="/contact">
             <IoCall className="icon-transform" /> İletişime geç
           </Link>
           <Link to="/ilan-ver" className="ilan-ver">
@@ -70,7 +103,7 @@ function Navbar({ user }) {
   else
     return (
       <nav className={`navbar-mobile ${isOpen ? "open" : ""}`}>
-        <a href="#" className="navbar-logo">
+        <div className="navbar-logo">
           <div className="frame">
             <img src="/logo.png" alt="logo" />
           </div>
@@ -85,10 +118,10 @@ function Navbar({ user }) {
               onChange={handleNavbarStateChange}
             />
           </div>
-        </a>
+        </div>
         <div className={`navbar-links ${isOpen ? "open" : ""}`}>
           <NavLink
-            to="/"
+            to="/ana-sayfa"
             onClick={() => {
               setIsOpen(false);
             }}
@@ -96,7 +129,7 @@ function Navbar({ user }) {
             <BsFillGridFill className="icon-transform" /> Ana Sayfa
           </NavLink>
           <NavLink
-            to="/konut"
+            to="/"
             onClick={() => {
               setIsOpen(false);
             }}
@@ -113,14 +146,57 @@ function Navbar({ user }) {
             <BsFillCarFrontFill className="icon-transform" />
             Otomobil İlanları
           </NavLink>
-          <button
+          <NavLink
+            to="/tadilat"
+            onClick={() => {
+              setIsOpen(false);
+            }}
+          >
+            <MdWork className="icon-transform" />
+            Tadilat
+          </NavLink>
+          {user ? (
+            <NavLink
+              to="/admin/konutlar/"
+              onClick={() => {
+                setIsOpen(false);
+              }}
+            >
+              <MdAdminPanelSettings className="icon-transform" /> Yönetim Paneli
+            </NavLink>
+          ) : (
+            <button
+              className="navbar-contact"
+              onClick={() => {
+                navigation("/admin/konutlar/");
+                setIsOpen(false);
+              }}
+            >
+              <FaUserCircle className="icon-transform" /> Giriş Yap
+            </button>
+          )}
+          <Link
             className="navbar-contact"
+            to="/contact"
             onClick={() => {
               setIsOpen(false);
             }}
           >
             <IoCall className="icon-transform" /> İletişime geç
-          </button>
+          </Link>
+          <a
+            className="theme-change-switcher-mobile"
+            onClick={() => {
+              changeTheme(`${theme === "light" ? "dark" : "light"}`);
+            }}
+          >
+            {theme === "light" ? (
+              <HiSun className="sun theme-icon icon-transform" />
+            ) : (
+              <IoIosMoon className="moon theme-icon icon-transform" />
+            )}{" "}
+            Tema Değiştir
+          </a>
           <Link
             to="/ilan-ver"
             className="ilan-ver"

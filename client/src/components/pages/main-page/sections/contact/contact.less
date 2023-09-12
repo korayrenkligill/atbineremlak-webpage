@@ -1,5 +1,7 @@
 main.main-page {
   .contact {
+    padding: var(--page-padding);
+
     .contact-container {
       display: flex;
       gap: 2rem;
@@ -21,7 +23,8 @@ main.main-page {
             padding: 10px;
             border: none;
             border-radius: 10px;
-            background-color: var(--color-fifth-text);
+            background-color: var(--color-fifth-text) !important;
+            color: var(--color-secondary-text);
             resize: vertical;
           }
           input:focus,
@@ -49,6 +52,7 @@ main.main-page {
         flex: 1;
         border: none;
         border-radius: 30px;
+        width: 100%;
       }
     }
     .numbers {
@@ -82,11 +86,13 @@ main.main-page {
           p {
             font-weight: bold;
             font-size: 1rem;
+            color: var(--color-primary-text);
           }
           span {
             display: inline-block;
             transform: translateY(-5px);
             font-size: 0.8rem;
+            color: var(--color-secondary-text);
           }
         }
         .contact-informations {
@@ -102,6 +108,7 @@ main.main-page {
             display: flex;
             align-items: center;
             gap: 4px;
+            color: var(--color-primary-text);
             img.image-icon {
               width: 15px;
               height: 15px;

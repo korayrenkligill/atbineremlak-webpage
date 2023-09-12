@@ -5,13 +5,19 @@
   box-shadow: var(--boxshadow);
 }
 .admin-page-sidebar h1.header {
+  background-color: transparent;
+  box-shadow: none;
+  padding: 0rem;
+  border-radius: 0rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 1.3rem;
+  color: var(--color-primary-text);
 }
 .admin-page-sidebar h1.header .icon {
-  font-size: 1rem;
+  font-size: 1.5rem;
+  animation: PagesClickAnimation 1s infinite;
 }
 .admin-page-sidebar .links {
   display: flex;
@@ -60,19 +66,34 @@
   border-left: 3px solid var(--color-primary-blue);
 }
 .admin-page-sidebar .links.open {
-  max-height: 550px;
+  max-height: 650px;
   transition: max-height 0.6s;
 }
 @media screen and (max-width: 768px) {
   .admin-page-sidebar {
     box-shadow: none;
   }
+  .admin-page-sidebar h1.header {
+    background-color: var(--color-secondary-background);
+    box-shadow: 0px 4px 10px 3px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
   .admin-page-sidebar .links {
-    max-height: 2000px;
-    display: none;
+    max-height: 0px;
   }
   .admin-page-sidebar .links.open {
-    max-height: 2000px;
-    display: flex;
+    max-height: 650px;
+  }
+}
+@keyframes PagesClickAnimation {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }

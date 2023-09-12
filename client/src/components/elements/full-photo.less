@@ -1,0 +1,29 @@
+.full-photo {
+  position: relative;
+  z-index: 10000000;
+  img {
+    max-width: 80%;
+    max-height: 80%;
+    filter: drop-shadow(var(--boxshadow));
+  }
+  .background-close-button {
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.316);
+    backdrop-filter: grayscale(100%) blur(2px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+  }
+  button {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    background-color: transparent;
+    font-size: 2rem;
+    color: white;
+  }
+}

@@ -9,6 +9,7 @@
   width: 150px;
   height: 150px;
   background-color: var(--color-secondary-background);
+  color: var(--color-secondary-text);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -19,7 +20,9 @@
 }
 .user-add .user-add-form .drop-area img {
   width: 100%;
-  aspect-ratio: 1;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
 }
 .user-add .user-add-form .drop-area .icon {
   transform: translate(4px, 4px);
@@ -28,19 +31,52 @@
   display: flex;
   flex-direction: column;
 }
+.user-add .user-add-form .form-element label {
+  color: var(--color-secondary-text);
+  padding-bottom: 8px;
+}
+.user-add .user-add-form .form-element .ql-picker,
+.user-add .user-add-form .form-element .ql-editor.ql-blank::before,
+.user-add .user-add-form .form-element .ql-toolbar {
+  color: var(--color-primary-text) !important;
+}
+.user-add .user-add-form .form-element input,
+.user-add .user-add-form .form-element select,
+.user-add .user-add-form .form-element textarea,
+.user-add .user-add-form .form-element .quill {
+  width: 100%;
+  color: var(--color-primary-text);
+}
 .user-add .user-add-form .form-element span.optional {
   font-size: 0.7rem;
   color: var(--color-tertiary-text);
+  margin-left: 5px;
 }
 .user-add .user-add-form .form-element-double {
   display: flex;
   align-items: center;
   gap: 2rem;
 }
-.user-add .user-add-form .form-element-double span {
+.user-add .user-add-form .form-element-double label {
+  color: var(--color-secondary-text);
+  padding-bottom: 8px;
+}
+.user-add .user-add-form .form-element-double input,
+.user-add .user-add-form .form-element-double select,
+.user-add .user-add-form .form-element-double textarea,
+.user-add .user-add-form .form-element-double .quill {
+  width: 100%;
+  color: var(--color-primary-text);
+}
+.user-add .user-add-form .form-element-double span:not(.optional) {
   flex: 1;
   display: flex;
   flex-direction: column;
+}
+.user-add .user-add-form .form-element-double span:not(.optional) span.optional {
+  font-size: 0.7rem;
+  color: var(--color-tertiary-text);
+  margin-left: 5px;
 }
 .user-add .user-add-form button.submit-button {
   padding: 10px;

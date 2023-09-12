@@ -9,7 +9,7 @@ import { BACKEND_URL } from "../../../../elements/config";
 import { useNavigate } from "react-router-dom";
 import { SuccessNotification } from "../../../../elements/toastify";
 
-function CarRequest() {
+function CarRequest({ user }) {
   const navigation = useNavigate();
   const [loading, setLoading] = useState(true);
   const [cars, setCars] = useState([]);
@@ -18,7 +18,8 @@ function CarRequest() {
     event.stopPropagation();
     let car = cars.find((u) => u.id == id);
     car.request = false;
-    axios.put(`${BACKEND_URL}/cars/${id}`, car).then(() => {
+    car.user = user;
+    axios.put(`${BACKEND_URL}/cars/request-accept/${id}`, car).then(() => {
       SuccessNotification("İlan başarıyla onaylandı");
       navigation("/admin/otomobiller/");
     });

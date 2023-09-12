@@ -1,5 +1,8 @@
 import React, { useState } from "react";
-import { IoMenu } from "react-icons/io5";
+import { BiSearchAlt } from "react-icons/bi";
+import { FaTrash } from "react-icons/fa";
+import { GiClick } from "react-icons/gi";
+
 import "./araba-sidebar.css";
 
 const otomobilModelleri = [
@@ -32,14 +35,14 @@ const otomobilModelleri = [
 function ArabaSidebar(props) {
   const [mobileMenu, setMobileMenu] = useState(false);
   return (
-    <div className="emlak-sidebar">
+    <div className="araba-sidebar">
       <h2
         className="title"
         onClick={() => {
           setMobileMenu(!mobileMenu);
         }}
       >
-        Filtreleme Menüsü <IoMenu className="icon" />
+        Filtreleme Menüsü <GiClick className="icon" />
       </h2>
       <div
         className={`mobile-menu ${
@@ -186,6 +189,16 @@ function ArabaSidebar(props) {
             <option value="MPV">MPV</option>
             <option value="Roadster">Roadster</option>
           </select>
+        </div>
+        <div className="buttons">
+          <button className="submit" onClick={props.handleFilterChanged}>
+            ARA
+            <BiSearchAlt className="icon" />
+          </button>
+          <button className="clear" onClick={props.handleClearFilter}>
+            filtreyi temizle
+            <FaTrash className="icon" />
+          </button>
         </div>
       </div>
     </div>

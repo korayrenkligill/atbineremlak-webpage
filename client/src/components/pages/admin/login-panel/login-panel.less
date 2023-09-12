@@ -20,9 +20,13 @@
         font-size: 0.8rem;
         margin-left: 10px;
       }
+      input {
+        color: var(--color-secondary-text);
+      }
     }
     h2 {
       margin-bottom: 1rem;
+      color: var(--color-primary-text);
     }
     button.submit-button {
       padding: 10px;
@@ -43,5 +47,14 @@
 @media screen and (max-width: 768px) {
   .login-screen {
     padding: 20vh 0px;
+  }
+}
+@media screen and(max-width: 500px) {
+  .login-screen {
+    .login-form {
+      div.form-item {
+        min-width: 250px;
+      }
+    }
   }
 }
